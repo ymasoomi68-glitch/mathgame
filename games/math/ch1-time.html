@@ -142,7 +142,17 @@ function finish(){
  $("resultMessage").textContent=score>=18?"درخشان بود! تسلط بسیار خوبی بر اعداد مرکب داری.":score>=14?"آفرین! بیشتر مباحث را خوب بلدی؛ پاسخ‌ها را مرور کن.":score>=10?"خوب پیش رفتی. با مرور تبدیل‌ها و قرض گرفتن از واحد بزرگ‌تر، قوی‌تر می‌شوی.":"تلاش ارزشمندی بود. پاسخ‌ها و توضیح‌ها را مرور کن و دوباره امتحان کن.";
  const b=$("badges");b.innerHTML="";const labels=score>=18?["استاد اعداد مرکب","دقت عالی","حلّال مسئله"]:score>=14?["محاسبه‌گر پرتلاش","در مسیر تسلط"]:["کاوشگر ریاضی","تمرین‌کنندهٔ شجاع"];
  labels.forEach(t=>{const el=document.createElement("span");el.className="badge";el.textContent="✦ "+t;b.appendChild(el)});
- $("review").innerHTML="";answers.forEach((a,i)=>{const li=document.createElement("li");li.className=a.good?"correct":"wrong";li.innerHTML="<strong>"+fa(i+1)+". "+a.question+"</strong><br>پاسخ صحیح: "+a.correct+"<br><span style='color:var(--muted)'>"+a.why+"</span>";$("review").appendChild(li)})
+ $("review").innerHTML="";answers.forEach((a,i)=>{const li=document.createElement("li");li.className=a.good?"correct":"wrong";li.innerHTML="<strong>"+fa(i+1)+". "+a.question+"</strong><br>پاسخ صحیح: "+a.correct+"<br><span style='color:var(--muted)'>"+a.why+"</span>";$("review").appendChild(li)});
+
+ // 🆕 این ۸ خط اضافه شده:
+ try {
+   window.parent.postMessage({
+     type: 'GAME_FINISHED',
+     gameId: 'ch1-time',
+     score: score,
+     total: questions.length
+   }, '*');
+ } catch (e) {}
 }
 $("start").addEventListener("click",startGame);
 $("next").addEventListener("click",()=>{if(idx<questions.length-1){idx++;renderQuestion()}else finish()});
