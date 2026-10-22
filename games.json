@@ -1,9 +1,9 @@
 {
   "subjects": [
-    { "id": "math",    "label": "ریاضی",           "emoji": "🔢", "color": "#3b82f6" },
-    { "id": "science", "label": "علوم",            "emoji": "🔬", "color": "#10b981" },
-    { "id": "farsi",   "label": "فارسی",           "emoji": "📖", "color": "#ef4444" },
-    { "id": "social",  "label": "مطالعات اجتماعی", "emoji": "🌍", "color": "#8b5cf6" }
+    { "id": "math",    "label": "ریاضی",           "emoji": "🔢", "icon": "images/math.png", "color": "#3b82f6" },
+    { "id": "science", "label": "علوم",            "emoji": "🔬", "icon": "images/science.png", "color": "#10b981" },
+    { "id": "farsi",   "label": "فارسی",           "emoji": "📖", "icon": "images/persian.png", "color": "#ef4444" },
+    { "id": "social",  "label": "مطالعات اجتماعی", "emoji": "🌍", "icon": "images/social.png", "color": "#8b5cf6" }
   ],
   "games": [
     {
