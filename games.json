@@ -3,7 +3,7 @@
     { "id": "math",    "label": "ریاضی",           "emoji": "🔢", "color": "#3b82f6" },
     { "id": "science", "label": "علوم",            "emoji": "🔬", "color": "#10b981" },
     { "id": "farsi",   "label": "فارسی",           "emoji": "📖", "color": "#ef4444" },
-    { "id": "social",  "label": "مطالعات اجتماعی", "emoji": "🌍", "color": "#8b5cf6" },
+    { "id": "social",  "label": "مطالعات اجتماعی", "emoji": "🌍", "color": "#8b5cf6" }
   ],
   "games": [
     {
