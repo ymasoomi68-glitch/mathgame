@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مأموریت نجات رنگین‌کمان | علوم پنجم</title>
+<style>
+:root{--ink:#26345f;--pink:#ff7fa8;--blue:#6ccde8;--gold:#ffd45c;--green:#55c9a0;--purple:#a99aff}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#e8fbff,#fff5fa 48%,#fffbe5);line-height:1.8}
+header{text-align:center;padding:22px 14px 18px;background:linear-gradient(120deg,#a8ecf8,#e4d5ff,#ffd5e2);border-bottom:5px solid white}
+.channel-credit{display:flex;justify-content:center;align-items:center;gap:8px 14px;flex-wrap:wrap;max-width:760px;margin:16px auto 0;padding:10px 14px;background:#ffffffc9;border:2px solid #fff;border-radius:18px;box-shadow:0 4px 0 #26345f12;font-size:.95rem}
+.channel-credit strong{font-size:1rem}
+.channel-credit span{background:#fff;border-radius:12px;padding:4px 10px}
+
+h1{font-size:clamp(1.5rem,4vw,2.4rem);margin:5px 0}header p{margin:5px;font-weight:bold}
+.wrap{max-width:1100px;margin:auto;padding:16px}.stats{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}.pill{background:#fff;border:2px solid #e4e5ff;border-radius:18px;padding:7px 13px;font-weight:bold;box-shadow:0 3px 0 #27345e0b}
+.progress{max-width:750px;margin:14px auto;background:#fff;height:13px;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#43c9a0,#ffcf58,#ff80ae);transition:.35s}
+.hero{background:#ffffffc9;border:2px solid white;border-radius:24px;padding:18px;margin:16px 0;text-align:center;box-shadow:0 8px 22px #37436b0d}
+.rainbow{font-size:clamp(2.4rem,8vw,5rem);line-height:1.3;filter:drop-shadow(0 4px 1px #26345f12)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
+.card{border:3px solid white;border-radius:22px;padding:16px;text-align:center;min-height:175px;cursor:pointer;box-shadow:0 6px 0 #26345f12;transition:.18s;color:var(--ink);font:inherit}
+.card:hover{transform:translateY(-3px)}.card:disabled{cursor:default;opacity:.7}.card.done{filter:saturate(.6)}.card b{display:block;font-size:1.1rem;margin:5px}.icon{font-size:2.3rem}.c1{background:#ffe1ed}.c2{background:#e3f8dc}.c3{background:#fff1bf}.c4{background:#e8e2ff}.c5{background:#d9f5ff}.c6{background:#ffe5d3}
+button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0}.primary{background:#16a895;color:white;font-weight:bold}.secondary{background:#edf0ff;color:#303d70}.answer{display:block;width:100%;text-align:right;background:#f0edff;border:2px solid #ded8ff;color:var(--ink);margin:8px 0;padding:12px}.answer:hover:not(:disabled){background:#e4f8ff}.answer.correct{background:#d9f8e8;border-color:#45bd88}.answer.wrong{background:#ffe0e7;border-color:#ed7892}.panel{display:none;background:white;border:3px solid #e3d9ff;border-radius:22px;padding:18px;margin-top:16px;box-shadow:0 8px 20px #26345f0c}.panel.active{display:block}.question{background:#f3f7ff;border-radius:15px;padding:15px;font-weight:bold;font-size:1.08rem}.row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.badge{background:#fff0b8;border-radius:20px;padding:5px 11px;font-size:.9rem;font-weight:bold}.feedback{min-height:38px;font-weight:bold;line-height:1.9;margin:10px 0}.hidden{display:none!important}.note{border:2px dashed #f0b8ca;background:#fff8fb;border-radius:15px;padding:12px;margin:14px 0}.final-rainbow{font-size:3rem}.small{font-size:.9rem;color:#5b668a}footer{text-align:center;padding:20px;font-size:.85rem;color:#687294}
+</style></head>
+<body>
+<header>
+<div style="font-size:2rem">🔬 ☀️ 🌈 🔍</div>
+<h1 id="mainTitle">مأموریت نجات رنگین‌کمان</h1>
+<p id="mainSubtitle">بازی تعاملی علوم پنجم دبستان | درس سوم</p>
+<span class="badge">معما • آزمایشگاه • چالش تصویری • آزمون نهایی</span>
+<div class="channel-credit">
+  <span>طراح: یوسف معصومی</span>
+</div>
+</header>
+<main class="wrap">
+<div class="stats"><div class="pill">⭐ امتیاز: <span id="score">۰</span></div><div class="pill">🌈 رنگ‌های آزادشده: <span id="colors">۰</span> از ۶</div><div class="pill">🧪 ایستگاه‌ها: <span id="done">۰</span> از ۶</div></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<section id="home">
+<div class="hero"><div class="rainbow">🌈</div><h2>دانشمند کوچک، آماده‌ای؟</h2><p>رنگ‌های رنگین‌کمان گم شده‌اند! در هر ایستگاه، پرسش‌ها را حل کن و یک رنگ را آزاد کن. در پایان، مأموریتت را کامل می‌کنی.</p><div class="note">💡 برای هر پاسخ درست ۱۰ امتیاز می‌گیری. پاسخ درست و توضیح کوتاه پس از هر انتخاب نمایش داده می‌شود.</div></div>
+<div class="grid" id="stations">
+<button class="card c1" onclick="openStation('rainbow')"><span class="icon">☀️</span><b>۱. راز نور سفید</b>رنگین‌کمان و رنگ‌های آن</button>
+<button class="card c2" onclick="openStation('prism')"><span class="icon">🔺</span><b>۲. آزمایشگاه منشور</b>تجزیه نور سفید</button>
+<button class="card c3" onclick="openStation('methods')"><span class="icon">💧</span><b>۳. کارآگاه رنگ‌ها</b>روش‌های تشکیل رنگین‌کمان</button>
+<button class="card c4" onclick="openStation('lens')"><span class="icon">🔍</span><b>۴. سرزمین ذره‌بین‌ها</b>عدسی و بزرگ‌نمایی</button>
+<button class="card c5" onclick="openStation('focus')"><span class="icon">✨</span><b>۵. شکارچی نور</b>کانون عدسی و ایمنی</button>
+<button class="card c6" onclick="openStation('image')"><span class="icon">🖼️</span><b>۶. اتاق تصویرها</b>اندازه و تشکیل تصویر</button>
+</div>
+</section>
+<section id="play" class="panel"><div class="row"><span class="badge">🧭 مأموریت فعال</span><button class="secondary" onclick="goHome()">🏡 بازگشت به نقشه</button></div><div id="content"></div><div id="feedback" class="feedback" aria-live="polite"></div><div class="row"><span class="small" id="counter"></span><button id="next" class="primary hidden" onclick="nextQuestion()">پرسش بعدی ←</button></div></section>
+<section id="finish" class="panel" style="text-align:center"><div class="final-rainbow">🏆🌈✨</div><h2>آفرین، مأموریت کامل شد!</h2><p id="summary"></p><h3>گواهی دانشمند کوچک علوم</h3><p>تو با حل معماهای نور، رنگین‌کمان و عدسی‌ها به پایان مأموریت رسیدی.</p><button class="primary" onclick="restart()">🔄 شروع دوباره</button><button class="secondary" onclick="goHome()">بازگشت به نقشه</button></section>
+</main><footer>علوم پنجم دبستان • درس سوم: رنگین‌کمان | برای تمرین و مرور درس</footer>
+<script>
+const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const stations={
+rainbow:{title:'ایستگاه اول: راز نور سفید',tag:'رنگین‌کمان',color:'🔴',q:[
+['نور خورشید در ظاهر چه رنگی به نظر می‌رسد؟',['سفید','سبز','بنفش'],0,'نور خورشید در ظاهر سفید است، اما از رنگ‌های گوناگون تشکیل شده است.'],
+['رنگین‌کمان چگونه به وجود می‌آید؟',['نور خورشید به قطره‌های آب می‌تابد و به رنگ‌های گوناگون تجزیه می‌شود','ابرها رنگ تولید می‌کنند','نور خورشید فقط به رنگ قرمز تبدیل می‌شود'],0,'قطره‌های آب می‌توانند نور خورشید را به رنگ‌های گوناگون تجزیه کنند.'],
+['کدام گزینه ترتیب رنگ‌های رنگین‌کمان را درست نشان می‌دهد؟',['قرمز، نارنجی، زرد، سبز، آبی، نیلی، بنفش','آبی، قرمز، سبز، زرد، نیلی، نارنجی، بنفش','قرمز، سبز، نارنجی، آبی، زرد، بنفش، نیلی'],0,'ترتیب کتاب: قرمز، نارنجی، زرد، سبز، آبی، نیلی و بنفش.'],
+['برای تشکیل رنگین‌کمان طبیعی، کدام دو شرط لازم است؟',['وجود قطره‌های آب در هوا و تابش نور خورشید به آن‌ها','وجود برف و نور ماه','وجود باد و خاک'],0,'برای تشکیل رنگین‌کمان باید قطره‌های آب در هوا باشند و نور خورشید به آن‌ها بتابد.'],
+['چرا رنگین‌کمان همیشه در آسمان دیده نمی‌شود؟',['چون وجود قطره‌های آب در هوا و تابش نور خورشید هم‌زمان لازم است','چون خورشید همیشه نور سفید ندارد','چون رنگ‌ها شب‌ها ناپدید می‌شوند'],0,'این دو شرط همیشه هم‌زمان فراهم نیستند.']
+]},
+prism:{title:'ایستگاه دوم: آزمایشگاه منشور',tag:'تجزیه نور',color:'🟠',q:[
+['منشور معمولاً چه شکلی دارد؟',['وسیله‌ای شفاف که معمولاً به شکل مثلثی ساخته می‌شود','صفحه‌ای کدر و سیاه','یک آینه گرد'],0,'منشور وسیله‌ای شفاف است که معمولاً شکل مثلثی دارد.'],
+['وقتی نور سفید از منشور عبور می‌کند، چه اتفاقی می‌افتد؟',['نور تجزیه می‌شود و رنگ‌های گوناگون از هم جدا می‌شوند','نور کاملاً ناپدید می‌شود','فقط رنگ زرد باقی می‌ماند'],0,'کار منشور تجزیه نور سفید به رنگ‌های تشکیل‌دهنده آن است.'],
+['کدام وسیله می‌تواند نور سفید را به رنگ‌های گوناگون تجزیه کند؟',['منشور','مقوای سیاه','تکه چوب'],0,'منشور یکی از وسایل تجزیه نور سفید است.'],
+['رنگ‌های رنگین‌کمان در اصل از چه چیزی به وجود می‌آیند؟',['تجزیه نور سفید','ترکیب خاک و آب','بازتاب رنگ درختان'],0,'رنگ‌های رنگین‌کمان از تجزیه نور سفید به وجود می‌آیند.']
+]},
+methods:{title:'ایستگاه سوم: کارآگاه رنگ‌ها',tag:'روش‌های تشکیل رنگین‌کمان',color:'🟡',q:[
+['کدام روش می‌تواند رنگ‌های نور سفید را نشان دهد؟',['عبور نور از منشور','تاباندن نور به پارچه سیاه','گذاشتن کاغذ در تاریکی'],0,'عبور نور از منشور یکی از روش‌های مشاهده تجزیه نور سفید است.'],
+['در یک روز آفتابی، کدام کار می‌تواند رنگین‌کمانی کوچک ایجاد کند؟',['آب‌پاشیدن در هوا در برابر نور خورشید','روشن کردن چراغ در اتاق تاریک','قرار دادن سنگ زیر میز'],0,'قطره‌های آب در هوا با نور خورشید می‌توانند رنگین‌کمان ایجاد کنند.'],
+['در روش استفاده از تشت آب، کدام وسیله نیز به کار می‌رود؟',['آینه کوچک','منشور چوبی','کاغذ سیاه'],0,'در این روش از تشت آب و آینه استفاده می‌شود.'],
+['در روش لوله شفاف، نور روی چه چیزی نمایش داده می‌شود؟',['کاغذ سفید','پارچه تیره','دیوار سیاه'],0,'نور عبوری از لوله روی کاغذ سفید نمایش داده می‌شود.']
+]},
+lens:{title:'ایستگاه چهارم: سرزمین ذره‌بین‌ها',tag:'ذره‌بین و عدسی',color:'🟢',q:[
+['ذره‌بین برای چه کاری استفاده می‌شود؟',['بزرگ‌تر دیدن اجسام و نوشته‌های ریز','تولید نور خورشید','تبدیل آب به بخار'],0,'ذره‌بین به ما کمک می‌کند اجسام و نوشته‌های ریز را بزرگ‌تر ببینیم.'],
+['ذره‌بین معمولاً از چه چیزی ساخته می‌شود؟',['شیشه یا پلاستیک شفاف','چوب و پارچه','فلز کدر'],0,'ذره‌بین معمولاً از شیشه یا پلاستیک شفاف ساخته می‌شود.'],
+['چرا به ذره‌بین «عدسی» هم می‌گویند؟',['چون قسمت اصلی آن عدسی است','چون از عدس خوراکی ساخته شده','چون نور تولید می‌کند'],0,'قسمت اصلی ذره‌بین یک عدسی است.'],
+['وقتی از پشت لیوان شیشه‌ای پر از آب به نوشته نگاه می‌کنیم، چه ممکن است ببینیم؟',['نوشته بزرگ‌تر دیده شود','نوشته همیشه ناپدید شود','نوشته حتماً قرمز شود'],0,'آب و دیواره لیوان می‌توانند مانند یک عدسی عمل کنند و اندازه نوشته را تغییر دهند.'],
+['عدسی در زندگی روزمره در کدام وسیله کاربرد دارد؟',['ذره‌بین و دوربین','قاشق و چنگال','دفتر و مداد'],0,'عدسی در وسایلی مانند ذره‌بین و دوربین به کار می‌رود.']
+]},
+focus:{title:'ایستگاه پنجم: شکارچی نور',tag:'کانون عدسی و ایمنی',color:'🔵',q:[
+['وقتی پرتوهای نور خورشید پس از عبور از ذره‌بین در یک نقطه جمع می‌شوند، آن نقطه چه نام دارد؟',['کانون عدسی','قطب‌نما','منشور'],0,'نقطه‌ای که پرتوهای نور پس از عبور از عدسی در آن جمع می‌شوند، کانون عدسی است.'],
+['در کانون عدسی چه اتفاقی برای نور می‌افتد؟',['پرتوهای نور در نقطه‌ای جمع می‌شوند','نور به صدا تبدیل می‌شود','نور کاملاً سرد می‌شود'],0,'در کانون عدسی، پرتوهای نور در یک نقطه جمع می‌شوند.'],
+['اگر نور خورشید را با ذره‌بین روی کاغذ ثابت نگه داریم، چه خطری وجود دارد؟',['کاغذ ممکن است بسیار گرم شود و بسوزد','کاغذ به آب تبدیل می‌شود','هیچ خطری وجود ندارد'],0,'تمرکز نور خورشید می‌تواند باعث داغ شدن و سوختن کاغذ شود.'],
+['کدام رفتار ایمن است؟',['هرگز نور خورشید را با ذره‌بین روی کاغذ یا مواد دیگر متمرکز نکنیم','برای سرگرمی نور را روی هر چیزی متمرکز کنیم','از پشت ذره‌بین مستقیم به خورشید نگاه کنیم'],0,'نور خورشید را با ذره‌بین متمرکز نکن و از نگاه مستقیم به خورشید بپرهیز.'],
+['فاصله کانونی عدسی‌ها چگونه است؟',['در عدسی‌های مختلف می‌تواند متفاوت باشد','در همه عدسی‌ها دقیقاً یکسان است','به رنگ دسته ذره‌بین بستگی دارد'],0,'فاصله کانونی در عدسی‌های مختلف متفاوت است و به نوع عدسی بستگی دارد.']
+]},
+image:{title:'ایستگاه ششم: اتاق تصویرها',tag:'تشکیل و اندازه تصویر',color:'🟣',q:[
+['عدسی‌ها چه کاری می‌توانند انجام دهند؟',['تصویر اجسام را تشکیل دهند','رنگ اجسام را همیشه حذف کنند','صدا را بزرگ کنند'],0,'عدسی‌ها می‌توانند تصویر اجسام را تشکیل دهند.'],
+['در آزمایش شمع و عدسی، تصویر روی صفحه معمولاً چگونه دیده می‌شود؟',['وارونه','همیشه مستقیم','بدون هیچ تغییری در جهت'],0,'در آزمایش نشان‌داده‌شده، تصویر شمع روی صفحه وارونه تشکیل می‌شود.'],
+['با تغییر فاصله جسم از عدسی، اندازه تصویر چه تغییری می‌کند؟',['ممکن است بزرگ‌تر یا کوچک‌تر شود','هیچ‌وقت تغییر نمی‌کند','همیشه فقط بزرگ‌تر می‌شود'],0,'با تغییر فاصله جسم از عدسی، اندازه تصویر می‌تواند تغییر کند.'],
+['برای تشکیل تصویر روی صفحه، چه چیزی لازم است؟',['شرایط مناسب برای تشکیل تصویر وجود داشته باشد','صفحه حتماً سیاه باشد','اتاق کاملاً بدون نور و بدون عدسی باشد'],0,'برای تشکیل تصویر روی صفحه باید شرایط مناسب فراهم باشد.'],
+['در کدام گزینه کاربرد عدسی درست آمده است؟',['بزرگ‌نمایی اجسام ریز و دوربین عکاسی','تولید آب و باران','ساختن صدا از نور'],0,'عدسی‌ها در بزرگ‌نمایی اجسام ریز و تشکیل تصویر در دوربین کاربرد دارند.']
+]}
+};
+let score=0,done=new Set(),current='',qi=0,questions=[],colors=new Set(),locked=false;
+function openStation(key){if(done.has(key)){alert('این ایستگاه را کامل کرده‌ای! می‌توانی ایستگاه دیگری را انتخاب کنی.');return}current=key;qi=0;questions=stations[key].q;locked=false;document.getElementById('home').classList.add('hidden');document.getElementById('finish').classList.remove('active');document.getElementById('play').classList.add('active');document.getElementById('mainTitle').textContent=stations[key].title;document.getElementById('mainSubtitle').textContent='علوم پنجم دبستان | درس سوم: رنگین‌کمان';renderQ()}
+function renderQ(){locked=false;let q=questions[qi];let wrong=q[1].map((t,i)=>({t,i})).filter(o=>o.i!==q[2]);for(let i=wrong.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[wrong[i],wrong[j]]=[wrong[j],wrong[i]]}let target=(globalQuestionIndex()+qi)%3;let opts=[];for(let i=0;i<3;i++){if(i===target)opts.push({t:q[1][q[2]],i:q[2]});else opts.push(wrong.shift())}window.shown=opts;document.getElementById('content').innerHTML='<div class="question">'+fa(qi+1)+'. '+q[0]+'</div><div>'+opts.map((o,i)=>'<button class="answer" onclick="choose('+i+')">'+['الف','ب','ج','د'][i]+') '+o.t+'</button>').join('')+'</div>';document.getElementById('feedback').textContent='';document.getElementById('next').classList.add('hidden');document.getElementById('counter').textContent=''}
+function globalQuestionIndex(){return Object.keys(stations).indexOf(current)*2}
+function choose(i){if(locked)return;locked=true;let q=questions[qi],bs=[...document.querySelectorAll('.answer')],correct=shown.findIndex(o=>o.i===q[2]);bs.forEach(b=>b.disabled=true);bs[correct].classList.add('correct');if(shown[i].i===q[2]){score+=10;document.getElementById('feedback').textContent='🌟 آفرین! پاسخ درست است. '+q[3]}else{bs[i].classList.add('wrong');document.getElementById('feedback').textContent='🌱 پاسخ درست مشخص شد. '+q[3]}updateStats();document.getElementById('next').classList.remove('hidden');document.getElementById('next').textContent=qi===questions.length-1?'پایان ایستگاه ←':'پرسش بعدی ←'}
+function nextQuestion(){
+  if(qi<questions.length-1){qi++;renderQ();return}
+  done.add(current);colors.add(current);updateStats();document.getElementById('play').classList.remove('active');
+  if(done.size===6){
+    document.getElementById('home').classList.add('hidden');document.getElementById('finish').classList.add('active');
+    document.getElementById('summary').textContent='امتیاز نهایی: '+fa(score)+' از '+fa(questionsTotal()*10)+' | ایستگاه‌های کامل‌شده: ۶ از ۶';
+    // 🆕 ارسال امتیاز به اپ اصلی
+    try {
+      window.parent.postMessage({
+        type: 'GAME_FINISHED',
+        gameId: 'ch3-rainbow',
+        score: score,
+        total: questionsTotal() * 10
+      }, '*');
+    } catch (e) {}
+  } else goHome();
+}
+function questionsTotal(){return Object.values(stations).reduce((s,x)=>s+x.q.length,0)}
+function goHome(){document.getElementById('play').classList.remove('active');document.getElementById('finish').classList.remove('active');document.getElementById('home').classList.remove('hidden');document.getElementById('mainTitle').textContent='مأموریت نجات رنگین‌کمان';document.getElementById('mainSubtitle').textContent='بازی تعاملی علوم پنجم دبستان | درس سوم';updateStats()}
+function updateStats(){document.getElementById('score').textContent=fa(score);document.getElementById('colors').textContent=fa(colors.size);document.getElementById('done').textContent=fa(done.size);document.getElementById('bar').style.width=(done.size/6*100)+'%';document.querySelectorAll('.card').forEach(c=>{let m=(c.getAttribute('onclick')||'').match(/openStation\('([^']+)'/);if(m&&done.has(m[1])){c.classList.add('done');c.innerHTML=c.innerHTML.replace(/<\/button>$/,'') ;if(!c.querySelector('.completedLabel')){let s=document.createElement('div');s.className='completedLabel badge';s.textContent='✓ رنگ آزاد شد';c.appendChild(s)}}})}
+function restart(){score=0;done=new Set();colors=new Set();current='';document.getElementById('mainTitle').textContent='مأموریت نجات رنگین‌کمان';document.getElementById('mainSubtitle').textContent='بازی تعاملی علوم پنجم دبستان | درس سوم';document.querySelectorAll('.card').forEach((c,i)=>{c.classList.remove('done');let l=c.querySelector('.completedLabel');if(l)l.remove()});updateStats();goHome()}
+</script>
+</body></html>
