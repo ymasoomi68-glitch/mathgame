@@ -18,7 +18,7 @@ const App = {
       main: document.getElementById('app-main'),
       title: document.getElementById('app-title'),
       backBtn: document.getElementById('back-btn'),
-       homeBtn: document.getElementById('home-btn'),
+      homeBtn: document.getElementById('home-btn'),
       updateBanner: document.getElementById('update-banner'),
     };
 
@@ -203,7 +203,7 @@ const App = {
           ${isReady ? `onclick="App.openSubject('${s.id}')"` : ''}
         >
           <div class="subject-emoji" style="background:${s.color}20;color:${s.color}">
-            ${s.emoji}
+            ${s.icon ? `<img src="${s.icon}" alt="${s.label}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">` : s.emoji}
           </div>
           <div class="subject-info">
             <div class="subject-title">${s.label}</div>
@@ -281,7 +281,7 @@ const App = {
     this.el.main.innerHTML = `
       <div class="subject-header">
         <div class="subject-header-emoji" style="background:${subject.color}20;color:${subject.color}">
-          ${subject.emoji}
+          ${subject.icon ? `<img src="${subject.icon}" alt="${subject.label}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">` : subject.emoji}
         </div>
         <h2>${subject.label}</h2>
       </div>
