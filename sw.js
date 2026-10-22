@@ -8,6 +8,7 @@ const ASSETS = [
   './js/storage.js',
   './games.json',
   './games/math/ch1-time.html',
+   './games/math/ch2-fractions.html',
   './games/science/ch3-rainbow.html',
   './icons/icon-192.png',
   './icons/icon-512.png',
