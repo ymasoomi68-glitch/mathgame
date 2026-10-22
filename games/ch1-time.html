@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>آزمایشگاه زمان | ریاضی پنجم</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+:root{--bg:#071a3a;--panel:#10264a;--panel2:#17345e;--ink:#f4f8ff;--muted:#c0cee3;--teal:#55e0cf;--orange:#ffb36b;--pink:#ff7c9c;--line:#2b4772;--good:#8cf0b2;--bad:#ffd18a}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 8%,#12366b 0,transparent 30%),radial-gradient(circle at 90% 88%,#172b57 0,transparent 32%),linear-gradient(135deg,#061632 0%,#0a2047 52%,#071a3a 100%);font-family:Vazirmatn,Tahoma,sans-serif;color:var(--ink);padding:18px}
+.wrap{max-width:900px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--teal)}
+.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--teal),#83b7ff);display:grid;place-items:center;color:#0b1728;font-size:23px}
+.tag{border:1px solid #3c5875;color:var(--muted);border-radius:999px;padding:7px 12px;font-size:.88rem}
+h1{text-align:center;font-size:clamp(1.8rem,5vw,3.2rem);line-height:1.35;margin:26px 0 8px;font-weight:900;letter-spacing:-.5px}
+h1 span{color:var(--teal)}
+.subtitle{text-align:center;color:var(--muted);margin:0 auto 22px;max-width:650px;line-height:1.9}
+.panel{background:linear-gradient(145deg,rgba(23,49,88,.98),rgba(12,31,63,.98));border:1px solid #2b4764;border-radius:24px;padding:clamp(18px,4vw,32px);box-shadow:0 18px 50px #0003;margin:18px 0}
+.hidden{display:none!important}
+h2{margin-top:0}
+.intro{text-align:center}
+.intro p{color:var(--muted);line-height:2}
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}
+.topic{background:#0d1d30;border:1px solid var(--line);border-radius:14px;padding:13px 8px;font-size:.9rem;color:#d9e7f5}
+.topic b{display:block;color:var(--orange);font-size:1.2rem;margin-bottom:5px}
+button{font:inherit;font-weight:800;border:0;border-radius:13px;padding:12px 19px;cursor:pointer;transition:transform .15s,filter .15s}
+button:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.primary{background:var(--teal);color:#08202b}
+.secondary{background:#263f5c;color:var(--ink);border:1px solid #42617f}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}
+.hud strong{color:var(--ink)}
+.stage{font-size:.82rem;color:var(--orange);font-weight:800;margin:18px 0 8px}
+.progress{height:8px;background:#263b53;border-radius:99px;overflow:hidden;margin:10px 0 22px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#83b7ff);transition:width .3s}
+.question{font-size:clamp(1.15rem,3.5vw,1.5rem);font-weight:800;line-height:1.9;margin:10px 0 16px}
+.equation{background:#0b1a2c;border:1px solid #31516d;border-right:4px solid var(--teal);border-radius:15px;padding:18px;text-align:center;font-size:clamp(1.15rem,4vw,1.65rem);font-weight:800;line-height:1.8;margin:15px 0}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:18px}
+.opt{background:#1a314b;color:var(--ink);border:1px solid #365571;text-align:right;min-height:60px;line-height:1.7}
+.opt:nth-child(2){border-right:4px solid #83b7ff}.opt:nth-child(3){border-right:4px solid var(--orange)}.opt:nth-child(4){border-right:4px solid var(--pink)}
+.opt:disabled{cursor:default;opacity:1}
+.feedback{min-height:52px;border-radius:14px;margin:16px 0 12px;padding:12px 14px;line-height:1.9;color:var(--muted);background:#0c1b2d}
+.feedback.good{color:var(--good);border:1px solid #327650;background:#102b2b}
+.feedback.bad{color:var(--bad);border:1px solid #76552f;background:#30271d}
+.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.result{text-align:center}
+.score{font-size:clamp(2.6rem,10vw,4.5rem);font-weight:900;color:var(--teal);margin:8px 0}
+.result p{line-height:1.9;color:var(--muted)}
+.badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0}
+.badge{border:1px solid #3c5a76;background:#0d1d30;border-radius:12px;padding:10px 13px;color:var(--orange);font-weight:800}
+.review{text-align:right;padding-right:25px;line-height:1.9}
+.review li{padding:10px 0;border-bottom:1px solid var(--line)}
+.review .correct{color:var(--good)}.review .wrong{color:var(--bad)}
+footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
+@media(max-width:560px){body{padding:10px}.topic-grid{grid-template-columns:1fr}.options{grid-template-columns:1fr}.panel{border-radius:18px}.tag{font-size:.78rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand"><div class="logo">◷</div><div>آزمایشگاه ریاضی <div style="font-size:.78rem;color:var(--muted);font-weight:500">پایهٔ پنجم ابتدایی</div></div></div><div class="tag">۲۰ مأموریت • چهار مرحله</div></header>
+<h1>مأموریت <span>اعداد مرکب</span></h1>
+<p class="subtitle">زمان را اندازه بگیر، تبدیل‌ها را انجام بده، محاسبه کن و خطاهای پنهان را کشف کن.</p>
+<section id="intro" class="panel intro">
+<h2>آماده‌ای وارد مأموریت شوی؟</h2>
+<p>در این بازی ۲۰ پرسش از مباحث اعداد مرکب داری. هر پاسخ درست یک امتیاز می‌گیرد. بعد از هر پاسخ، بازخورد آموزشی می‌بینی و در پایان می‌توانی همهٔ پاسخ‌ها را مرور کنی.</p>
+<div class="topic-grid">
+<div class="topic"><b>۰۱</b>شناخت و تبدیل واحدهای زمان</div>
+<div class="topic"><b>۰۲</b>جمع و تفریق اعداد مرکب</div>
+<div class="topic"><b>۰۳</b>الگوها و مسئله‌های کاربردی</div>
+</div>
+<button id="start" class="primary">شروع مأموریت ←</button>
+<p style="font-size:.85rem">یادآوری: هر ۱ دقیقه = ۶۰ ثانیه و هر ۱ ساعت = ۶۰ دقیقه.</p>
+</section>
+<section id="game" class="panel hidden">
+<div class="hud"><span id="stageLabel">مرحلهٔ اول</span><span>پرسش <strong id="counter">۱ از ۲۰</strong></span><span>امتیاز: <strong id="scoreTag">۰</strong></span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="stage" id="stageName">مرحلهٔ اول • شناخت و تبدیل</div>
+<div class="question" id="question"></div><div class="equation" id="equation"></div>
+<div class="options" id="options"></div>
+<div id="feedback" class="feedback" aria-live="polite">با دقت فکر کن و یکی از گزینه‌ها را انتخاب کن.</div>
+<div class="actions"><span class="tag" id="hint">هر پاسخ درست یک امتیاز</span><button id="next" class="primary hidden">پرسش بعدی ←</button></div>
+</section>
+<section id="result" class="panel result hidden">
+<h2>مأموریت به پایان رسید!</h2><p>نتیجهٔ تلاش تو:</p><div class="score" id="finalScore">۰ از ۲۰</div>
+<p id="resultMessage"></p><div class="badges" id="badges"></div>
+<div class="actions" style="justify-content:center"><button id="again" class="primary">شروع دوباره</button><button id="showReview" class="secondary">مرور پاسخ‌ها</button></div>
+<ol id="review" class="review hidden"></ol>
+</section>
+<footer>ریاضی پنجم • یادگیری با فکر کردن، تمرین و کشف اشتباه‌ها</footer>
+</div>
+<script>
+const questions = [
+{q:"۱) عدد مرکبِ «۳ متر و ۲۵ سانتی‌متر» را به سانتی‌متر تبدیل کن.",e:"۳ متر و ۲۵ سانتی‌متر = ؟ سانتی‌متر",a:"۳۲۵ سانتی‌متر",o:["۳۲۵ سانتی‌متر","۳۰۲۵ سانتی‌متر","۲۳۵ سانتی‌متر","۳۵۰ سانتی‌متر"],why:"هر متر ۱۰۰ سانتی‌متر است؛ ۳ متر = ۳۰۰ سانتی‌متر و ۳۰۰ + ۲۵ = ۳۲۵ سانتی‌متر."},
+{q:"۲) عدد مرکبِ «۲ کیلوگرم و ۳۵۰ گرم» چند گرم است؟",e:"۲ کیلوگرم و ۳۵۰ گرم = ؟ گرم",a:"۲۳۵۰ گرم",o:["۲۰۳۵۰ گرم","۲۳۵۰ گرم","۲۵۰۰ گرم","۳۵۲ گرم"],why:"هر کیلوگرم ۱۰۰۰ گرم است؛ ۲ کیلوگرم = ۲۰۰۰ گرم و ۲۰۰۰ + ۳۵۰ = ۲۳۵۰ گرم."},
+{q:"۳) عدد مرکبِ ۴۸۵ سانتی‌متر را به متر و سانتی‌متر بنویس.",e:"۴۸۵ سانتی‌متر = ؟",a:"۴ متر و ۸۵ سانتی‌متر",o:["۴ متر و ۸۵ سانتی‌متر","۴۸ متر و ۵ سانتی‌متر","۵ متر و ۸۵ سانتی‌متر","۴ متر و ۸ سانتی‌متر"],why:"هر ۱۰۰ سانتی‌متر برابر ۱ متر است؛ ۴۸۵ سانتی‌متر برابر ۴ متر و ۸۵ سانتی‌متر است."},
+{q:"۴) حاصل جمع را حساب کن.",e:"۲ ساعت و ۴۵ دقیقه + ۱ ساعت و ۳۰ دقیقه",a:"۴ ساعت و ۱۵ دقیقه",o:["۳ ساعت و ۷۵ دقیقه","۴ ساعت و ۱۵ دقیقه","۴ ساعت و ۵ دقیقه","۳ ساعت و ۱۵ دقیقه"],why:"۴۵ + ۳۰ = ۷۵ دقیقه، یعنی ۱ ساعت و ۱۵ دقیقه؛ با ۳ ساعت می‌شود ۴ ساعت و ۱۵ دقیقه."},
+{q:"۵) حاصل تفریق کدام است؟",e:"۵ ساعت و ۲۰ دقیقه − ۲ ساعت و ۴۵ دقیقه",a:"۲ ساعت و ۳۵ دقیقه",o:["۳ ساعت و ۲۵ دقیقه","۲ ساعت و ۳۵ دقیقه","۲ ساعت و ۴۵ دقیقه","۳ ساعت و ۳۵ دقیقه"],why:"یک ساعت را به ۶۰ دقیقه تبدیل می‌کنیم: ۴ ساعت و ۸۰ دقیقه − ۲ ساعت و ۴۵ دقیقه = ۲ ساعت و ۳۵ دقیقه."},
+{q:"۶) زمان زیر را به صورت ساعت، دقیقه و ثانیه بخوان.",e:"۱ ساعت و ۱۲ دقیقه و ۸ ثانیه",a:"۱:۱۲:۰۸",o:["۱:۱۲:۸۰","۱:۱۲:۰۸","۱:۲۸:۱۲","۱۲:۱:۸"],why:"ترتیب نمایش از بزرگ به کوچک است: ساعت، دقیقه، ثانیه؛ پس ۱:۱۲:۰۸."},
+{q:"۷) الگو را ادامه بده: هر بار ۲۰ ثانیه اضافه می‌شود.",e:"۲ دقیقه و ۱۰ ثانیه، ۲ دقیقه و ۳۰ ثانیه، ۲ دقیقه و ۵۰ ثانیه، …",a:"۳ دقیقه و ۱۰ ثانیه",o:["۳ دقیقه","۳ دقیقه و ۱۰ ثانیه","۳ دقیقه و ۲۰ ثانیه","۲ دقیقه و ۷۰ ثانیه"],why:"۵۰ ثانیه + ۲۰ ثانیه = ۷۰ ثانیه؛ یعنی ۱ دقیقه و ۱۰ ثانیه، پس ۳ دقیقه و ۱۰ ثانیه."},
+{q:"۸) حاصل جمع را به صورت ساعت و دقیقه بنویس.",e:"۳ ساعت و ۳۸ دقیقه + ۲ ساعت و ۲۷ دقیقه",a:"۶ ساعت و ۵ دقیقه",o:["۵ ساعت و ۶۵ دقیقه","۶ ساعت و ۵ دقیقه","۶ ساعت و ۱۵ دقیقه","۵ ساعت و ۵ دقیقه"],why:"۳۸ + ۲۷ = ۶۵ دقیقه، یعنی ۱ ساعت و ۵ دقیقه؛ با ۵ ساعت می‌شود ۶ ساعت و ۵ دقیقه."},
+{q:"۹) از ۸ دقیقه و ۱۲ ثانیه، ۳ دقیقه و ۴۵ ثانیه کم کن.",e:"۸:۱۲ − ۳:۴۵",a:"۴ دقیقه و ۲۷ ثانیه",o:["۵ دقیقه و ۳۳ ثانیه","۴ دقیقه و ۲۷ ثانیه","۴ دقیقه و ۳۳ ثانیه","۵ دقیقه و ۲۷ ثانیه"],why:"یک دقیقه را تبدیل می‌کنیم: ۷ دقیقه و ۷۲ ثانیه − ۳ دقیقه و ۴۵ ثانیه = ۴ دقیقه و ۲۷ ثانیه."},
+{q:"۱۰) یک برنامه ساعت ۹:۲۰ شروع شد و ۱ ساعت و ۴۵ دقیقه طول کشید. چه ساعتی تمام شد؟",e:"۹:۲۰ + ۱:۴۵",a:"۱۱:۰۵",o:["۱۰:۵۵","۱۱:۰۵","۱۱:۱۵","۱۰:۰۵"],why:"۹:۲۰ + ۱ ساعت = ۱۰:۲۰؛ با افزودن ۴۵ دقیقه، زمان ۱۱:۰۵ می‌شود."},
+{q:"۱۱) کدام تبدیل درست است؟",e:"۴ دقیقه و ۶ ثانیه = ؟ ثانیه",a:"۲۴۶ ثانیه",o:["۴۶ ثانیه","۲۴۶ ثانیه","۴۰۶ ثانیه","۲۴۰ ثانیه"],why:"۴ دقیقه = ۲۴۰ ثانیه؛ ۲۴۰ + ۶ = ۲۴۶ ثانیه."},
+{q:"۱۲) حاصل تفریق را پیدا کن.",e:"۶ دقیقه و ۱۵ ثانیه − ۲ دقیقه و ۳۸ ثانیه",a:"۳ دقیقه و ۳۷ ثانیه",o:["۴ دقیقه و ۲۳ ثانیه","۳ دقیقه و ۳۷ ثانیه","۳ دقیقه و ۲۳ ثانیه","۴ دقیقه و ۳۷ ثانیه"],why:"یک دقیقه را تبدیل می‌کنیم: ۵ دقیقه و ۷۵ ثانیه − ۲ دقیقه و ۳۸ ثانیه = ۳ دقیقه و ۳۷ ثانیه."},
+{q:"۱۳) یک مسابقه ۲ ساعت و ۳۵ دقیقه طول کشید. اگر ۵۵ دقیقه از آن گذشته باشد، چه مقدار باقی مانده است؟",e:"۲:۳۵ − ۰:۵۵",a:"۱ ساعت و ۴۰ دقیقه",o:["۱ ساعت و ۸۰ دقیقه","۱ ساعت و ۴۰ دقیقه","۲ ساعت و ۲۰ دقیقه","۱ ساعت و ۳۰ دقیقه"],why:"۲ ساعت و ۳۵ دقیقه را به ۱ ساعت و ۹۵ دقیقه تبدیل می‌کنیم؛ ۹۵ − ۵۵ = ۴۰ دقیقه، پس ۱ ساعت و ۴۰ دقیقه باقی می‌ماند."},
+{q:"۱۴) کدام عبارت زمان بیشتری را نشان می‌دهد؟",e:"الف) ۲ ساعت و ۵۰ دقیقه   ب) ۱۷۰ دقیقه",a:"هر دو برابرند",o:["گزینهٔ الف","گزینهٔ ب","هر دو برابرند","اطلاعات کافی نیست"],why:"۲ ساعت و ۵۰ دقیقه = ۱۷۰ دقیقه؛ بنابراین دو زمان برابرند."},
+{q:"۱۵) محاسبهٔ کدام دانش‌آموز درست است؟",e:"۱ ساعت و ۴۰ دقیقه + ۳۰ دقیقه",a:"۱ ساعت و ۷۰ دقیقه = ۲ ساعت و ۱۰ دقیقه",o:["۱ ساعت و ۷۰ دقیقه = ۲ ساعت و ۱۰ دقیقه","۱ ساعت و ۷۰ دقیقه = ۱ ساعت و ۱۰ دقیقه","۲ ساعت و ۷۰ دقیقه","۱ ساعت و ۳۰ دقیقه"],why:"۴۰ + ۳۰ = ۷۰ دقیقه و ۷۰ دقیقه برابر با ۱ ساعت و ۱۰ دقیقه است؛ در مجموع ۲ ساعت و ۱۰ دقیقه."},
+{q:"۱۶) از ساعت ۱۴:۳۵ تا ساعت ۱۵:۱۰ چند دقیقه فاصله است؟",e:"۱۴:۳۵ ← ۱۵:۱۰",a:"۳۵ دقیقه",o:["۲۵ دقیقه","۳۵ دقیقه","۴۵ دقیقه","۷۵ دقیقه"],why:"از ۱۴:۳۵ تا ۱۵:۰۰، ۲۵ دقیقه و از ۱۵:۰۰ تا ۱۵:۱۰، ۱۰ دقیقه است؛ مجموعاً ۳۵ دقیقه."},
+{q:"۱۷) حاصل جمع را به صورت دقیقه و ثانیه بنویس.",e:"۴ دقیقه و ۴۸ ثانیه + ۲ دقیقه و ۲۵ ثانیه",a:"۷ دقیقه و ۱۳ ثانیه",o:["۶ دقیقه و ۷۳ ثانیه","۷ دقیقه و ۱۳ ثانیه","۷ دقیقه و ۳ ثانیه","۶ دقیقه و ۱۳ ثانیه"],why:"۴۸ + ۲۵ = ۷۳ ثانیه، یعنی ۱ دقیقه و ۱۳ ثانیه؛ با ۶ دقیقه می‌شود ۷ دقیقه و ۱۳ ثانیه."},
+{q:"۱۸) طول دو روبان ۲ متر و ۷۵ سانتی‌متر و ۱ متر و ۴۰ سانتی‌متر است. مجموع طول آن‌ها چقدر است؟",e:"۲ متر و ۷۵ سانتی‌متر + ۱ متر و ۴۰ سانتی‌متر",a:"۴ متر و ۱۵ سانتی‌متر",o:["۳ متر و ۱۱۵ سانتی‌متر","۴ متر و ۱۵ سانتی‌متر","۴ متر و ۵ سانتی‌متر","۳ متر و ۱۵ سانتی‌متر"],why:"۷۵ + ۴۰ = ۱۱۵ سانتی‌متر، یعنی ۱ متر و ۱۵ سانتی‌متر؛ با ۳ متر می‌شود ۴ متر و ۱۵ سانتی‌متر."},
+{q:"۱۹) در یک محاسبه نوشته شده است: ۳ دقیقه و ۵۰ ثانیه + ۲۰ ثانیه = ۳ دقیقه و ۷۰ ثانیه. پاسخ نهایی را درست کن.",e:"۳:۵۰ + ۰:۲۰ = ؟",a:"۴ دقیقه و ۱۰ ثانیه",o:["۳ دقیقه و ۷۰ ثانیه","۴ دقیقه و ۱۰ ثانیه","۴ دقیقه و ۷۰ ثانیه","۳ دقیقه و ۱۰ ثانیه"],why:"۷۰ ثانیه برابر با ۱ دقیقه و ۱۰ ثانیه است؛ پس حاصل نهایی ۴ دقیقه و ۱۰ ثانیه است."},
+{q:"۲۰) کدام جمله دربارهٔ عددهای مرکب زمان درست است؟",e:"یک واحد بزرگ‌تر را به واحد کوچک‌تر تبدیل می‌کنیم.",a:"هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است.",o:["هر ساعت ۱۰۰ دقیقه است.","هر دقیقه ۱۰۰ ثانیه است.","هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است.","برای جمع زمان‌ها نیازی به تبدیل واحد نیست."],why:"در اندازه‌گیری زمان، هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است؛ هنگام جمع و تفریق باید به این رابطه‌ها توجه کنیم."}
+];
+const stages=["شناخت و تبدیل","جمع و تفریق","مسئله‌های کاربردی","کارآگاه خطا"];
+let idx=0,score=0,answers=[];
+const $=id=>document.getElementById(id);
+const fa=n=>String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[+d]);
+function stageFor(i){return Math.floor(i/5)}
+function startGame(){idx=0;score=0;answers=[];$("intro").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");renderQuestion()}
+function renderQuestion(){
+ const q=questions[idx],st=stageFor(idx);
+ $("counter").textContent=fa(idx+1)+" از ۲۰";$("scoreTag").textContent=fa(score);
+ $("stageLabel").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st];
+ $("stageName").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st]+" • "+stages[st];
+ $("bar").style.width=(idx/questions.length*100)+"%";
+ $("question").textContent=q.q;$("equation").textContent=q.e;
+ $("feedback").className="feedback";$("feedback").textContent="با دقت فکر کن و یکی از گزینه‌ها را انتخاب کن.";
+ $("next").classList.add("hidden");$("options").innerHTML="";
+ q.o.forEach((op,i)=>{const b=document.createElement("button");b.className="opt";b.textContent=["الف) ","ب) ","پ) ","ت) "][i]+op;b.addEventListener("click",()=>choose(op,b));$("options").appendChild(b)})
+}
+function choose(op,button){
+ const q=questions[idx],all=[...$("options").querySelectorAll("button")];all.forEach(b=>b.disabled=true);
+ const good=op===q.a;answers.push({chosen:op,correct:q.a,good,question:q.q,why:q.why});const f=$("feedback");
+ if(good){score++;f.className="feedback good";f.textContent="آفرین! پاسخ درست است. "+q.why;button.style.borderColor="var(--good)";button.style.color="var(--good)"}
+ else{f.className="feedback bad";f.textContent="این بار درست نبود. پاسخ صحیح: "+q.a+". "+q.why;button.style.borderColor="var(--bad)";all.forEach(b=>{if(b.textContent.endsWith(q.a)){b.style.borderColor="var(--good)";b.style.color="var(--good)"}})}
+ $("scoreTag").textContent=fa(score);$("bar").style.width=((idx+1)/questions.length*100)+"%";
+ $("next").textContent=idx===questions.length-1?"دیدن نتیجه ←":"پرسش بعدی ←";$("next").classList.remove("hidden")
+}
+function finish(){
+ $("game").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=fa(score)+" از ۲۰";
+ $("resultMessage").textContent=score>=18?"درخشان بود! تسلط بسیار خوبی بر اعداد مرکب داری.":score>=14?"آفرین! بیشتر مباحث را خوب بلدی؛ پاسخ‌ها را مرور کن.":score>=10?"خوب پیش رفتی. با مرور تبدیل‌ها و قرض گرفتن از واحد بزرگ‌تر، قوی‌تر می‌شوی.":"تلاش ارزشمندی بود. پاسخ‌ها و توضیح‌ها را مرور کن و دوباره امتحان کن.";
+ const b=$("badges");b.innerHTML="";const labels=score>=18?["استاد اعداد مرکب","دقت عالی","حلّال مسئله"]:score>=14?["محاسبه‌گر پرتلاش","در مسیر تسلط"]:["کاوشگر ریاضی","تمرین‌کنندهٔ شجاع"];
+ labels.forEach(t=>{const el=document.createElement("span");el.className="badge";el.textContent="✦ "+t;b.appendChild(el)});
+ $("review").innerHTML="";answers.forEach((a,i)=>{const li=document.createElement("li");li.className=a.good?"correct":"wrong";li.innerHTML="<strong>"+fa(i+1)+". "+a.question+"</strong><br>پاسخ صحیح: "+a.correct+"<br><span style='color:var(--muted)'>"+a.why+"</span>";$("review").appendChild(li)})
+}
+$("start").addEventListener("click",startGame);
+$("next").addEventListener("click",()=>{if(idx<questions.length-1){idx++;renderQuestion()}else finish()});
+$("again").addEventListener("click",()=>{$("review").classList.add("hidden");$("showReview").textContent="مرور پاسخ‌ها";startGame()});
+$("showReview").addEventListener("click",()=>{$("review").classList.toggle("hidden");$("showReview").textContent=$("review").classList.contains("hidden")?"مرور پاسخ‌ها":"پنهان کردن پاسخ‌ها"});
+</script>
+</body>
+</html>
