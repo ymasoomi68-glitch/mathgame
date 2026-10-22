@@ -18,6 +18,7 @@ const App = {
       main: document.getElementById('app-main'),
       title: document.getElementById('app-title'),
       backBtn: document.getElementById('back-btn'),
+       homeBtn: document.getElementById('home-btn'),
       updateBanner: document.getElementById('update-banner'),
     };
 
@@ -131,6 +132,7 @@ const App = {
     }
 
     this.el.backBtn.classList.toggle('hidden', this.state.view === 'home');
+    this.el.homeBtn.classList.toggle('hidden', this.state.view === 'home');
     this.el.main.classList.toggle('game-mode', this.state.view === 'game');
 
     if (this.state.view === 'home') this.renderHome();
