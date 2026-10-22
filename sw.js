@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kavoshgar5-v1.0.0';
+const CACHE_VERSION = 'kavoshgar5-v2.0.0';
 const ASSETS = [
   './',
   './index.html',
@@ -8,9 +8,22 @@ const ASSETS = [
   './js/storage.js',
   './games.json',
   './games/math/ch1-time.html',
-  './icons/icon-192.svg',
-  './icons/icon-512.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/favicon.png',
+  './icons/apple-touch-icon.png',
+  './images/math.png',
+  './images/science.png',
+  './images/persian.png',
+  './images/social.png',
+  './images/profile.png',
+  './images/scores.png',
+  './images/settings.png',
+  './images/levels.png',
+  './images/games.png'
 ];
+
+// ... بقیه کدهای sw.js همون‌طور که بود بمونه ...
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
