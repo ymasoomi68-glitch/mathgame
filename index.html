@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#f59e0b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="کاوشگر پنجم" />
 
   <title>🚀 کاوشگر پنجم</title>
 
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="./icons/icon-192.svg" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
+  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link
@@ -23,11 +24,26 @@
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-    <header id="app-header" class="app-header">
-    <button id="back-btn" class="icon-btn hidden" aria-label="بازگشت">←</button>
+  <header id="app-header" class="app-header">
+    <div class="header-right">
+      <button id="back-btn" class="icon-btn hidden" aria-label="بازگشت">←</button>
+      <button id="home-btn" class="icon-btn hidden" aria-label="خانه" onclick="location.hash='/'">
+        <img src="./icons/favicon.png" alt="خانه">
+      </button>
+    </div>
+    
     <h1 id="app-title" class="app-title">🚀 کاوشگر پنجم</h1>
-    <button id="home-btn" class="icon-btn hidden" aria-label="خانه" onclick="location.hash='/'">🏠</button>
+    
+    <div class="header-left">
+      <button class="icon-btn" aria-label="امتیاز">
+        <img src="./images/scores.png" alt="امتیاز">
+      </button>
+      <button class="icon-btn" aria-label="پروفایل">
+        <img src="./images/profile.png" alt="پروفایل">
+      </button>
+    </div>
   </header>
+
   <main id="app-main" class="app-main"></main>
 
   <div id="update-banner" class="update-banner hidden">
