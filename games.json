@@ -18,6 +18,17 @@
       "teacher": "یوسف معصومی"
     },
     {
+      "id": "ch2-fractions",
+      "subject": "math",
+      "chapter": 2,
+      "title": "قهرمانان عددهای مخلوط",
+      "subtitle": "جمع و تفریق عددهای مخلوط",
+      "description": "ماجراجویی ریاضی برای بازسازی پل‌ها و پیدا کردن گنجینه شهر کسرها",
+      "emoji": "🏰",
+      "file": "games/math/ch2-fractions.html",
+      "teacher": "یوسف معصومی"
+    },
+    {
       "id": "ch3-rainbow",
       "subject": "science",
       "chapter": 3,
