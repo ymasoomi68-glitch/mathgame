@@ -1,7 +1,7 @@
 {
-  "name": "سفر ریاضی پنجم",
-  "short_name": "ریاضی‌لند",
-  "description": "بازی آموزشی ریاضی پنجم دبستان",
+  "name": "کاوشگر پنجم — بازی‌های آموزشی",
+  "short_name": "کاوشگر پنجم",
+  "description": "مجموعه بازی‌های آموزشی پایه‌ی پنجم ابتدایی",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
