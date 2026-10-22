@@ -4,8 +4,6 @@
     { "id": "science", "label": "علوم",            "emoji": "🔬", "color": "#10b981" },
     { "id": "farsi",   "label": "فارسی",           "emoji": "📖", "color": "#ef4444" },
     { "id": "social",  "label": "مطالعات اجتماعی", "emoji": "🌍", "color": "#8b5cf6" },
-    { "id": "quran",   "label": "قرآن",            "emoji": "📿", "color": "#f59e0b" },
-    { "id": "english", "label": "انگلیسی",         "emoji": "🔤", "color": "#ec4899" }
   ],
   "games": [
     {
@@ -17,7 +15,7 @@
       "description": "تبدیل واحدهای زمان، جمع و تفریق اعداد مرکب و کشف خطاها",
       "emoji": "⏱️",
       "file": "games/math/ch1-time.html",
-      "teacher": "خانم صادقی"
+      "teacher": "یوسف معصومی"
     }
   ]
 }
