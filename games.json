@@ -16,6 +16,17 @@
       "emoji": "⏱️",
       "file": "games/math/ch1-time.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch3-rainbow",
+      "subject": "science",
+      "chapter": 3,
+      "title": "مأموریت نجات رنگین‌کمان",
+      "subtitle": "رنگین‌کمان",
+      "description": "بازی تعاملی علوم پنجم | ایستگاه‌های نور و رنگ",
+      "emoji": "🌈",
+      "file": "games/science/ch3-rainbow.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }
