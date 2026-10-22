@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kavoshgar5-v2.0.0';
+const CACHE_VERSION = 'kavoshgar5-v3.0.0';
 const ASSETS = [
   './',
   './index.html',
