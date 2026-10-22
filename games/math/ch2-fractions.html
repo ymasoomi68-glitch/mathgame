@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172554">
+<title>قهرمانان عددهای مخلوط | ریاضی پنجم</title>
+<style>
+:root{--navy:#172554;--blue:#2563eb;--cyan:#06b6d4;--purple:#7c3aed;--gold:#facc15;--ink:#172033;--muted:#64748b;--paper:#fff;--good:#15803d;--bad:#b91c1c;--line:#dbeafe}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 8%,#dbeafe 0,transparent 27%),radial-gradient(circle at 92% 15%,#f3e8ff 0,transparent 28%),linear-gradient(145deg,#f8fafc,#ecfeff);min-height:100vh;padding:14px}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}
+.shell{max-width:1000px;margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 auto 12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:var(--navy)}
+.brand-mark{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;color:white;font-size:24px;background:linear-gradient(145deg,var(--blue),var(--purple));box-shadow:0 6px 0 #c7d2fe}
+.pill{border:1px solid #cbd5e1;border-radius:999px;background:#ffffffb8;padding:8px 12px;color:#334155;font-size:13px;font-weight:700}
+.creator-tag{font-size:12px;line-height:1.9;color:#334155;background:#ffffffd9;border:1px solid #bfdbfe;border-radius:12px;padding:7px 11px;text-align:center;box-shadow:0 3px 10px #17255412}
+.creator-tag b{color:#312e81}
+.creator-tag [dir="ltr"]{font-weight:900;color:#1d4ed8;white-space:nowrap}
+.card{background:#fff;border:1px solid #dbeafe;border-radius:25px;overflow:hidden;box-shadow:0 18px 55px #1e3a8a14}
+.hero{position:relative;overflow:hidden;padding:28px 22px;color:#fff;background:linear-gradient(120deg,#172554,#4338ca 56%,#0891b2)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:#ffffff10}
+.hero:before{width:220px;height:220px;left:-65px;top:-105px}
+.hero:after{width:160px;height:160px;right:-50px;bottom:-95px}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:18px}
+.eyebrow{font-size:13px;font-weight:800;color:#fde68a;letter-spacing:.2px}
+h1{font-size:clamp(27px,5vw,42px);line-height:1.35;margin:8px 0;font-weight:900}
+.hero p{margin:0;color:#e0f2fe;line-height:1.9}
+.hero-credit{position:relative;z-index:1;display:inline-block;margin-top:14px;padding:8px 12px;border:1px solid #ffffff55;border-radius:12px;background:#ffffff16;color:#f8fafc;font-size:12px;line-height:1.9;text-align:right}
+.hero-credit strong{color:#fde68a}
+.world-art{min-height:160px;display:grid;place-items:center;font-size:clamp(68px,10vw,105px);filter:drop-shadow(0 10px 7px #0f172a44);position:relative}
+.world-art .float{position:absolute;font-size:30px;animation:float 3s ease-in-out infinite}
+.world-art .f1{top:5px;right:20%;}.world-art .f2{bottom:6px;left:18%;animation-delay:.7s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+main{padding:22px}
+.panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px;margin-bottom:16px}
+.panel h2,.panel h3{margin-top:0;color:var(--navy)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:14px;font-weight:800;margin-bottom:7px}
+input{width:100%;border:2px solid #cbd5e1;border-radius:12px;padding:12px 13px;background:#fff;min-height:48px}
+.hint{font-size:12px;color:var(--muted);line-height:1.8;margin:7px 0 0}
+.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:800;transition:transform .15s,filter .15s;min-height:46px}
+.btn:hover{filter:brightness(1.04);transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.primary{background:linear-gradient(90deg,#2563eb,#7c3aed);color:white;box-shadow:0 5px 0 #c7d2fe}
+.secondary{background:white;border:1px solid #cbd5e1;color:#334155}
+.gold{background:linear-gradient(90deg,#facc15,#f59e0b);color:#422006;box-shadow:0 4px 0 #fde68a}
+.wide{width:100%}
+.start-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+#game,#result{display:none}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h2{margin:0;color:var(--navy);font-size:22px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:#eff6ff;border:1px solid #dbeafe;padding:8px 11px;border-radius:12px;font-weight:800;font-size:13px}
+.progress{height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:12px 0 20px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,#06b6d4,#2563eb,#7c3aed);transition:width .3s}
+.map{display:none}
+.stage{border:1px solid #dbeafe;border-radius:16px;background:#fff;padding:12px 7px;text-align:center;min-height:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;position:relative}
+.stage .emoji{font-size:28px}.stage strong{font-size:12px;line-height:1.6}.stage small{font-size:11px;color:#64748b}
+.stage.active{border:2px solid #6366f1;background:#eef2ff;box-shadow:0 5px 0 #c7d2fe}
+.stage.done{background:#f0fdf4;border-color:#86efac}
+.stage.locked{opacity:.56;filter:grayscale(.35)}
+.mission{background:linear-gradient(110deg,#eff6ff,#f5f3ff);border:1px solid #c7d2fe;border-radius:18px;padding:16px;margin-bottom:16px}
+.mission-head{display:flex;align-items:center;gap:12px}
+.mission-icon{width:54px;height:54px;flex:0 0 54px;border-radius:17px;background:#fff;display:grid;place-items:center;font-size:29px;box-shadow:0 4px 12px #312e8110}
+.mission h3{margin:0 0 4px;color:#312e81}.mission p{margin:0;color:#475569;font-size:13px;line-height:1.8}
+.question-card{border:1px solid #e2e8f0;border-radius:20px;padding:20px;background:#fff}
+.topic{display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:900;margin-bottom:10px}
+.qtext{font-size:clamp(21px,4vw,30px);line-height:1.8;margin:0 0 16px;font-weight:900;text-align:center;color:#172554}
+.math{direction:ltr;unicode-bidi:isolate;display:inline-flex;align-items:center;gap:.18em;white-space:nowrap;font-family:Tahoma,Arial,sans-serif}.frac{display:inline-grid;grid-template-rows:auto 2px auto;align-items:center;justify-items:center;vertical-align:middle;line-height:1.05;min-width:1.15em;margin:0 .05em}.frac .num,.frac .den{padding:0 .12em;font-size:.82em}.frac .bar{height:2px;width:100%;background:currentColor;min-width:1em}.mixed{display:inline-flex;align-items:center;gap:.16em}.stage-menu{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:16px}.stage-pick{border:1px solid #cbd5e1;border-radius:15px;background:white;padding:12px 6px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font-weight:800}.stage-pick span{font-size:25px}.stage-pick small{font-size:11px;color:#64748b}.stage-pick:disabled{opacity:.48;filter:grayscale(.5);cursor:not-allowed}.stage-pick.unlocked{border:2px solid #6366f1;background:#eef2ff}.stage-pick.done{background:#f0fdf4;border-color:#86efac}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.opt{border:2px solid #dbeafe;border-radius:14px;background:#f8fafc;text-align:center;padding:13px 10px;min-height:58px;font-size:20px;font-weight:800;color:#1e293b}
+.opt:hover:not(:disabled){background:#eff6ff;border-color:#60a5fa}
+.opt.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.opt.wrong{background:#fee2e2;border-color:#f87171;color:#7f1d1d}
+.opt:disabled{cursor:default}
+.feedback{display:none;margin-top:15px;padding:14px;border-radius:14px;line-height:1.9}
+.feedback.show{display:block}.feedback.good{background:#f0fdf4;border:1px solid #86efac;color:#166534}.feedback.bad{background:#fff7ed;border:1px solid #fdba74;color:#9a3412}
+.feedback strong{display:block;margin-bottom:4px}
+.controls{display:flex;flex-direction:column;gap:10px;margin-top:16px}.controls>*{width:100%}
+.lab{margin-top:15px;border:1px solid #bae6fd;border-radius:15px;background:#f0f9ff;overflow:hidden}
+.lab summary{padding:13px 15px;font-weight:900;cursor:pointer;color:#075985}
+.lab-content{padding:0 16px 16px;line-height:2;direction:ltr;text-align:left}.lab-content .step{direction:ltr;text-align:left;border-right:0;border-left:3px solid #38bdf8}
+.step{padding:8px 11px;border-right:3px solid #38bdf8;background:#fff;border-radius:8px;margin:8px 0}
+.result-hero{text-align:center;padding:22px 10px;background:linear-gradient(120deg,#172554,#4338ca,#0891b2);color:white;border-radius:18px}
+.trophy{font-size:58px}.score{font-size:clamp(35px,7vw,54px);font-weight:900;color:#fde68a}.result-hero h2{margin:6px 0}.result-hero p{margin:5px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.result-stat{padding:15px 8px;text-align:center;border:1px solid #dbeafe;background:#f8fafc;border-radius:14px}
+.result-stat strong{display:block;font-size:25px;color:#4338ca}.result-stat span{font-size:12px;color:#64748b}
+.skill-row{display:grid;grid-template-columns:125px 1fr 42px;align-items:center;gap:10px;margin:12px 0;font-size:13px;font-weight:700}
+.skillbar{height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden}.skillbar i{display:block;height:100%;background:linear-gradient(90deg,#06b6d4,#7c3aed)}
+.review-item{border:1px solid #e2e8f0;border-radius:12px;margin:8px 0;background:#fff;overflow:hidden}
+.review-item summary{padding:12px;cursor:pointer;font-weight:800}
+.review-item p{padding:0 12px 10px;margin:0;line-height:1.9}
+.footer{text-align:center;color:#64748b;font-size:12px;padding:15px 5px}
+.notice{font-size:12px;line-height:1.9;color:#64748b;margin-top:14px}
+.hidden{display:none!important}
+body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important}
+@media(max-width:650px){body{padding:8px}.hero{padding:22px 16px}.hero-inner{grid-template-columns:1fr}.world-art{min-height:90px;font-size:70px}.world-art .float{font-size:23px}.hero-inner>div:first-child{text-align:center}main{padding:14px}.map{grid-template-columns:repeat(2,minmax(0,1fr))}.stage:last-child{grid-column:1/-1}.options{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}.skill-row{grid-template-columns:100px 1fr 35px}.start-actions{grid-template-columns:1fr}.stage-menu{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-pick:last-child{grid-column:1/-1}.section-head h2{font-size:19px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{body{background:white;padding:0}.topbar,#start,.controls,.footer,.map{display:none!important}.card{box-shadow:none;border:0}.hero{print-color-adjust:exact}.panel{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand"><span class="brand-mark">½</span><span>باشگاه قهرمانان ریاضی</span></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+      <div class="creator-tag"><b>طراح: یوسف معصومی</b></div>
+      <span class="pill">پایه پنجم ابتدایی</span>
+    </div>
+  </div>
+  <div class="card">
+    <header class="hero" id="heroHeader">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">✦ یک ماجراجویی ریاضی آغاز می‌شود ✦</div>
+          <h1>قهرمانان عددهای مخلوط</h1>
+          <p>برای بازسازی پل‌ها، بازکردن دروازه‌ها و پیدا کردن گنجینهٔ شهر کسرها، باید با فکر و دقت مسئله‌ها را حل کنی.</p>
+          <div class="hero-credit"><strong>طراح: یوسف معصومی</strong></div>
+        </div>
+        <div class="world-art" aria-label="قلعه و گنجینه خیالی">🏰<span class="float f1">✨</span><span class="float f2">🗝️</span></div>
+      </div>
+    </header>
+    <main>
+      <section id="start">
+        <div class="panel">
+          <h2>🎒 آماده‌ای، قهرمان؟</h2>
+          <p style="line-height:1.9;margin-top:0">نامت را وارد کن و پنج مأموریت شهر کسرها را پشت سر بگذار. هر پاسخ درست، تو را یک قدم به گنجینه نزدیک‌تر می‌کند.</p>
+          <div class="form-grid">
+            <div><label for="firstName">نام</label><input id="firstName" maxlength="40" autocomplete="given-name" placeholder="مثلاً پارمیس" required></div>
+            <div><label for="lastName">نام خانوادگی</label><input id="lastName" maxlength="50" autocomplete="family-name" placeholder="مثلاً بی‌نیاز" required></div>
+          </div>
+          <div class="start-actions">
+            <button class="btn primary" id="startBtn" type="button">🚀 ثبت نام و انتخاب مرحله</button>
+            <button class="btn secondary" id="guideBtn" type="button">📘 راهنمای بازی</button>
+          </div>
+        </div>
+        <div class="panel hidden" id="guidePanel">
+          <h3>چطور بازی کنم؟</h3>
+          <p style="line-height:2;margin-bottom:0">۱) نام و نام خانوادگی را وارد کن. ۲) مأموریت‌ها را به‌ترتیب انجام بده. ۳) برای هر سؤال، پاسخ را انتخاب کن. ۴) اگر اشتباه کردی، راهنمایی را بخوان و دوباره تلاش کن. ۵) پس از پاسخ درست، می‌توانی مراحل حل را در «آزمایشگاه محاسبات» ببینی. در پایان، کارنامه‌ات نمایش داده می‌شود.</p>
+        </div>
+      </section>
+
+      <section id="stageSelect" style="display:none">
+        <div class="panel">
+          <h2>🗺️ انتخاب مرحله</h2>
+          <p style="line-height:1.9">سلام <b id="stagePlayerName"></b>! مرحلهٔ موردنظرت را انتخاب کن. بعد از پایان هر مرحله، دوباره به همین صفحه برمی‌گردی تا مرحلهٔ بعدی را شروع کنی.</p>
+          <div class="stage-menu" id="stageMenu"></div>
+        </div>
+      </section>
+
+      <section id="game">
+        <div class="section-head">
+          <h2 id="welcome">سلام قهرمان!</h2>
+          <div class="stats">
+            <span class="stat">⭐ امتیاز: <b id="points">۰</b></span>
+            <span class="stat">🗝️ کلیدها: <b id="keys">۰</b></span>
+            <button class="stat" id="soundBtn" type="button" aria-pressed="false" style="cursor:pointer;font:inherit">🔈 صدا: خاموش</button>
+          </div>
+        </div>
+        <div class="progress" aria-label="پیشرفت بازی"><div id="progressBar"></div></div>
+        <div class="mission">
+          <div class="mission-head">
+            <div class="mission-icon" id="missionIcon">🚪</div>
+            <div><h3 id="missionTitle">دروازهٔ کسرها</h3><p id="missionDesc">با دقت شروع کن و راه شهر را باز کن.</p></div>
+          </div>
+        </div>
+        <div class="question-card">
+          <span class="topic" id="topic">تمرین ریاضی</span>
+          <div class="section-head" style="margin-bottom:5px">
+            <span class="hint hidden" id="qNumber" aria-hidden="true">سؤال ۱</span>
+            <span class="hint" id="difficulty">سطح آسان</span>
+          </div>
+          <h2 class="qtext" id="questionText">۱/۲ + ۱/۴ = ؟</h2>
+          <div class="options" id="options"></div>
+          <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+          <details class="lab hidden" id="lab">
+            <summary>🧪 آزمایشگاه محاسبات: ببین چطور حل می‌شود</summary>
+            <div class="lab-content" id="labContent"></div>
+          </details>
+          <div class="controls">
+            <button class="btn secondary" id="hintBtn" type="button">💡 راهنمایی</button>
+            <button class="btn secondary" id="homeBtn" type="button">⌂ بازگشت به صفحهٔ اول</button>
+            <button class="btn primary hidden" id="nextBtn" type="button">سؤال بعدی ←</button>
+          </div>
+          <div class="feedback hidden" id="hintBox"></div>
+        </div>
+      </section>
+
+      <section id="result">
+        <div class="result-hero">
+          <div class="trophy">🏆</div>
+          <div class="score" id="finalScore">۰</div>
+          <h2 id="resultTitle">قهرمان شهر کسرها!</h2>
+          <p id="resultName"></p>
+          <p id="resultMessage">با تلاش و فکر، مأموریتت را به پایان رساندی.</p>
+        </div>
+        <div class="result-grid">
+          <div class="result-stat"><strong id="correctCount">۰</strong><span>پاسخ درست</span></div>
+          <div class="result-stat"><strong id="wrongCount">۰</strong><span>پاسخ نادرست</span></div>
+          <div class="result-stat"><strong id="percent">۰٪</strong><span>درصد موفقیت</span></div>
+        </div>
+        <div class="panel">
+          <h3>📊 کارنامهٔ مهارت‌ها</h3>
+          <div id="skillResults"></div>
+        </div>
+        <div class="panel">
+          <h3>🔎 مرور پاسخ‌ها</h3>
+          <div id="reviewList"></div>
+        </div>
+        <div class="controls">
+          <button class="btn primary" id="printBtn" type="button">🖨️ چاپ / ذخیرهٔ کارنامه</button>
+          <button class="btn gold" id="restartBtn" type="button">🔄 بازی دوباره</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="footer">طراح: یوسف معصومی</div>
+</div>
+<script>
+(() => {
+'use strict';
+const stages = [
+ {name:'دروازهٔ کسرها',icon:'🚪',desc:'راه ورود به شهر را با جمع و تفریق کسرها باز کن.',topic:'جمع و تفریق کسرها',skill:'کسرها',color:'#dbeafe'},
+ {name:'پل مخرج مشترک',icon:'🌉',desc:'قطعات پل را با پیدا کردن مخرج مشترک کنار هم بگذار.',topic:'مخرج مشترک',skill:'مخرج مشترک',color:'#cffafe'},
+ {name:'باغ عددهای مخلوط',icon:'🌳',desc:'با جمع درست، باغ شهر را دوباره سرسبز کن.',topic:'جمع عددهای مخلوط',skill:'جمع مخلوط‌ها',color:'#dcfce7'},
+ {name:'پل شکسته',icon:'🧩',desc:'با تفریق دقیق، راه رسیدن به قلعه را تعمیر کن.',topic:'تفریق عددهای مخلوط',skill:'تفریق مخلوط‌ها',color:'#fef3c7'},
+ {name:'قلعهٔ گنجینه‌ها',icon:'🏰',desc:'چالش پایانی: عدد مخلوط و کسر را با هم حساب کن.',topic:'مسئلهٔ ترکیبی',skill:'مخلوط و کسر',color:'#ede9fe'}
+];
+const questions = [
+ {stage:0,skill:'جمع و تفریق کسرها',level:'آسان',q:'۱/۵ + ۲/۵ = ؟',opts:['۳/۵','۳/۱۰','۲/۵','۱/۵'],a:0,hint:'چون مخرج‌ها برابرند، صورت‌ها را جمع کن و مخرج را نگه دار.',steps:['مخرج‌ها برابرند؛ پس مخرج ۵ را نگه می‌داریم.','۱ + ۲ = ۳.','پاسخ: ۳/۵.']},
+ {stage:0,skill:'جمع و تفریق کسرها',level:'آسان',q:'۴/۷ − ۲/۷ = ؟',opts:['۲/۷','۲/۱۴','۶/۷','۱/۷'],a:0,hint:'چون مخرج‌ها برابرند، صورت‌ها را از هم کم کن.',steps:['مخرج‌ها برابرند؛ پس مخرج ۷ را نگه می‌داریم.','۴ − ۲ = ۲.','پاسخ: ۲/۷.']},
+ {stage:0,skill:'جمع و تفریق کسرها',level:'متوسط',q:'۳/۴ + ۲/۳ = ؟',opts:['۵/۷','۱ و ۵/۱۲','۱ و ۱/۱۲','۱ و ۷/۱۲'],a:1,hint:'مخرج مشترک ۱۲ انتخاب مناسبی است.',steps:['۳/۴ = ۹/۱۲ و ۲/۳ = ۸/۱۲.','۹/۱۲ + ۸/۱۲ = ۱۷/۱۲.','۱۷/۱۲ = ۱ و ۵/۱۲.']},
+ {stage:0,skill:'جمع و تفریق کسرها',level:'دشوار',q:'۷/۸ − ۱/۶ = ؟',opts:['۶/۲','۱۷/۲۴','۵/۲۴','۱۹/۲۴'],a:1,hint:'مخرج مشترک ۲۴ است.',steps:['۷/۸ = ۲۱/۲۴ و ۱/۶ = ۴/۲۴.','۲۱/۲۴ − ۴/۲۴ = ۱۷/۲۴.','پاسخ: ۱۷/۲۴.']},
+ {stage:0,skill:'جمع و تفریق کسرها',level:'دشوار',q:'۵/۹ + ۷/۱۲ = ؟',opts:['۱۲/۲۱','۱ و ۱/۳۶','۱ و ۵/۳۶','۱ و ۱/۳۶'],a:2,hint:'مخرج مشترک ۳۶ بگیر و در پایان عدد مخلوط بساز.',steps:['۵/۹ = ۲۰/۳۶ و ۷/۱۲ = ۲۱/۳۶.','۲۰/۳۶ + ۲۱/۳۶ = ۴۱/۳۶.','۴۱/۳۶ = ۱ و ۵/۳۶.']},
+ {stage:1,skill:'مخرج مشترک',level:'دشوار',q:'۳/۵ + ۵/۶ = ؟',opts:['۸/۱۱','۱ و ۱۳/۳۰','۱ و ۱/۳۰','۱ و ۲/۳۰'],a:1,hint:'مخرج مشترک ۳۰ است.',steps:['۳/۵ = ۱۸/۳۰ و ۵/۶ = ۲۵/۳۰.','۱۸/۳۰ + ۲۵/۳۰ = ۴۳/۳۰.','۴۳/۳۰ = ۱ و ۱۳/۳۰.']},
+ {stage:1,skill:'مخرج مشترک',level:'دشوار',q:'۱۱/۱۲ − ۳/۸ = ؟',opts:['۸/۴','۱۳/۲۴','۵/۲۴','۷/۲۴'],a:1,hint:'مخرج مشترک ۲۴ انتخاب کن.',steps:['۱۱/۱۲ = ۲۲/۲۴ و ۳/۸ = ۹/۲۴.','۲۲/۲۴ − ۹/۲۴ = ۱۳/۲۴.','پاسخ: ۱۳/۲۴.']},
+ {stage:1,skill:'مخرج مشترک',level:'دشوار',q:'کدام کسر با ۳/۴ برابر است؟',opts:['۶/۱۰','۹/۱۲','۶/۱۲','۱۲/۱۸'],a:1,hint:'صورت و مخرج را در یک عدد یکسان ضرب کن.',steps:['۳/۴ را در ۳ ضرب می‌کنیم.','۳×۳ = ۹ و ۴×۳ = ۱۲.','پس ۹/۱۲ با ۳/۴ برابر است.']},
+ {stage:2,skill:'جمع عددهای مخلوط',level:'متوسط',q:'۲ و ۳/۵ + ۱ و ۴/۵ = ؟',opts:['۳ و ۲/۵','۴ و ۲/۵','۴ و ۷/۱۰','۳ و ۷/۵'],a:1,hint:'کسرها ۷/۵ می‌شوند؛ یک واحد را به بخش صحیح اضافه کن.',steps:['۲ + ۱ = ۳.','۳/۵ + ۴/۵ = ۷/۵ = ۱ و ۲/۵.','۳ + ۱ و ۲/۵ = ۴ و ۲/۵.']},
+ {stage:2,skill:'جمع عددهای مخلوط',level:'دشوار',q:'۳ و ۵/۶ + ۲ و ۳/۴ = ؟',opts:['۵ و ۲/۵','۶ و ۷/۱۲','۶ و ۱/۱۲','۵ و ۷/۱۲'],a:1,hint:'کسرها را با مخرج مشترک ۱۲ جمع کن.',steps:['۵/۶ = ۱۰/۱۲ و ۳/۴ = ۹/۱۲.','۱۰/۱۲ + ۹/۱۲ = ۱۹/۱۲ = ۱ و ۷/۱۲.','۳ + ۲ + ۱ و ۷/۱۲ = ۶ و ۷/۱۲.']},
+ {stage:2,skill:'جمع عددهای مخلوط',level:'دشوار',q:'۴ و ۲/۹ + ۱ و ۵/۶ = ؟',opts:['۵ و ۷/۱۵','۶ و ۱/۱۸','۶ و ۱/۶','۶ و ۷/۱۸'],a:1,hint:'مخرج مشترک ۱۸ است؛ جمع کسرها از یک واحد بیشتر می‌شود.',steps:['۲/۹ = ۴/۱۸ و ۵/۶ = ۱۵/۱۸.','۴/۱۸ + ۱۵/۱۸ = ۱۹/۱۸ = ۱ و ۱/۱۸.','۴ + ۱ + ۱ و ۱/۱۸ = ۶ و ۱/۱۸.']},
+ {stage:2,skill:'جمع عددهای مخلوط',level:'متوسط',q:'۱ و ۷/۱۰ + ۲ و ۱/۵ = ؟',opts:['۳ و ۹/۱۰','۴ و ۱/۱۰','۳ و ۸/۱۵','۴ و ۹/۱۰'],a:0,hint:'۱/۵ را به ۲/۱۰ تبدیل کن.',steps:['۱/۵ = ۲/۱۰.','۷/۱۰ + ۲/۱۰ = ۹/۱۰.','۱ + ۲ = ۳؛ پاسخ ۳ و ۹/۱۰ است.']},
+ {stage:3,skill:'تفریق عددهای مخلوط',level:'متوسط',q:'۵ و ۴/۷ − ۲ و ۲/۷ = ؟',opts:['۳ و ۲/۷','۳ و ۶/۷','۲ و ۲/۷','۳ و ۱/۷'],a:0,hint:'قسمت صحیح و قسمت کسری را جداگانه کم کن.',steps:['۵ − ۲ = ۳.','۴/۷ − ۲/۷ = ۲/۷.','پاسخ: ۳ و ۲/۷.']},
+ {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۶ و ۱/۴ − ۲ و ۳/۴ = ؟',opts:['۴ و ۱/۲','۳ و ۱/۲','۳ و ۳/۴','۴ و ۱/۴'],a:1,hint:'از یک واحد صحیح قرض بگیر و آن را به چهار چهارم تبدیل کن.',steps:['۶ و ۱/۴ = ۵ و ۵/۴.','۵/۴ − ۳/۴ = ۲/۴ = ۱/۲.','۵ − ۲ = ۳؛ پاسخ ۳ و ۱/۲ است.']},
+ {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۸ و ۲/۳ − ۳ و ۵/6 = ؟',opts:['۵ و ۱/۶','۴ و ۵/۶','۴ و ۱/۲','۵ و ۵/۶'],a:1,hint:'مخرج مشترک ۶ بگیر و از یک واحد صحیح قرض بگیر.',steps:['۲/۳ = ۴/۶؛ چون ۴/۶ از ۵/۶ کمتر است، یک واحد قرض می‌گیریم.','۸ و ۴/۶ = ۷ و ۱۰/۶؛ ۱۰/۶ − ۵/۶ = ۵/۶.','۷ − ۳ = ۴؛ پاسخ ۴ و ۵/۶ است.']},
+ {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۷ و ۱/۵ − ۲ و ۳/۱۰ = ؟',opts:['۵ و ۱/۱۰','۴ و ۹/۱۰','۵ و ۴/۱۰','۴ و ۱/۲'],a:1,hint:'۱/۵ را به ۲/۱۰ تبدیل کن؛ سپس قرض گرفتن را بررسی کن.',steps:['۱/۵ = ۲/۱۰؛ پس ۷ و ۲/۱۰ − ۲ و ۳/۱۰.','قرض می‌گیریم: ۷ و ۲/۱۰ = ۶ و ۱۲/۱۰.','۱۲/۱۰ − ۳/۱۰ = ۹/۱۰ و ۶ − ۲ = ۴؛ پاسخ ۴ و ۹/۱۰.']},
+ {stage:4,skill:'عدد مخلوط و کسر',level:'متوسط',q:'۲ و ۳/۸ + ۵/۸ = ؟',opts:['۲ و ۱/۴','۳','۳ و ۳/۸','۲ و ۸/۱۶'],a:1,hint:'کسرها را جمع کن؛ اگر یک واحد کامل شد، به قسمت صحیح اضافه کن.',steps:['۳/۸ + ۵/۸ = ۸/۸ = ۱.','۲ + ۱ = ۳.','پاسخ: ۳.']},
+ {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۴ و ۱/۶ − ۵/۱۲ = ؟',opts:['۳ و ۳/۴','۳ و ۷/۱۲','۴ و ۱/۱۲','۳ و ۵/۱۲'],a:0,hint:'۱/۶ را به ۲/۱۲ تبدیل کن و یک واحد قرض بگیر.',steps:['۱/۶ = ۲/۱۲؛ پس ۴ و ۲/۱۲.','قرض می‌گیریم: ۴ و ۲/۱۲ = ۳ و ۱۴/۱۲.','۱۴/۱۲ − ۵/۱۲ = ۹/۱۲ = ۳/۴؛ پاسخ ۳ و ۳/۴ است.']},
+ {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۳ و ۵/6 + ۲/3 = ؟',opts:['۴ و ۱/۲','۴ و ۱/۶','۳ و ۷/۹','۴ و ۵/۶'],a:0,hint:'۲/۳ را به ششم تبدیل کن؛ کسرها از یک واحد بیشتر می‌شوند.',steps:['۲/۳ = ۴/۶.','۵/۶ + ۴/۶ = ۹/۶ = ۱ و ۱/۲.','۳ + ۱ و ۱/۲ = ۴ و ۱/۲.']},
+ {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۵ و ۱/۴ − ۷/8 = ؟',opts:['۴ و ۳/۸','۴ و ۱/۸','۵ و ۳/۸','۳ و ۷/۸'],a:0,hint:'۱/۴ را به ۲/۸ تبدیل کن و از یک واحد صحیح قرض بگیر.',steps:['۱/۴ = ۲/۸؛ پس ۵ و ۲/۸.','قرض می‌گیریم: ۵ و ۲/۸ = ۴ و ۱۰/۸.','۱۰/۸ − ۷/۸ = ۳/۸؛ پاسخ ۴ و ۳/۸.']}
+];
+const faDigits = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
+const $ = id => document.getElementById(id);
+let player='', order=[], allOrder=[], idx=0, score=0, wrong=0, keys=0, answered=false, soundOn=false, audioCtx=null;
+let records=[], firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function playTone(freq=660,duration=.11){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.08,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.start();o.stop(audioCtx.currentTime+duration);}catch(e){}}
+function mathHTML(str){return String(str).replace(/([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
+function setFeedback(kind,title,text){const el=$('feedback');el.className='feedback show '+kind;el.innerHTML='<strong>'+title+'</strong><span>'+mathHTML(text)+'</span>';}
+function showHint(){const q=questions[order[idx]],box=$('hintBox');box.className='feedback show';box.style.background='#fffbeb';box.style.border='1px solid #fde68a';box.style.color='#854d0e';box.innerHTML='💡 راهنمایی: '+mathHTML(q.hint);}
+function renderStageMenu(){ $('stageMenu').innerHTML=stages.map((s,i)=>{const done=completedStages.has(i),open=i<=unlockedStage;return `<button type="button" class="stage-pick ${done?'done':open?'unlocked':''}" data-stage="${i}" ${open?'':'disabled'}><span>${done?'✅':s.icon}</span><strong>${s.name}</strong><small>${done?'تکمیل شد':open?'آمادهٔ شروع':'🔒 قفل است'}</small></button>`}).join('');$('stageMenu').querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{if(Number(b.dataset.stage)>unlockedStage)return;beginStage(Number(b.dataset.stage));}));}
+function showStageSelect(){ document.body.classList.remove('in-game');document.body.classList.add('in-stage-select');$('start').style.display='none';$('game').style.display='none';$('result').style.display='none';$('stageSelect').style.display='block';$('stagePlayerName').textContent=player;renderStageMenu();window.scrollTo({top:0,behavior:'smooth'});}
+function renderQuestion(){answered=false;const q=questions[order[idx]],stage=stages[q.stage];$('missionIcon').textContent=stage.icon;$('missionTitle').textContent=stage.name;$('missionDesc').textContent=stage.desc;$('topic').textContent=q.skill;$('qNumber').textContent=`سؤال ${faDigits(idx+1)} از ${faDigits(order.length)}`;$('difficulty').textContent='سطح '+q.level;$('questionText').innerHTML='<span class="math">'+mathHTML(q.q)+'</span>';$('options').innerHTML='';shuffle(q.opts.map((v,i)=>({v,original:i}))).forEach(item=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML='<span class="math">'+mathHTML(item.v)+'</span>';b.addEventListener('click',()=>choose(item.original,b));$('options').appendChild(b);});$('feedback').className='feedback';$('feedback').textContent='';$('hintBox').className='feedback hidden';$('lab').classList.add('hidden');$('lab').open=false;$('nextBtn').classList.add('hidden');$('hintBtn').disabled=false;$('progressBar').style.width=(idx/order.length*100)+'%';$('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);}
+function choose(original,button){if(answered)return;const q=questions[order[idx]],buttons=[...$('options').querySelectorAll('button')];if(original===q.a){answered=true;if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=true;score+=10;keys+=1;buttons.forEach(b=>{b.disabled=true});button.classList.add('correct');setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');playTone(790);$('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');$('lab').classList.remove('hidden');$('nextBtn').classList.remove('hidden');$('hintBtn').disabled=true;records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true,steps:q.steps});$('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);}else{if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=false;wrong++;button.classList.add('wrong');button.disabled=true;setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');playTone(260);records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false,steps:q.steps});$('hintBtn').disabled=false;}}
+function nextQuestion(){if(!answered)return;idx++;if(idx>=order.length){completedStages.add(currentStage);if(currentStage===4){showResult();return;}unlockedStage=Math.max(unlockedStage,currentStage+1);returnHome(true);return;}renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
+function returnHome(stageDone=false){document.body.classList.remove('in-game');document.body.classList.add('in-stage-select');$('game').style.display='none';$('result').style.display='none';$('start').style.display='none';$('stageSelect').style.display='block';renderStageMenu();if(stageDone){const old=$('stageNotice');if(old)old.remove();const notice=document.createElement('div');notice.id='stageNotice';notice.className='panel';notice.innerHTML=`<h3>🎉 ${stages[currentStage].name} به پایان رسید!</h3><p style="line-height:1.9;margin-bottom:0">آفرین ${player}! امتیازت تا اینجا ${faDigits(score)} است. حالا مرحلهٔ بعدی را از فهرست انتخاب کن.</p>`;$('stageSelect').querySelector('.panel').insertAdjacentElement('afterbegin',notice);}window.scrollTo({top:0,behavior:'smooth'});}
+function showResult(){
+  document.body.classList.remove('in-game','in-stage-select');$('game').style.display='none';$('result').style.display='block';$('progressBar').style.width='100%';
+  const played=allOrder,total=played.length,correct=played.filter(qid=>firstTry[qid]===true).length,pct=Math.round(correct/total*100);
+  $('finalScore').textContent=faDigits(score)+' امتیاز';$('resultName').textContent='کارنامهٔ '+player;$('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(wrong);$('percent').textContent=faDigits(pct)+'٪';
+  $('resultTitle').textContent=pct>=85?'قهرمان درخشان شهر کسرها!':pct>=65?'قهرمان پرتلاش شهر کسرها!':'قهرمان آیندهٔ شهر کسرها!';
+  $('resultMessage').textContent=pct>=85?'با دقت و پشتکار، گنجینه را پیدا کردی!':pct>=65?'آفرین! با مرور چند نکته می‌توانی قوی‌تر شوی.':'هر تمرین فرصتی برای یادگیری است؛ سؤال‌ها را مرور کن و دوباره تلاش کن.';
+  const skills=[...new Set(played.map(qid=>questions[qid].skill))];
+  $('skillResults').innerHTML=skills.map(skill=>{const qs=played.filter(i=>questions[i].skill===skill);const got=qs.filter(i=>firstTry[i]===true).length;const p=Math.round(got/qs.length*100);return `<div class="skill-row"><span>${skill}</span><div class="skillbar"><i style="width:${p}%"></i></div><span>${faDigits(p)}٪</span></div>`}).join('');
+  $('reviewList').innerHTML=played.map((qid,i)=>{const q=questions[qid];return `<details class="review-item"><summary>${firstTry[qid]===true?'✅ پاسخ درست در تلاش اول':'🔎 نیازمند تمرین بیشتر'} · سؤال ${faDigits(i+1)} · ${q.skill}</summary><p><b>مسئله:</b> <span class="math">${mathHTML(q.q)}</span></p><p><b>پاسخ درست:</b> <span class="math">${mathHTML(q.opts[q.a])}</span></p><p><b>روش حل:</b> ${q.steps.map(mathHTML).join(' ')}</p></details>`}).join('');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // 🆕 ارسال امتیاز به اپ اصلی
+  try {
+    window.parent.postMessage({
+      type: 'GAME_FINISHED',
+      gameId: 'ch2-fractions',
+      score: correct,
+      total: total
+    }, '*');
+  } catch (e) {}
+}
+function beginStage(stageIndex){if(stageIndex>unlockedStage)return;document.body.classList.remove('in-stage-select');document.body.classList.add('in-game');currentStage=stageIndex;order=questions.map((q,i)=>({q,i})).filter(x=>x.q.stage===stageIndex).map(x=>x.i);allOrder=[...allOrder.filter(i=>questions[i].stage!==stageIndex),...order];idx=0;$('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';$('welcome').textContent='سلام '+player+'، آماده‌ای؟';renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
+function startGame(){document.body.classList.remove('in-game','in-stage-select');const f=$('firstName').value.trim(),l=$('lastName').value.trim();if(!f){alert('لطفاً نام دانش‌آموز را وارد کن.');$('firstName').focus();return;}if(!l){alert('لطفاً نام خانوادگی دانش‌آموز را وارد کن.');$('lastName').focus();return;}player=f+' '+l;score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;const notice=$('stageNotice');if(notice)notice.remove();showStageSelect();}
+$('startBtn').addEventListener('click',startGame);$('guideBtn').addEventListener('click',()=>$('guidePanel').classList.toggle('hidden'));$('hintBtn').addEventListener('click',showHint);$('nextBtn').addEventListener('click',nextQuestion);$('homeBtn').addEventListener('click',()=>{if(confirm('به صفحهٔ انتخاب مرحله برگردی؟ پیشرفت این مرحله ذخیره نمی‌شود.'))returnHome(false);});$('printBtn').addEventListener('click',()=>window.print());$('restartBtn').addEventListener('click',()=>{document.body.classList.remove('in-game','in-stage-select');player='';$('firstName').value='';$('lastName').value='';$('result').style.display='none';$('stageSelect').style.display='none';$('start').style.display='block';const notice=$('stageNotice');if(notice)notice.remove();$('firstName').focus();});$('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊 صدا: روشن':'🔈 صدا: خاموش';$('soundBtn').setAttribute('aria-pressed',String(soundOn));if(soundOn)playTone(660);});renderStageMenu();
+})();
+</script>
+</body>
+</html>
