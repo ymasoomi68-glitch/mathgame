@@ -53,6 +53,7 @@ button {
 .app-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
@@ -63,16 +64,16 @@ button {
   z-index: 10;
 }
 
+.header-right, .header-left {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .app-title {
   font-size: 1.15rem;
   font-weight: bold;
   flex: 1;
   text-align: center;
-}
-
-.header-spacer {
-  width: 40px;
-  height: 40px;
 }
 
 .icon-btn {
@@ -86,6 +87,14 @@ button {
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  overflow: hidden;
+}
+
+.icon-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
 }
 
 .icon-btn:hover {
@@ -121,14 +130,8 @@ button {
   50%      { transform: translateY(-15px); }
 }
 
-.home h2 {
-  font-size: 1.6rem;
-  color: #92400e;
-}
-
-.home p {
-  color: var(--text-muted);
-}
+.home h2 { font-size: 1.6rem; color: #92400e; }
+.home p { color: var(--text-muted); }
 
 .stats {
   display: flex;
@@ -177,21 +180,8 @@ button {
   box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5);
 }
 
-.btn-text {
-  color: var(--text-muted);
-  font-weight: normal;
-  padding: 0.5rem;
-}
-
-.btn-success {
-  background: var(--success);
-  color: white;
-}
-
-.btn-secondary {
-  background: #f3f4f6;
-  color: var(--text);
-}
+.btn-text { color: var(--text-muted); font-weight: normal; padding: 0.5rem; }
+.btn-success { background: var(--success); color: white; }
 
 /* ===== عنوان صفحه ===== */
 .page-title {
@@ -202,10 +192,7 @@ button {
 }
 
 /* ===== لیست بازی‌ها ===== */
-.games-list {
-  display: grid;
-  gap: 0.75rem;
-}
+.games-list { display: grid; gap: 0.75rem; }
 
 .game-card {
   display: flex;
@@ -219,20 +206,8 @@ button {
   transition: transform 0.2s;
 }
 
-.game-card:hover:not(.locked) {
-  transform: translateX(-4px);
-}
-
-.game-card.locked {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.game-emoji {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
+.game-card:hover { transform: translateX(-4px); }
+.game-emoji { font-size: 2rem; flex-shrink: 0; }
 .game-info { flex: 1; }
 .game-title { font-size: 1rem; font-weight: bold; margin-bottom: 0.2rem; }
 .game-desc { font-size: 0.85rem; color: var(--text-muted); }
@@ -259,16 +234,8 @@ button {
   font-size: 0.9rem;
 }
 
-.update-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-.update-banner .btn {
-  padding: 0.4rem 0.9rem;
-  font-size: 0.85rem;
-}
+.update-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.update-banner .btn { padding: 0.4rem 0.9rem; font-size: 0.85rem; }
 
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
@@ -325,21 +292,19 @@ button {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
-.subject-card.coming-soon {
-  opacity: 0.55;
-  cursor: not-allowed;
-  filter: grayscale(0.4);
-}
+.subject-card.coming-soon { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.4); }
 
 .subject-emoji {
-  width: 58px;
-  height: 58px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
   flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .subject-info { flex: 1; }
@@ -348,10 +313,7 @@ button {
 .subject-arrow { color: var(--text-muted); font-size: 1.2rem; }
 
 /* ===== هدر درس ===== */
-.subject-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
+.subject-header { text-align: center; margin-bottom: 1.5rem; }
 
 .subject-header-emoji {
   width: 80px;
@@ -362,12 +324,11 @@ button {
   justify-content: center;
   font-size: 2.6rem;
   margin-bottom: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.subject-header h2 {
-  color: var(--primary-dark);
-  font-size: 1.4rem;
-}
+.subject-header h2 { color: var(--primary-dark); font-size: 1.4rem; }
 
 /* ===== فصل‌ها ===== */
 .chapter-section { margin-bottom: 2rem; }
@@ -381,12 +342,7 @@ button {
   text-align: right;
 }
 
-/* ===== کارت بازی (تکمیلی) ===== */
-.game-teacher {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 0.25rem;
-}
+.game-teacher { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
 
 .game-stars {
   font-size: 1rem;
