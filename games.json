@@ -38,6 +38,17 @@
       "emoji": "🌈",
       "file": "games/science/ch3-rainbow.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch3-farsi",
+      "subject": "farsi",
+      "chapter": 3,
+      "title": "رازی و ساخت بیمارستان",
+      "subtitle": "آزمون فارسی",
+      "description": "آزمون جامع درس سوم فارسی پنجم | درک مطلب، واژه‌آموزی و هم‌خانواده",
+      "emoji": "📖",
+      "file": "games/farsi/ch3-farsi.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
-  "version": "1.0.0",
-  "releasedAt": "2026-10-23T05:56:59.031Z",
-  "notes": "نسخه جدید کاوشگر پنجم",
+  "version": "1.0.1",
+  "releasedAt": "2026-10-23T06:21:57.615Z",
+  "notes": "بروزرسانی سیستم",
   "hashes": {
-    "index": "ed44ffcb6b1ca72060f9578dd497c696",
+    "index": "dcbe7ef6b773dc3bedcd4cfd96fd0742",
     "css": "3b63842c26b32737c3dcb0654867411e",
-    "app": "36e31f10f80d108f74b43847d1941afb"
+    "app": "a830dd6de054f0575fa995f52b19ec1a"
   }
 }
