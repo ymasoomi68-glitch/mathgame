@@ -1,14 +1,15 @@
-const CACHE_VERSION = 'kavoshgar5-v3.0.0';
+const CACHE_VERSION = 'kavoshgar5-v1.0.0';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './version.json',
   './css/style.css',
   './js/app.js',
   './js/storage.js',
   './games.json',
   './games/math/ch1-time.html',
-   './games/math/ch2-fractions.html',
+  './games/math/ch2-fractions.html',
   './games/science/ch3-rainbow.html',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -24,8 +25,6 @@ const ASSETS = [
   './images/levels.png',
   './images/games.png'
 ];
-
-// ... بقیه کدهای sw.js همون‌طور که بود بمونه ...
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -50,9 +49,11 @@ self.addEventListener('fetch', (event) => {
   if (!event.request.url.startsWith(self.location.origin)) return;
 
   const url = new URL(event.request.url);
+  // این فایل‌ها همیشه از شبکه چک بشن (نه کش) تا تغییرات فوری اعمال بشن
   const isDynamic =
     url.pathname.includes('/games/') ||
-    url.pathname.endsWith('/games.json');
+    url.pathname.endsWith('/games.json') ||
+    url.pathname.endsWith('/version.json');
 
   if (isDynamic) {
     event.respondWith(
@@ -67,6 +68,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // بقیه فایل‌ها از کش (سریع‌تر)
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;

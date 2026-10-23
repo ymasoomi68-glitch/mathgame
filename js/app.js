@@ -27,7 +27,8 @@ const App = {
     window.addEventListener('message', (e) => this.handleGameMessage(e));
 
     await this.loadData();
-
+    // ذخیره نسخه در حافظه
+    localStorage.setItem('app-version', '1.0.0'); 
     if (!location.hash) {
       location.hash = '/';
     } else {
@@ -305,27 +306,7 @@ const App = {
     `;
   },
 
-  setupSWUpdate() {
-    if (!('serviceWorker' in navigator)) return;
-
-    navigator.serviceWorker.register('./sw.js').catch(err => {
-      console.warn('خطا در ثبت SW:', err);
-    });
-
-    navigator.serviceWorker.ready.then(reg => {
-      reg.addEventListener('updatefound', () => {
-        const newWorker = reg.installing;
-        if (!newWorker) return;
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            this.showUpdateBanner(reg);
-          }
-        });
-      });
-    });
-  },
-
-  showUpdateBanner(reg) {
+    showUpdateBanner(reg) {
     const banner = this.el.updateBanner;
     if (!banner) return;
     banner.classList.remove('hidden');
@@ -337,7 +318,7 @@ const App = {
     };
     document.getElementById('dismiss-update').onclick = () => banner.classList.add('hidden');
   },
-};
+};   // 👈 این خط ( }; ) رو حتماً اضافه کن تا شیء App بسته بشه!
 
 function toFa(n) {
   return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d]);
