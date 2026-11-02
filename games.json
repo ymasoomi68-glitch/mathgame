@@ -1,9 +1,33 @@
 {
   "subjects": [
-    { "id": "math",    "label": "ریاضی",           "emoji": "🔢", "icon": "images/math.png", "color": "#3b82f6" },
-    { "id": "science", "label": "علوم",            "emoji": "🔬", "icon": "images/science.png", "color": "#10b981" },
-    { "id": "farsi",   "label": "فارسی",           "emoji": "📖", "icon": "images/persian.png", "color": "#ef4444" },
-    { "id": "social",  "label": "مطالعات اجتماعی", "emoji": "🌍", "icon": "images/social.png", "color": "#8b5cf6" }
+    {
+      "id": "math",
+      "label": "ریاضی",
+      "emoji": "🔢",
+      "icon": "images/math.png",
+      "color": "#3b82f6"
+    },
+    {
+      "id": "science",
+      "label": "علوم",
+      "emoji": "🔬",
+      "icon": "images/science.png",
+      "color": "#10b981"
+    },
+    {
+      "id": "farsi",
+      "label": "فارسی",
+      "emoji": "📖",
+      "icon": "images/persian.png",
+      "color": "#ef4444"
+    },
+    {
+      "id": "social",
+      "label": "مطالعات اجتماعی",
+      "emoji": "🌍",
+      "icon": "images/social.png",
+      "color": "#8b5cf6"
+    }
   ],
   "games": [
     {
@@ -48,6 +72,17 @@
       "description": "آزمون جامع درس سوم فارسی پنجم | درک مطلب، واژه‌آموزی و هم‌خانواده",
       "emoji": "📖",
       "file": "games/farsi/ch3-farsi.html",
+      "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch3-multiply-fractions",
+      "subject": "match",
+      "chapter": 2,
+      "title": "قهرمانان ضرب کسرها",
+      "subtitle": "ضرب کسرها",
+      "description": "بازی تعاملی ضرب کسرها | پنج مرحله ماجراجویی",
+      "emoji": "✖️",
+      "file": "games/math/ch3-multiply-fractions.html",
       "teacher": "یوسف معصومی"
     }
   ]

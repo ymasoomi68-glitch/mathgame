@@ -25,6 +25,7 @@ const ASSETS = [
   './images/settings.png',
   './images/levels.png',
   './images/games.png'
+  './games/math/ch3-multiply-fractions.html',
 ];
 
 self.addEventListener('install', (event) => {
