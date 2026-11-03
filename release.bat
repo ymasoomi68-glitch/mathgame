@@ -5,12 +5,20 @@ echo ========================================
 echo   Release Script - Kavoshgar 5
 echo ========================================
 echo.
-node make-version.js
-echo.
-set /p notes="Release notes (English): "
+set /p notes=Release notes: 
+if "%notes%"=="" set notes=Update
+node make-version.js "%notes%"
+if errorlevel 1 goto fail
 git add .
-git commit -m "Release update"
+git commit -m "Release: %notes%"
 git push
+if errorlevel 1 goto fail
 echo.
-echo ✅ Pushed to GitHub!
+echo Pushed to GitHub!
 pause
+exit /b 0
+:fail
+echo.
+echo ERROR: release failed. See messages above.
+pause
+exit /b 1

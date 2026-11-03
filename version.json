@@ -1,10 +1,11 @@
 {
-  "version": "1.0.3",
-  "releasedAt": "2026-11-02T15:36:02.697Z",
-  "notes": "بروزرسانی سیستم",
+  "version": "1.0.5",
+  "releasedAt": "2026-11-03T03:18:28.007Z",
+  "notes": "Fixed bugs, added PWA install, and new graphics",
   "hashes": {
-    "index": "dcbe7ef6b773dc3bedcd4cfd96fd0742",
-    "css": "3b63842c26b32737c3dcb0654867411e",
-    "app": "a830dd6de054f0575fa995f52b19ec1a"
+    "index": "6ecf8b581a89ed4e14bb2c58954df456",
+    "css": "7a3b9dbe96547639ebee65f6962ba8a2",
+    "app": "22289bf3123071f244563cafe49cfe0f",
+    "sw": "d877a0689e0cc43b891d94e315c41238"
   }
 }

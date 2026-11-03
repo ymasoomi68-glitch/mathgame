@@ -1,58 +1,51 @@
 const fs = require('fs');
 const readline = require('readline');
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-const ask = (q) => new Promise(res => rl.question(q, res));
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const ask = (q) => new Promise((res) => rl.question(q, (a) => res(a.trim())));
 
 async function main() {
-    console.log("\n=== 🎮 Add New Game to Kavoshgar 5 ===\n");
-    const id = await ask("Game ID (e.g., ch3-farsi): ");
-    const subject = await ask("Subject (math, science, farsi, social): ");
-    const chapter = parseInt(await ask("Chapter Number: "));
-    const title = await ask("Title: ");
-    const subtitle = await ask("Subtitle: ");
-    const description = await ask("Description: ");
-    const emoji = await ask("Emoji: ");
-    const file = await ask("File Path (e.g., games/farsi/ch3-farsi.html): ");
+  try {
+    console.log('\n=== 🎮 Add New Game to Kavoshgar 5 ===\n');
+    const data = JSON.parse(fs.readFileSync('games.json', 'utf8'));
+    const subjects = data.subjects.map((s) => s.id);
 
-    const newGame = {
-        id, subject, chapter, title, subtitle, description, emoji, file,
-        teacher: "یوسف معصومی"
-    };
+    const id = await ask('Game ID (e.g., ch3-farsi): ');
+    if (!/^[a-z0-9][a-z0-9-]*$/i.test(id)) throw new Error('Game ID باید فقط شامل حروف انگلیسی، عدد و - باشد.');
+    if (data.games.some((g) => g.id === id)) throw new Error('این Game ID قبلاً وجود دارد.');
 
-    // 1. Update games.json
-    const jsonPath = 'games.json';
-    if (fs.existsSync(jsonPath)) {
-        const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-        if (!data.games.find(g => g.id === id)) {
-            data.games.push(newGame);
-            fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
-            console.log("✅ games.json updated!");
-        } else {
-            console.log("⚠️ Game ID already exists in games.json!");
-        }
+    const subject = await ask(`Subject (${subjects.join(', ')}): `);
+    if (!subjects.includes(subject)) throw new Error('درس نامعتبر است.');
+    const chapter = parseInt(await ask('Chapter Number: '), 10);
+    if (!Number.isInteger(chapter) || chapter < 1) throw new Error('شماره فصل نامعتبر است.');
+    const title = await ask('Title: ');
+    const subtitle = await ask('Subtitle: ');
+    const description = await ask('Description: ');
+    const emoji = await ask('Emoji: ');
+    const file = (await ask('File Path (e.g., games/farsi/ch3-farsi.html): ')).replace(/^\.?\//, '');
+    if (!fs.existsSync(file)) throw new Error(`فایل ${file} پیدا نشد.`);
+
+    data.games.push({ id, subject, chapter, title, subtitle, description, emoji, file, teacher: 'یوسف معصومی' });
+    fs.writeFileSync('games.json', JSON.stringify(data, null, 2), 'utf8');
+    console.log('✅ games.json updated!');
+
+    // sw.js: آرایه را بازسازی می‌کنیم تا مشکل ویرگول جا‌افتاده پیش نیاید
+    if (fs.existsSync('sw.js')) {
+      const sw = fs.readFileSync('sw.js', 'utf8');
+      const m = sw.match(/(const ASSETS = \[)([\s\S]*?)(\n?\];)/);
+      if (!m) throw new Error('آرایه ASSETS در sw.js پیدا نشد.');
+      const entry = `'./${file}'`;
+      if (m[2].includes(entry)) console.log('⚠️ File already in sw.js ASSETS.');
+      else {
+        const inner = m[2].replace(/[\s,]+$/, '');
+        fs.writeFileSync('sw.js', sw.replace(m[0], `${m[1]}${inner},\n  ${entry}\n];`), 'utf8');
+        console.log('✅ sw.js updated!');
+      }
     }
-
-    // 2. Update sw.js
-    const swPath = 'sw.js';
-    if (fs.existsSync(swPath)) {
-        let swContent = fs.readFileSync(swPath, 'utf8');
-        const newAssetStr = `  './${file}',`;
-        if (!swContent.includes(newAssetStr)) {
-            // پیدا کردن آخرین فایل در آرایه ASSETS و اضافه کردن زیر آن
-            swContent = swContent.replace(/(const ASSETS = \[[\s\S]*?)(\n\];)/, `$1\n  './${file}',$2`);
-            fs.writeFileSync(swPath, swContent, 'utf8');
-            console.log("✅ sw.js updated!");
-        } else {
-            console.log("⚠️ File already exists in sw.js ASSETS!");
-        }
-    }
-    
-    console.log("\n🎉 Done! You can now run release.bat\n");
-    rl.close();
+    console.log('\n🎉 Done! Now run release.bat\n');
+  } catch (e) {
+    console.error('\n❌ ' + e.message + '\n');
+    process.exitCode = 1;
+  } finally { rl.close(); }
 }
 main();

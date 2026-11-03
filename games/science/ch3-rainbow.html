@@ -20,7 +20,7 @@ h1{font-size:clamp(1.5rem,4vw,2.4rem);margin:5px 0}header p{margin:5px;font-weig
 .card{border:3px solid white;border-radius:22px;padding:16px;text-align:center;min-height:175px;cursor:pointer;box-shadow:0 6px 0 #26345f12;transition:.18s;color:var(--ink);font:inherit}
 .card:hover{transform:translateY(-3px)}.card:disabled{cursor:default;opacity:.7}.card.done{filter:saturate(.6)}.card b{display:block;font-size:1.1rem;margin:5px}.icon{font-size:2.3rem}.c1{background:#ffe1ed}.c2{background:#e3f8dc}.c3{background:#fff1bf}.c4{background:#e8e2ff}.c5{background:#d9f5ff}.c6{background:#ffe5d3}
 button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0}.primary{background:#16a895;color:white;font-weight:bold}.secondary{background:#edf0ff;color:#303d70}.answer{display:block;width:100%;text-align:right;background:#f0edff;border:2px solid #ded8ff;color:var(--ink);margin:8px 0;padding:12px}.answer:hover:not(:disabled){background:#e4f8ff}.answer.correct{background:#d9f8e8;border-color:#45bd88}.answer.wrong{background:#ffe0e7;border-color:#ed7892}.panel{display:none;background:white;border:3px solid #e3d9ff;border-radius:22px;padding:18px;margin-top:16px;box-shadow:0 8px 20px #26345f0c}.panel.active{display:block}.question{background:#f3f7ff;border-radius:15px;padding:15px;font-weight:bold;font-size:1.08rem}.row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.badge{background:#fff0b8;border-radius:20px;padding:5px 11px;font-size:.9rem;font-weight:bold}.feedback{min-height:38px;font-weight:bold;line-height:1.9;margin:10px 0}.hidden{display:none!important}.note{border:2px dashed #f0b8ca;background:#fff8fb;border-radius:15px;padding:12px;margin:14px 0}.final-rainbow{font-size:3rem}.small{font-size:.9rem;color:#5b668a}footer{text-align:center;padding:20px;font-size:.85rem;color:#687294}
-</style></head>
+</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"><link rel="stylesheet" href="../../css/game-theme.css"></head>
 <body>
 <header>
 <div style="font-size:2rem">🔬 ☀️ 🌈 🔍</div>
@@ -100,9 +100,9 @@ function choose(i){if(locked)return;locked=true;let q=questions[qi],bs=[...docum
 function nextQuestion(){
   if(qi<questions.length-1){qi++;renderQ();return}
   done.add(current);colors.add(current);updateStats();document.getElementById('play').classList.remove('active');
-  if(done.size===6){
+  if(done.size===Object.keys(stations).length){
     document.getElementById('home').classList.add('hidden');document.getElementById('finish').classList.add('active');
-    document.getElementById('summary').textContent='امتیاز نهایی: '+fa(score)+' از '+fa(questionsTotal()*10)+' | ایستگاه‌های کامل‌شده: ۶ از ۶';
+    document.getElementById('summary').textContent='امتیاز نهایی: '+fa(score)+' از '+fa(questionsTotal()*10)+' | ایستگاه‌های کامل‌شده: '+fa(done.size)+' از '+fa(done.size);
     // 🆕 ارسال امتیاز به اپ اصلی
     try {
       window.parent.postMessage({
@@ -110,7 +110,7 @@ function nextQuestion(){
         gameId: 'ch3-rainbow',
         score: score,
         total: questionsTotal() * 10
-      }, '*');
+      }, location.origin);
     } catch (e) {}
   } else goHome();
 }

@@ -1,60 +1,38 @@
-// مدیریت پیشرفت بازیکن با localStorage
-const Storage = (() => {
+// مدیریت پیشرفت بازیکن با localStorage (امن در برابر خطا و حالت خصوصی)
+const Progress = (() => {
   const KEY = 'math5-progress';
-
-  const defaults = {
-    games: {},   // { gameId: { stars, attempts, lastPlayed } }
-    totalStars: 0,
-  };
+  const fresh = () => ({ games: {}, totalStars: 0 }); // هر بار شیء تازه؛ مشکل مرجع مشترک رفع شد
+  let memory = null; // اگر localStorage در دسترس نبود
 
   function load() {
     try {
       const raw = localStorage.getItem(KEY);
-      return raw ? { ...defaults, ...JSON.parse(raw) } : { ...defaults };
-    } catch {
-      return { ...defaults };
-    }
+      if (!raw) return memory || fresh();
+      const p = JSON.parse(raw);
+      if (!p || typeof p !== 'object' || typeof p.games !== 'object' || !p.games) return fresh();
+      return { games: p.games, totalStars: Number(p.totalStars) || 0 };
+    } catch { return memory || fresh(); }
   }
-
   function save(data) {
-    try {
-      localStorage.setItem(KEY, JSON.stringify(data));
-    } catch (e) {
-      console.warn('خطا در ذخیره‌سازی:', e);
-    }
+    memory = data;
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { console.warn('ذخیره‌سازی ممکن نشد:', e); }
   }
+  const sum = (games) => Object.values(games).reduce((s, g) => s + (g.stars || 0), 0);
 
   return {
-    getProgress() {
-      return load();
-    },
-
-    getGame(gameId) {
-      return load().games[gameId];
-    },
-
-    recordGame(gameId, stars) {
+    getProgress: load,
+    getGame: (id) => load().games[id],
+    getTotalStars: () => sum(load().games), // یک منبع حقیقت: مجموع ستاره‌ی بازی‌ها
+    recordGame(id, stars) {
       const data = load();
-      const prev = data.games[gameId];
-      const bestStars = Math.max(stars, prev?.stars ?? 0);
-      const diff = bestStars - (prev?.stars ?? 0);
-
-      data.games[gameId] = {
-        stars: bestStars,
-        attempts: (prev?.attempts ?? 0) + 1,
-        lastPlayed: Date.now(),
-      };
-      data.totalStars += diff;
-
+      const prev = data.games[id];
+      data.games[id] = { stars: Math.max(stars, prev?.stars ?? 0), attempts: (prev?.attempts ?? 0) + 1, lastPlayed: Date.now() };
+      data.totalStars = sum(data.games);
       save(data);
     },
-
     reset() {
-      localStorage.removeItem(KEY);
-    },
-
-    getTotalStars() {
-      return load().totalStars;
+      memory = fresh();
+      try { localStorage.removeItem(KEY); } catch {}
     },
   };
 })();

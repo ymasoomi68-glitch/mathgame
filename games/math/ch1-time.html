@@ -55,7 +55,7 @@ button:hover{transform:translateY(-2px);filter:brightness(1.07)}
 footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
 @media(max-width:560px){body{padding:10px}.topic-grid{grid-template-columns:1fr}.options{grid-template-columns:1fr}.panel{border-radius:18px}.tag{font-size:.78rem}}
 </style>
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"><link rel="stylesheet" href="../../css/game-theme.css"></head>
 <body>
 <div class="wrap">
 <header><div class="brand"><div class="logo">◷</div><div>آزمایشگاه ریاضی <div style="font-size:.78rem;color:var(--muted);font-weight:500">پایهٔ پنجم ابتدایی</div></div></div><div class="tag">۲۰ مأموریت • چهار مرحله</div></header>
@@ -120,7 +120,7 @@ function stageFor(i){return Math.floor(i/5)}
 function startGame(){idx=0;score=0;answers=[];$("intro").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");renderQuestion()}
 function renderQuestion(){
  const q=questions[idx],st=stageFor(idx);
- $("counter").textContent=fa(idx+1)+" از ۲۰";$("scoreTag").textContent=fa(score);
+ $("counter").textContent=fa(idx+1)+" از "+fa(questions.length);$("scoreTag").textContent=fa(score);
  $("stageLabel").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st];
  $("stageName").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st]+" • "+stages[st];
  $("bar").style.width=(idx/questions.length*100)+"%";
@@ -138,7 +138,7 @@ function choose(op,button){
  $("next").textContent=idx===questions.length-1?"دیدن نتیجه ←":"پرسش بعدی ←";$("next").classList.remove("hidden")
 }
 function finish(){
- $("game").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=fa(score)+" از ۲۰";
+ $("game").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=fa(score)+" از "+fa(questions.length);
  $("resultMessage").textContent=score>=18?"درخشان بود! تسلط بسیار خوبی بر اعداد مرکب داری.":score>=14?"آفرین! بیشتر مباحث را خوب بلدی؛ پاسخ‌ها را مرور کن.":score>=10?"خوب پیش رفتی. با مرور تبدیل‌ها و قرض گرفتن از واحد بزرگ‌تر، قوی‌تر می‌شوی.":"تلاش ارزشمندی بود. پاسخ‌ها و توضیح‌ها را مرور کن و دوباره امتحان کن.";
  const b=$("badges");b.innerHTML="";const labels=score>=18?["استاد اعداد مرکب","دقت عالی","حلّال مسئله"]:score>=14?["محاسبه‌گر پرتلاش","در مسیر تسلط"]:["کاوشگر ریاضی","تمرین‌کنندهٔ شجاع"];
  labels.forEach(t=>{const el=document.createElement("span");el.className="badge";el.textContent="✦ "+t;b.appendChild(el)});
@@ -149,7 +149,7 @@ function finish(){
      gameId: 'ch1-time',
      score: score,
      total: questions.length
-   }, '*');
+   }, location.origin);
  } catch (e) {}
 }
 $("start").addEventListener("click",startGame);

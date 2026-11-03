@@ -3,64 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#f59e0b" />
+  <meta name="theme-color" content="#1d1f4f" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="کاوشگر پنجم" />
-
   <title>🚀 کاوشگر پنجم</title>
-
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+  <link rel="icon" type="image/png" href="./icons/favicon.png" />
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
-
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
-  />
-
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" />
   <link rel="stylesheet" href="./css/style.css" />
+  <script>
+    // رویداد نصب ممکن است قبل از بارگذاری app.js رخ دهد؛ همین‌جا نگه‌اش می‌داریم
+    window.__installEvent = null;
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__installEvent = e; window.dispatchEvent(new Event('install-ready')); });
+  </script>
 </head>
 <body>
-  <!-- بنر آپدیت -->
-  <div id="update-banner" class="update-banner hidden">
+  <div id="update-banner" class="update-banner hidden" role="status">
     <span>🎉 نسخه‌ی جدید آماده است!</span>
     <div class="update-actions">
       <button id="update-btn" class="btn btn-success">به‌روزرسانی</button>
       <button id="dismiss-update" class="btn btn-text">بعداً</button>
     </div>
   </div>
+
   <header id="app-header" class="app-header">
     <div class="header-right">
-      <button id="back-btn" class="icon-btn hidden" aria-label="بازگشت">←</button>
-      <button id="home-btn" class="icon-btn hidden" aria-label="خانه" onclick="location.hash='/'">
-        <img src="./icons/favicon.png" alt="خانه">
+      <button id="back-btn" class="icon-btn hidden" aria-label="بازگشت">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button id="home-btn" class="icon-btn hidden" aria-label="صفحه اصلی">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5h4V20h3.5a1 1 0 0 0 1-1v-9"/></svg>
       </button>
     </div>
-    
     <h1 id="app-title" class="app-title">🚀 کاوشگر پنجم</h1>
-    
     <div class="header-left">
-      <button class="icon-btn" aria-label="امتیاز">
-        <img src="./images/scores.png" alt="امتیاز">
-      </button>
-      <button class="icon-btn" aria-label="پروفایل">
-        <img src="./images/profile.png" alt="پروفایل">
-      </button>
+      <button id="scores-btn" class="icon-btn" aria-label="امتیازها"><img src="./images/scores.png" alt="" /></button>
+      <button id="profile-btn" class="icon-btn" aria-label="تنظیمات"><img src="./images/profile.png" alt="" /></button>
     </div>
   </header>
 
-  <main id="app-main" class="app-main"></main>
-
-  <div id="update-banner" class="update-banner hidden">
-    <span>🎉 نسخه‌ی جدید آماده است!</span>
-    <div class="update-actions">
-      <button id="update-btn" class="btn btn-success">به‌روزرسانی</button>
-      <button id="dismiss-update" class="btn btn-text">بعداً</button>
-    </div>
-  </div>
+  <main id="app-main" class="app-main"><noscript>برای اجرای برنامه، جاوااسکریپت را فعال کنید.</noscript></main>
 
   <script src="./js/storage.js"></script>
   <script src="./js/app.js"></script>
