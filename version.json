@@ -1,11 +1,11 @@
 {
-  "version": "1.0.5",
-  "releasedAt": "2026-11-03T03:18:28.007Z",
-  "notes": "Fixed bugs, added PWA install, and new graphics",
+  "version": "1.0.6",
+  "releasedAt": "2026-11-03T17:44:42.209Z",
+  "notes": "Added Multiplication Fractions Quiz",
   "hashes": {
     "index": "6ecf8b581a89ed4e14bb2c58954df456",
     "css": "7a3b9dbe96547639ebee65f6962ba8a2",
     "app": "22289bf3123071f244563cafe49cfe0f",
-    "sw": "d877a0689e0cc43b891d94e315c41238"
+    "sw": "533ef0883dabfd289f4f655d0882f881"
   }
 }

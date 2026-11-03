@@ -84,6 +84,17 @@
       "emoji": "✖️",
       "file": "games/math/ch3-multiply-fractions.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch2-multiply-fractions-quiz",
+      "subject": "math",
+      "chapter": 2,
+      "title": "آزمون ضرب کسرها",
+      "subtitle": "آزمون آنلاین",
+      "description": "آزمون ۲۰ سوالی ضرب کسرها با کارنامه و گزارش",
+      "emoji": "📝",
+      "file": "games/math/ch2-multiply-fractions-quiz.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }
