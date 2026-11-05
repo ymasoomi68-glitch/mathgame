@@ -1,11 +1,11 @@
 {
-  "version": "1.0.6",
-  "releasedAt": "2026-11-03T17:44:42.209Z",
-  "notes": "Added Multiplication Fractions Quiz",
+  "version": "1.0.7",
+  "releasedAt": "2026-11-05T08:49:48.885Z",
+  "notes": "Added Farsi Treasure Game",
   "hashes": {
     "index": "6ecf8b581a89ed4e14bb2c58954df456",
     "css": "7a3b9dbe96547639ebee65f6962ba8a2",
     "app": "22289bf3123071f244563cafe49cfe0f",
-    "sw": "533ef0883dabfd289f4f655d0882f881"
+    "sw": "92a4e5718777b12c30de92c31a8391cf"
   }
 }

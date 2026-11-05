@@ -95,6 +95,17 @@
       "emoji": "📝",
       "file": "games/math/ch2-multiply-fractions-quiz.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch4-farsi-treasure",
+      "subject": "farsi",
+      "chapter": 4,
+      "title": "راز گنجینهٔ دانایی",
+      "subtitle": "درس چهارم فارسی",
+      "description": "ماجراجویی تعاملی فارسی پنجم (بازرگان و پسران، کرم شب‌تاب، نگارش)",
+      "emoji": "💎",
+      "file": "games/farsi/ch4-farsi-treasure.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }
