@@ -18,9 +18,11 @@ h1{font-size:clamp(1.5rem,4vw,2.4rem);margin:5px 0}header p{margin:5px;font-weig
 .rainbow{font-size:clamp(2.4rem,8vw,5rem);line-height:1.3;filter:drop-shadow(0 4px 1px #26345f12)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
 .card{border:3px solid white;border-radius:22px;padding:16px;text-align:center;min-height:175px;cursor:pointer;box-shadow:0 6px 0 #26345f12;transition:.18s;color:var(--ink);font:inherit;position:relative}
-.card:hover{transform:translateY(-3px)}.card:disabled{cursor:default;opacity:.7}.card.done{filter:saturate(.6)}.card b{display:block;font-size:1.1rem;margin:5px}.icon{font-size:2.3rem}.c1{background:#ffe1ed}.c2{background:#e3f8dc}.c3{background:#fff1bf}.c4{background:#e8e2ff}.c5{background:#d9f5ff}.c6{background:#ffe5d3}
-button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0}.primary{background:#16a895;color:white;font-weight:bold}.secondary{background:#edf0ff;color:#303d70}.answer{display:block;width:100%;text-align:right;background:#f0edff;border:2px solid #ded8ff;color:var(--ink);margin:8px 0;padding:12px}.answer:hover:not(:disabled){background:#e4f8ff}.answer.correct{background:#d9f8e8;border-color:#45bd88}.answer.wrong{background:#ffe0e7;border-color:#ed7892}.panel{display:none;background:white;border:3px solid #e3d9ff;border-radius:22px;padding:18px;margin-top:16px;box-shadow:0 8px 20px #26345f0c}.panel.active{display:block}.question{background:#f3f7ff;border-radius:15px;padding:15px;font-weight:bold;font-size:1.08rem}.row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.badge{background:#fff0b8;border-radius:20px;padding:5px 11px;font-size:.9rem;font-weight:bold}.feedback{min-height:38px;font-weight:bold;line-height:1.9;margin:10px 0}.hidden{display:none!important}.note{border:2px dashed #f0b8ca;background:#fff8fb;border-radius:15px;padding:12px;margin:14px 0}.final-rainbow{font-size:3rem}.small{font-size:.9rem;color:#5b668a}footer{text-align:center;padding:20px;font-size:.85rem;color:#687294}
-.action-btns{display:flex; gap:10px; justify-content:center; margin-top:15px;}
+.card:hover:not(.locked){transform:translateY(-3px)}
+.card.locked{opacity:.65;filter:grayscale(.8);cursor:not-allowed;background:#e2e8f0;border-color:#cbd5e1}
+.card.done{filter:saturate(.6);cursor:default}
+.card b{display:block;font-size:1.1rem;margin:5px}.icon{font-size:2.3rem}.c1{background:#ffe1ed}.c2{background:#e3f8dc}.c3{background:#fff1bf}.c4{background:#e8e2ff}.c5{background:#d9f5ff}.c6{background:#ffe5d3}
+button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0}.primary{background:#16a895;color:white;font-weight:bold}.secondary{background:#edf0ff;color:#303d70}.answer{display:block;width:100%;text-align:right;background:#f0edff;border:2px solid #ded8ff;color:var(--ink);margin:8px 0;padding:12px}.answer:hover:not(:disabled){background:#e4f8ff}.answer.correct{background:#d9f8e8;border-color:#45bd88}.answer.wrong{background:#ffe0e7;border-color:#ed7892}.panel{display:none;background:white;border:3px solid #e3d9ff;border-radius:22px;padding:18px;margin-top:16px;box-shadow:0 8px 20px #26345f0c}.panel.active{display:block}.question{background:#f3f7ff;border-radius:15px;padding:15px;font-weight:bold;font-size:1.08rem}.row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.badge{background:#fff0b8;border-radius:20px;padding:5px 11px;font-size:.9rem;font-weight:bold}.feedback{min-height:38px;font-weight:bold;line-height:1.9;margin:10px 0}.hidden{display:none!important}.note{border:2px dashed #f0b8ca;background:#fff8fb;border-radius:15px;padding:12px;margin:14px 0;font-size:.95rem}.final-rainbow{font-size:3rem}.small{font-size:.9rem;color:#5b668a}footer{text-align:center;padding:20px;font-size:.85rem;color:#687294}
 </style></head>
 <body>
 <header>
@@ -39,25 +41,48 @@ button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0
 <div class="hero">
     <div class="rainbow">🌈</div>
     <h2>دانشمند کوچک، آماده‌ای؟</h2>
-    <p>رنگ‌های رنگین‌کمان گم شده‌اند! در هر ایستگاه، پرسش‌ها را حل کن و یک رنگ را آزاد کن. در پایان، مأموریتت را کامل می‌کنی.</p>
-    <div class="note">💡 برای هر پاسخ درست ۱۰ امتیاز می‌گیری. پاسخ درست و توضیح کوتاه پس از هر انتخاب نمایش داده می‌شود.</div>
-    <div class="action-btns">
-        <button id="resume" class="primary hidden" style="background:var(--green); color:#0b1728;">ادامه مأموریت قبلی ←</button>
-        <button id="reset" class="secondary hidden" style="color:var(--pink); border:2px solid var(--pink);">🧹 شروع دوباره</button>
+    <p>رنگ‌های رنگین‌کمان گم شده‌اند! ایستگاه‌ها را به‌ترتیب باز کن و پرسش‌ها را حل کن. هر ایستگاه ۱۰ امتیاز دارد.</p>
+    <div class="note">
+      ⚠️ <b>قوانین مهم:</b><br>
+      ۱. هر ایستگاه فقط بعد از تکمیل ایستگاه قبلی باز می‌شود.<br>
+      ۲. امتیاز هر ایستگاه فقط با پاسخ به <b>تمام سوالات</b> آن ثبت می‌شود.<br>
+      ۳. اگر از یک ایستگاه نیمه‌کاره خارج شوید، امتیاز آن صفر شده و باید از ابتدا شروع کنید.
+    </div>
+    <div style="margin-top:15px;">
+        <button id="reset" class="secondary hidden" style="color:var(--pink); border:2px solid var(--pink);">🧹 شروع دوباره کل مأموریت</button>
     </div>
 </div>
 <div class="grid" id="stations">
-<button class="card c1" onclick="openStation('rainbow')"><span class="icon">☀️</span><b>۱. راز نور سفید</b>رنگین‌کمان و رنگ‌های آن</button>
-<button class="card c2" onclick="openStation('prism')"><span class="icon">🔺</span><b>۲. آزمایشگاه منشور</b>تجزیه نور سفید</button>
-<button class="card c3" onclick="openStation('methods')"><span class="icon">💧</span><b>۳. کارآگاه رنگ‌ها</b>روش‌های تشکیل رنگین‌کمان</button>
-<button class="card c4" onclick="openStation('lens')"><span class="icon">🔍</span><b>۴. سرزمین ذره‌بین‌ها</b>عدسی و بزرگ‌نمایی</button>
-<button class="card c5" onclick="openStation('focus')"><span class="icon">✨</span><b>۵. شکارچی نور</b>کانون عدسی و ایمنی</button>
-<button class="card c6" onclick="openStation('image')"><span class="icon">🖼️</span><b>۶. اتاق تصویرها</b>اندازه و تشکیل تصویر</button>
+<button id="card0" class="card c1" onclick="openStation('rainbow')"><span class="icon">☀️</span><b>۱. راز نور سفید</b>رنگین‌کمان و رنگ‌های آن</button>
+<button id="card1" class="card c2 locked" onclick="openStation('prism')"><span class="icon">🔺</span><b>۲. آزمایشگاه منشور</b>تجزیه نور سفید</button>
+<button id="card2" class="card c3 locked" onclick="openStation('methods')"><span class="icon">💧</span><b>۳. کارآگاه رنگ‌ها</b>روش‌های تشکیل رنگین‌کمان</button>
+<button id="card3" class="card c4 locked" onclick="openStation('lens')"><span class="icon">🔍</span><b>۴. سرزمین ذره‌بین‌ها</b>عدسی و بزرگ‌نمایی</button>
+<button id="card4" class="card c5 locked" onclick="openStation('focus')"><span class="icon">✨</span><b>۵. شکارچی نور</b>کانون عدسی و ایمنی</button>
+<button id="card5" class="card c6 locked" onclick="openStation('image')"><span class="icon">🖼️</span><b>۶. اتاق تصویرها</b>اندازه و تشکیل تصویر</button>
 </div>
 </section>
-<section id="play" class="panel"><div class="row"><span class="badge">🧭 مأموریت فعال</span><button class="secondary" onclick="goHome()">🏡 بازگشت به نقشه</button></div><div id="content"></div><div id="feedback" class="feedback" aria-live="polite"></div><div class="row"><span class="small" id="counter"></span><button id="next" class="primary hidden" onclick="nextQuestion()">پرسش بعدی ←</button></div></section>
-<section id="finish" class="panel" style="text-align:center"><div class="final-rainbow">🏆🌈✨</div><h2>آفرین، مأموریت کامل شد!</h2><p id="summary"></p><h3>گواهی دانشمند کوچک علوم</h3><p>تو با حل معماهای نور، رنگین‌کمان و عدسی‌ها به پایان مأموریت رسیدی.</p><button class="primary" onclick="restart()">🔄 شروع دوباره</button><button class="secondary" onclick="goHome()">بازگشت به نقشه</button></section>
-</main><footer>علوم پنجم دبستان • درس سوم: رنگین‌کمان | برای تمرین و مرور درس</footer>
+<section id="play" class="panel">
+  <div class="row">
+    <span class="badge" id="stageLabel">مأموریت فعال</span>
+    <button class="secondary" onclick="goHome()">🏡 بازگشت به نقشه (لغو امتیاز این ایستگاه)</button>
+  </div>
+  <div id="content"></div>
+  <div id="feedback" class="feedback" aria-live="polite"></div>
+  <div class="row">
+    <span class="small" id="counter"></span>
+    <button id="next" class="primary hidden" onclick="nextQuestion()">پرسش بعدی ←</button>
+  </div>
+</section>
+<section id="finish" class="panel" style="text-align:center">
+  <div class="final-rainbow">🏆🌈✨</div>
+  <h2>آفرین، مأموریت کامل شد!</h2>
+  <p id="summary"></p>
+  <h3>گواهی دانشمند کوچک علوم</h3>
+  <p>تو با حل معماهای نور، رنگین‌کمان و عدسی‌ها به پایان مأموریت رسیدی.</p>
+  <button class="primary" onclick="restart()">🔄 شروع دوباره</button>
+  <button class="secondary" onclick="goHome()">بازگشت به نقشه</button>
+</section>
+</main><footer>علوم پنجم دبستان • درس سوم: رنگین‌کمان | طراح: خانم صادقی</footer>
 <script>
 const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const stations={
@@ -103,18 +128,19 @@ image:{title:'ایستگاه ششم: اتاق تصویرها',tag:'تشکیل و
 ]}
 };
 
-let score=0,done=new Set(),current='',qi=0,questions=[],colors=new Set(),locked=false;
+const stationKeys = ['rainbow', 'prism', 'methods', 'lens', 'focus', 'image'];
+let score = 0, completedStations = new Set(), unlockedIndex = 0;
+let current = '', qi = 0, sessionStageScore = 0, locked = false;
+
 const $=id=>document.getElementById(id);
 
 function saveProgress() {
-  if (done.size === 6) {
+  if (completedStations.size === 6) {
     localStorage.removeItem('rainbow_mission_progress');
     return;
   }
   localStorage.setItem('rainbow_mission_progress', JSON.stringify({
-    score, done: [...done], colors: [...colors],
-    current, qi, locked, chosen: window.lastChosen || null,
-    shown: window.shown || null
+    score, completed: [...completedStations], unlockedIndex
   }));
 }
 
@@ -123,15 +149,18 @@ function loadProgress() {
   if (!s) return false;
   try {
     const d = JSON.parse(s);
-    score = d.score;
-    done = new Set(d.done);
-    colors = new Set(d.colors);
-    current = d.current;
-    qi = d.qi;
-    locked = d.locked;
-    window.lastChosen = d.chosen;
-    window.shown = d.shown;
-    if (current && stations[current]) questions = stations[current].q;
+    score = d.score || 0;
+    completedStations = new Set(d.completed || []);
+    unlockedIndex = d.unlockedIndex || 0;
+    
+    // به محض ورود به بازی، پیشرفت ایستگاه ناقص قبلی صفر می‌شود.
+    current = '';
+    qi = 0;
+    sessionStageScore = 0;
+    window.shown = null;
+    window.lastChosen = null;
+    locked = false;
+
     return true;
   } catch(e) { return false; }
 }
@@ -140,39 +169,85 @@ function clearProgress() {
   localStorage.removeItem('rainbow_mission_progress');
 }
 
-function openStation(key){
-  if(done.has(key)){alert('این ایستگاه را کامل کرده‌ای! می‌توانی ایستگاه دیگری را انتخاب کنی.');return}
-  current=key;qi=0;questions=stations[key].q;locked=false;
-  window.shown=null; window.lastChosen=null;
-  saveProgress();
-  document.getElementById('home').classList.add('hidden');
-  document.getElementById('finish').classList.remove('active');
-  document.getElementById('play').classList.add('active');
-  document.getElementById('mainTitle').textContent=stations[key].title;
-  document.getElementById('mainSubtitle').textContent='علوم پنجم دبستان | درس سوم: رنگین‌کمان';
+function updateStats() {
+  $('score').textContent = fa(score);
+  $('colors').textContent = fa(completedStations.size);
+  $('done').textContent = fa(completedStations.size);
+  $('bar').style.width = (completedStations.size / 6 * 100) + '%';
+  
+  stationKeys.forEach((key, i) => {
+    const card = $('card' + i);
+    if (completedStations.has(key)) {
+      card.classList.add('done');
+      card.classList.remove('locked');
+      card.querySelector('b').innerHTML = '✓ ' + card.querySelector('b').innerHTML.replace('✓ ', '');
+      card.style.cursor = 'default';
+    } else if (i <= unlockedIndex) {
+      card.classList.remove('done', 'locked');
+      card.querySelector('b').innerHTML = card.querySelector('b').innerHTML.replace('✓ ', '');
+      card.style.cursor = 'pointer';
+    } else {
+      card.classList.add('locked');
+      card.classList.remove('done');
+      card.style.cursor = 'not-allowed';
+    }
+  });
+
+  if (score > 0 || completedStations.size > 0) {
+    $('reset').classList.remove('hidden');
+  } else {
+    $('reset').classList.add('hidden');
+  }
+}
+
+function openStation(key) {
+  const idx = stationKeys.indexOf(key);
+  if (idx > unlockedIndex) {
+    alert('🔒 این ایستگاه هنوز قفل است! ابتدا ایستگاه قبلی را کامل کنید.');
+    return;
+  }
+  if (completedStations.has(key)) {
+    alert('✅ شما این ایستگاه را قبلاً کامل کرده‌اید!');
+    return;
+  }
+  
+  if (!confirm('آیا آماده‌اید؟ با ورود به ایستگاه، سوالات از ابتدا شروع می‌شود. اگر نیمه‌کاره خارج شوید، امتیاز این ایستگاه صفر خواهد شد.')) return;
+
+  current = key;
+  qi = 0;
+  sessionStageScore = 0;
+  locked = false;
+  window.shown = null; 
+  window.lastChosen = null;
+  
+  $('home').classList.add('hidden');
+  $('finish').classList.remove('active');
+  $('play').classList.add('active');
+  $('mainTitle').textContent = stations[key].title;
+  $('mainSubtitle').textContent = 'علوم پنجم دبستان | درس سوم: رنگین‌کمان';
   renderQ();
 }
 
-function renderQ(){
-  let q=questions[qi];
+function renderQ() {
+  const q = stations[current].q[qi];
   if (!window.shown) {
-    let wrong=q[1].map((t,i)=>({t,i})).filter(o=>o.i!==q[2]);
+    let wrong = q[1].map((t,i) => ({t,i})).filter(o => o.i !== q[2]);
     for(let i=wrong.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[wrong[i],wrong[j]]=[wrong[j],wrong[i]]}
-    let target=(globalQuestionIndex()+qi)%3;
-    let opts=[];
+    let target = qi % 3;
+    let opts = [];
     for(let i=0;i<3;i++){if(i===target)opts.push({t:q[1][q[2]],i:q[2]});else opts.push(wrong.shift())}
-    window.shown=opts;
+    window.shown = opts;
   }
   
-  document.getElementById('content').innerHTML='<div class="question">'+fa(qi+1)+'. '+q[0]+'</div><div>'+window.shown.map((o,i)=>'<button class="answer" data-orig-index="'+o.i+'" onclick="choose('+i+')">'+['الف','ب','ج','د'][i]+') '+o.t+'</button>').join('')+'</div>';
+  $('content').innerHTML = '<div class="question">'+fa(qi+1)+'. '+q[0]+'</div><div>'+window.shown.map((o,i)=>'<button class="answer" data-orig-index="'+o.i+'" onclick="choose('+i+')">'+['الف','ب','ج','د'][i]+') '+o.t+'</button>').join('')+'</div>';
   
-  let f = document.getElementById('feedback');
-  let n = document.getElementById('next');
+  let f = $('feedback');
+  let n = $('next');
   
   if (locked) {
     f.textContent = (window.lastChosen === q[2]) ? '🌟 آفرین! پاسخ درست است. '+q[3] : '🌱 پاسخ درست مشخص شد. '+q[3];
     n.classList.remove('hidden');
-    n.textContent = qi === questions.length-1 ? 'پایان ایستگاه ←' : 'پرسش بعدی ←';
+    n.textContent = qi === stations[current].q.length-1 ? 'ثبت امتیاز و پایان ایستگاه ←' : 'پرسش بعدی ←';
     let bs = [...document.querySelectorAll('.answer')];
     bs.forEach(b => {
       b.disabled = true;
@@ -186,14 +261,12 @@ function renderQ(){
     f.textContent = '';
     n.classList.add('hidden');
   }
-  document.getElementById('counter').textContent = '';
+  $('counter').textContent = '';
 }
 
-function globalQuestionIndex(){return Object.keys(stations).indexOf(current)*2}
-
-function choose(i){
+function choose(i) {
   if(locked)return;
-  let q=questions[qi],bs=[...document.querySelectorAll('.answer')];
+  let q=stations[current].q[qi],bs=[...document.querySelectorAll('.answer')];
   window.lastChosen = window.shown[i].i;
   locked = true;
   bs.forEach(b=>b.disabled=true);
@@ -202,129 +275,104 @@ function choose(i){
   bs[correctIdx].classList.add('correct');
   
   if(window.shown[i].i===q[2]){
-    score+=10;
-    document.getElementById('feedback').textContent='🌟 آفرین! پاسخ درست است. '+q[3];
+    sessionStageScore += 10;
+    $('feedback').textContent='🌟 آفرین! پاسخ درست است. '+q[3];
   }else{
     bs[i].classList.add('wrong');
-    document.getElementById('feedback').textContent='🌱 پاسخ درست مشخص شد. '+q[3];
+    $('feedback').textContent='🌱 پاسخ درست مشخص شد. '+q[3];
   }
-  updateStats();
-  document.getElementById('next').classList.remove('hidden');
-  document.getElementById('next').textContent = qi === questions.length-1 ? 'پایان ایستگاه ←' : 'پرسش بعدی ←';
-  saveProgress();
+  
+  $('next').classList.remove('hidden');
+  $('next').textContent = qi === stations[current].q.length-1 ? 'ثبت امتیاز و پایان ایستگاه ←' : 'پرسش بعدی ←';
 }
 
-function nextQuestion(){
-  if(qi<questions.length-1){
+function nextQuestion() {
+  if(qi < stations[current].q.length-1) {
     qi++;
-    locked=false;
-    window.shown=null;
-    window.lastChosen=null;
+    locked = false;
+    window.shown = null;
+    window.lastChosen = null;
     renderQ();
-    saveProgress();
     return;
   }
-  done.add(current);colors.add(current);updateStats();
-  document.getElementById('play').classList.remove('active');
-  if(done.size===6){
+  
+  // پایان ایستگاه
+  score += sessionStageScore;
+  completedStations.add(current);
+  
+  if(unlockedIndex < 5) {
+    unlockedIndex++;
+  }
+
+  const justFinished = current;
+  current = '';
+  qi = 0;
+  sessionStageScore = 0;
+  
+  saveProgress();
+  updateStats();
+  
+  $('play').classList.remove('active');
+  
+  if(completedStations.size === 6) {
     clearProgress();
-    document.getElementById('home').classList.add('hidden');
-    document.getElementById('finish').classList.add('active');
-    document.getElementById('summary').textContent='امتیاز نهایی: '+fa(score)+' از '+fa(questionsTotal()*10)+' | ایستگاه‌های کامل‌شده: ۶ از ۶';
+    $('home').classList.add('hidden');
+    $('finish').classList.add('active');
+    $('summary').textContent = 'امتیاز نهایی: ' + fa(score) + ' از ' + fa(questionsTotal() * 10);
     try { window.parent.postMessage({ type: 'GAME_FINISHED', gameId: 'ch3-rainbow', score: score, total: questionsTotal() * 10 }, '*'); } catch (e) {}
   } else {
-    saveProgress();
     goHome();
+    alert('🎉 ایستگاه با موفقیت تکمیل شد! امتیاز شما ثبت و ایستگاه بعدی باز شد.');
   }
 }
 
-function questionsTotal(){return Object.values(stations).reduce((s,x)=>s+x.q.length,0)}
-
-function goHome(){
-  document.getElementById('play').classList.remove('active');
-  document.getElementById('finish').classList.remove('active');
-  document.getElementById('home').classList.remove('hidden');
-  document.getElementById('mainTitle').textContent='مأموریت نجات رنگین‌کمان';
-  document.getElementById('mainSubtitle').textContent='بازی تعاملی علوم پنجم دبستان | درس سوم';
-  updateStats();
-  current = '';
-  window.shown = null;
-  window.lastChosen = null;
-  locked = false;
-  saveProgress();
+function questionsTotal() {
+  return Object.values(stations).reduce((s,x)=>s+x.q.length,0);
 }
 
-function updateStats(){
-  document.getElementById('score').textContent=fa(score);
-  document.getElementById('colors').textContent=fa(colors.size);
-  document.getElementById('done').textContent=fa(done.size);
-  document.getElementById('bar').style.width=(done.size/6*100)+'%';
-  document.querySelectorAll('.card').forEach(c=>{
-    let m=(c.getAttribute('onclick')||'').match(/openStation\('([^']+)'/);
-    if(m&&done.has(m[1])){
-      c.classList.add('done');
-      if(!c.querySelector('.completedLabel')){
-        let s=document.createElement('div');
-        s.className='completedLabel badge';
-        s.textContent='✓ رنگ آزاد شد';
-        c.appendChild(s);
-      }
-    } else {
-      c.classList.remove('done');
-      let l=c.querySelector('.completedLabel');
-      if(l) l.remove();
+function goHome() {
+  if (current && !completedStations.has(current)) {
+    if (!confirm('شما در حال خروج از ایستگاه نیمه‌کاره هستید. با این کار امتیاز این ایستگاه صفر شده و باید از ابتدا شروع کنید. آیا مطمئن هستید؟')) {
+      return;
     }
-  });
+    sessionStageScore = 0;
+    qi = 0;
+    window.shown = null;
+    window.lastChosen = null;
+    locked = false;
+    current = '';
+  }
+  
+  $('play').classList.remove('active');
+  $('finish').classList.remove('active');
+  $('home').classList.remove('hidden');
+  $('mainTitle').textContent = 'مأموریت نجات رنگین‌کمان';
+  $('mainSubtitle').textContent = 'بازی تعاملی علوم پنجم دبستان | درس سوم';
+  updateStats();
 }
 
-function restart(){
+function restart() {
   if(confirm('آیا مطمئن هستید؟ تمام پیشرفت شما پاک خواهد شد.')) {
     clearProgress();
-    score=0;done=new Set();colors=new Set();current='';qi=0;locked=false;
-    window.shown=null; window.lastChosen=null;
-    document.getElementById('mainTitle').textContent='مأموریت نجات رنگین‌کمان';
-    document.getElementById('mainSubtitle').textContent='بازی تعاملی علوم پنجم دبستان | درس سوم';
-    updateStats();goHome();
-    document.getElementById('resume').classList.add('hidden');
-    document.getElementById('reset').classList.add('hidden');
+    score = 0;
+    completedStations = new Set();
+    unlockedIndex = 0;
+    current = ''; qi = 0; sessionStageScore = 0; locked = false;
+    window.shown = null; window.lastChosen = null;
+    $('mainTitle').textContent = 'مأموریت نجات رنگین‌کمان';
+    $('mainSubtitle').textContent = 'بازی تعاملی علوم پنجم دبستان | درس سوم';
+    $('reset').classList.add('hidden');
+    updateStats();
+    goHome();
   }
 }
 
+// شروع
 window.addEventListener('DOMContentLoaded', () => {
-  if (loadProgress()) {
-    document.getElementById('resume').classList.remove('hidden');
-    document.getElementById('reset').classList.remove('hidden');
-    updateStats();
-  }
+  loadProgress();
+  updateStats();
 });
 
-document.getElementById('resume').addEventListener('click', () => {
-  if (loadProgress()) {
-    if (current && !done.has(current) && stations[current] && qi < stations[current].q.length) {
-      document.getElementById('home').classList.add('hidden');
-      document.getElementById('play').classList.add('active');
-      document.getElementById('mainTitle').textContent=stations[current].title;
-      document.getElementById('mainSubtitle').textContent='علوم پنجم دبستان | درس سوم: رنگین‌کمان';
-      questions = stations[current].q;
-      updateStats();
-      renderQ();
-    } else {
-      document.getElementById('home').classList.remove('hidden');
-      document.getElementById('play').classList.remove('active');
-      updateStats();
-    }
-  }
-});
-
-document.getElementById('reset').addEventListener('click', () => {
-  if (confirm('آیا مطمئن هستید؟ تمام پیشرفت شما پاک خواهد شد.')) {
-    clearProgress();
-    score=0; done=new Set(); colors=new Set(); current=''; qi=0; questions=[]; locked=false;
-    window.shown=null; window.lastChosen=null;
-    document.getElementById('resume').classList.add('hidden');
-    document.getElementById('reset').classList.add('hidden');
-    goHome();
-  }
-});
+$('reset').addEventListener('click', restart);
 </script>
 </body></html>

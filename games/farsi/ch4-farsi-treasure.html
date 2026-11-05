@@ -15,29 +15,51 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padd
 </style></head>
 <body><div class="wrap">
 <header class="hero"><div class="brand">🌿 طراح و تهیه‌کننده: خانم صادقی 🌿</div><h1>🔐 راز گنجینهٔ دانایی</h1><p>ماجراجویی تعاملی فارسی پنجم ـ درس چهارم</p><div class="badge">بازرگان و پسران ✦ کرم شب‌تاب ✦ نگارش</div></header>
-<section id="welcome" class="card"><h2 class="section-title">سلام، قهرمان دانایی! ✨</h2><p class="sub">برای بازشدن صندوقچهٔ دانایی، از سه ایستگاه عبور کن. در هر ایستگاه ۱۲ پرسش داری؛ هر پاسخ درست یک امتیاز دارد و در پایان می‌توانی از ۳۶ امتیاز بگیری. با دقت بخوان، فکر کن و پاسخ بده!</p>
-<div class="controls" style="justify-content:center; margin-top:15px;">
-  <button id="startBtn" class="primary" onclick="startGame()">🚪 شروع ماجراجویی</button>
-  <button id="resumeBtn" class="primary hidden" onclick="resumeGame()" style="background:#10b981; color:white;">ادامه مأموریت ←</button>
-  <button id="resetWelcomeBtn" class="secondary hidden" onclick="startGame()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🧹 شروع دوباره</button>
-</div>
-<p class="note">این بازی برای تمرین و یادگیری طراحی شده است. پرسش‌ها از متن «بازرگان و پسران»، داستان «کرم شب‌تاب» و فعالیت‌های نگارش درس چهارم انتخاب شده‌اند.</p></section>
-<section id="map" class="card hidden"><div class="topline"><div><h2 class="section-title" style="margin-bottom:4px">نقشهٔ مأموریت</h2><div id="hello" class="sub"></div></div><div class="pill">⭐ امتیاز کل: <b id="mapScore">۰</b> از ۳۶</div></div><div class="stages">
-<div id="stageCard0" class="stage merchant"><div><div class="emoji">🧔🏻‍♂️</div><h3>بازار بازرگان دانا</h3><p>پیام داستان، واژه‌ها و پندهای بازرگان</p></div><button id="stageBtn0" onclick="enterStage(0)">ورود به بازار ←</button></div>
-<div id="stageCard1" class="stage firefly"><div><div class="emoji">✨🪲</div><h3>باغ کرم شب‌تاب</h3><p>شخصیت‌ها، رویدادها و پیام داستان</p></div><button id="stageBtn1" onclick="enterStage(1)">روشن‌کردن چراغ‌ها ←</button></div>
-<div id="stageCard2" class="stage writer"><div><div class="emoji">📚✍️</div><h3>کارگاه نویسندگان</h3><p>گوش‌دادنی و شنیدنی، «هم» و «نیز» و حکایت</p></div><button id="stageBtn2" onclick="enterStage(2)">ورود به کارگاه ←</button></div></div><p class="note">هر ایستگاه فقط یک‌بار قابل انجام است. پس از تکمیل، قفل می‌شود و دیگر نمی‌توانی وارد آن شوی. هر ایستگاه ۱۲ پرسش دارد؛ مجموع بازی ۳۶ امتیاز است. پیشرفتت در همین مرورگر ذخیره می‌شود.</p>
-<div class="controls" style="justify-content:center; margin-top:10px;">
-   <button class="secondary" onclick="startGame()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
-</div>
+<section id="welcome" class="card">
+  <h2 class="section-title">سلام، قهرمان دانایی! ✨</h2>
+  <p class="sub">برای بازشدن صندوقچهٔ دانایی، از سه ایستگاه عبور کن. در هر ایستگاه ۱۲ پرسش داری؛ هر پاسخ درست یک امتیاز دارد و در پایان می‌توانی از ۳۶ امتیاز بگیری. با دقت بخوان، فکر کن و پاسخ بده!</p>
+  <div class="controls" style="justify-content:center; margin-top:15px; flex-direction:column; align-items:center;">
+    <button id="startBtn" class="primary" onclick="goToMap()" style="width:100%; max-width:300px;">🚪 شروع ماجراجویی</button>
+    <button id="resumeBtn" class="primary hidden" onclick="resumeGame()" style="background:#10b981; color:white; width:100%; max-width:300px;">ادامه مأموریت ←</button>
+    <button id="resetWelcomeBtn" class="secondary hidden" onclick="resetAll()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af; width:100%; max-width:300px;">🧹 شروع دوباره</button>
+  </div>
+  <p class="note" style="text-align:center;">این بازی برای تمرین و یادگیری طراحی شده است. پرسش‌ها از متن «بازرگان و پسران»، داستان «کرم شب‌تاب» و فعالیت‌های نگارش درس چهارم انتخاب شده‌اند.</p>
 </section>
-<section id="quiz" class="card hidden"><div class="topline"><div><div class="pill" id="stageLabel">مرحله</div><h2 class="section-title" id="stageHeading">پرسش</h2></div><div class="pill">پرسش <b id="qNumber">۱</b> از <b id="qTotal">۱۲</b></div></div><div class="progress"><span id="bar"></span></div><div class="topline"><span class="mini"></span><span class="pill">⭐ امتیاز کل: <b id="score">۰</b></span></div><div id="questionText" class="qtext"></div><div id="options" class="options"></div><div id="feedback" class="feedback hidden" aria-live="polite"></div><div class="controls"><button class="secondary" onclick="backToMap()">↩ بازگشت به نقشه</button><button id="nextBtn" class="primary" disabled onclick="nextQuestion()">پرسش بعدی ←</button></div></section>
-<section id="result" class="card hidden" style="text-align:center"><div class="trophy" id="trophy">🏆</div><h2 class="section-title" id="resultTitle">آفرین!</h2><p id="resultMessage" class="sub"></p><div class="end-score" id="finalScore">۰</div><p id="resultDetail" class="sub"></p>
-<div class="controls" style="justify-content:center">
-  <button class="secondary" onclick="backToMap()">🗺 بازگشت به نقشه</button>
-  <button id="treasureBtn" class="primary hidden" onclick="showFinal()">🎁 دیدن گنجینهٔ دانایی</button>
-  <button class="secondary" onclick="startGame()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🔄 شروع دوباره</button>
-</div>
-<div id="treasure" class="feedback good hidden">🎉 صندوقچه باز شد! دانایی، تلاش و به‌کاربستن آموخته‌ها، گنج واقعی توست. 🌟</div></section>
+
+<section id="map" class="card hidden">
+  <div class="topline"><div><h2 class="section-title" style="margin-bottom:4px">نقشهٔ مأموریت</h2><div id="hello" class="sub"></div></div><div class="pill">⭐ امتیاز کل: <b id="mapScore">۰</b> از ۳۶</div></div>
+  <div class="stages">
+    <div id="stageCard0" class="stage merchant"><div><div class="emoji">🧔🏻‍♂️</div><h3>بازار بازرگان دانا</h3><p>پیام داستان، واژه‌ها و پندهای بازرگان</p></div><button id="stageBtn0" onclick="enterStage(0)">ورود به بازار ←</button></div>
+    <div id="stageCard1" class="stage firefly"><div><div class="emoji">✨🪲</div><h3>باغ کرم شب‌تاب</h3><p>شخصیت‌ها، رویدادها و پیام داستان</p></div><button id="stageBtn1" onclick="enterStage(1)">روشن‌کردن چراغ‌ها ←</button></div>
+    <div id="stageCard2" class="stage writer"><div><div class="emoji">📚✍️</div><h3>کارگاه نویسندگان</h3><p>گوش‌دادنی و شنیدنی، «هم» و «نیز» و حکایت</p></div><button id="stageBtn2" onclick="enterStage(2)">ورود به کارگاه ←</button></div>
+  </div>
+  <p class="note">هر ایستگاه فقط یک‌بار قابل انجام است. پس از تکمیل، قفل می‌شود و دیگر نمی‌توانی وارد آن شوی. هر ایستگاه ۱۲ پرسش دارد؛ مجموع بازی ۳۶ امتیاز است. پیشرفتت در همین مرورگر ذخیره می‌شود.</p>
+  <div class="controls" style="justify-content:center; margin-top:10px;">
+     <button class="secondary" onclick="resetAll()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
+  </div>
+</section>
+
+<section id="quiz" class="card hidden">
+  <div class="topline"><div><div class="pill" id="stageLabel">مرحله</div><h2 class="section-title" id="stageHeading">پرسش</h2></div><div class="pill">پرسش <b id="qNumber">۱</b> از <b id="qTotal">۱۲</b></div></div>
+  <div class="progress"><span id="bar"></span></div>
+  <div class="topline"><span class="mini"></span><span class="pill">⭐ امتیاز کل: <b id="score">۰</b></span></div>
+  <div id="questionText" class="qtext"></div>
+  <div id="options" class="options"></div>
+  <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+  <div class="controls"><button class="secondary" onclick="backToMap()">↩ بازگشت به نقشه</button><button id="nextBtn" class="primary" disabled onclick="nextQuestion()">پرسش بعدی ←</button></div>
+</section>
+
+<section id="result" class="card hidden" style="text-align:center">
+  <div class="trophy" id="trophy">🏆</div><h2 class="section-title" id="resultTitle">آفرین!</h2>
+  <p id="resultMessage" class="sub"></p><div class="end-score" id="finalScore">۰</div><p id="resultDetail" class="sub"></p>
+  <div class="controls" style="justify-content:center; flex-wrap:wrap; gap:10px;">
+    <button class="secondary" onclick="backToMap()">🗺 بازگشت به نقشه</button>
+    <button id="treasureBtn" class="primary hidden" onclick="showFinal()">🎁 دیدن گنجینهٔ دانایی</button>
+    <button class="secondary" onclick="resetAll()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🔄 شروع دوباره</button>
+  </div>
+  <div id="treasure" class="feedback good hidden">🎉 صندوقچه باز شد! دانایی، تلاش و به‌کاربستن آموخته‌ها، گنج واقعی توست. 🌟</div>
+</section>
+
 <footer class="footer"><strong>طراح و تهیه‌کننده: خانم صادقی</strong></footer>
 </div>
 <script>
@@ -116,25 +138,23 @@ function clearProgress() {
   localStorage.removeItem('farsi_treasure_progress');
 }
 
-function startGame() {
-  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
-    clearProgress();
-    score=0; completed=[false,false,false]; stageScores=[0,0,0];
-    currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null;
-    
-    document.getElementById('welcome').classList.add('hidden');
-    document.getElementById('result').classList.add('hidden');
-    document.getElementById('quiz').classList.add('hidden');
-    document.getElementById('map').classList.remove('hidden');
-    document.getElementById('hello').textContent = "سلام قهرمان! آماده‌ای مأموریتت را شروع کنی؟";
-    
-    document.getElementById('resumeBtn').classList.add('hidden');
-    document.getElementById('resetWelcomeBtn').classList.add('hidden');
-    document.getElementById('startBtn').classList.add('hidden');
+function goToMap() {
+  clearProgress();
+  score=0; completed=[false,false,false]; stageScores=[0,0,0];
+  currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null;
 
-    renderMap();
-    updateScore();
-  }
+  document.getElementById('welcome').classList.add('hidden');
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('map').classList.remove('hidden');
+  document.getElementById('hello').textContent = "سلام قهرمان! آماده‌ای مأموریتت را شروع کنی؟";
+  
+  document.getElementById('resumeBtn').classList.add('hidden');
+  document.getElementById('resetWelcomeBtn').classList.add('hidden');
+  document.getElementById('startBtn').classList.add('hidden');
+
+  renderMap();
+  updateScore();
 }
 
 function resumeGame() {
@@ -151,8 +171,6 @@ function resumeGame() {
       document.getElementById('finalScore').textContent=`${fa(score)} از ۳۶ امتیاز`;
       document.getElementById('resultDetail').textContent=`هر سه ایستگاه را کامل کردی و از ۳۶ پرسش بازی، ${fa(score)} پاسخ درست داشتی.`;
       document.getElementById('trophy').textContent='🏆🎉';
-      document.querySelector('#result .controls .secondary').textContent='🗺 دیدن نقشهٔ قهرمانی';
-      document.querySelector('#result .controls .primary').classList.remove('hidden');
       document.getElementById('treasure').classList.add('hidden');
     } else if(!completed[currentStage]) {
       document.getElementById('quiz').classList.remove('hidden');
@@ -163,6 +181,23 @@ function resumeGame() {
       renderMap();
       updateScore();
     }
+  }
+}
+
+function resetAll() {
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
+    clearProgress();
+    score=0; completed=[false,false,false]; stageScores=[0,0,0];
+    currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null;
+    
+    document.getElementById('welcome').classList.remove('hidden');
+    document.getElementById('map').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    
+    document.getElementById('resumeBtn').classList.add('hidden');
+    document.getElementById('resetWelcomeBtn').classList.add('hidden');
+    document.getElementById('startBtn').classList.remove('hidden');
   }
 }
 
