@@ -133,20 +133,16 @@ function shuffleArray(array) {
   return array;
 }
 
-// آماده سازی سوالات (تصادفی کردن گزینه ها)
+// آماده سازی سوالات (فقط گزینه ها جابجا میشن، جواب درست همچنان متن است)
 function prepareQuestions() {
   gameQuestions = questions.map(q => {
-    let originalOptions = [...q.o];
-    let correctAnswerText = originalOptions[q.a];
-    let shuffledOptions = shuffleArray([...originalOptions]);
-    let newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
-    return { ...q, o: shuffledOptions, a: newCorrectIndex };
+    return { ...q, o: shuffleArray([...q.o]) };
   });
 }
 
 // ذخیره پیشرفت
 function saveProgress() {
-  localStorage.setItem('time_lab_progress', JSON.stringify({ idx, score, answers }));
+  localStorage.setItem('time_lab_progress', JSON.stringify({ idx, score, answers, gameQuestions }));
 }
 
 // بازیابی پیشرفت
@@ -157,6 +153,7 @@ function loadProgress() {
     idx = data.idx;
     score = data.score;
     answers = data.answers;
+    gameQuestions = data.gameQuestions;
     return true;
   }
   return false;
@@ -208,7 +205,7 @@ function renderQuestion(){
     $("options").appendChild(b);
   });
 
-  // اگر قبلا پاسخ داده شده بود، وضعیت را بازسازی کن (برای زمانی که کاربر برمیگرده)
+  // اگر قبلا پاسخ داده شده بود، وضعیت را بازسازی کن
   if (answers[idx]) {
     const savedAnswer = answers[idx];
     const all = [...$("options").querySelectorAll("button")];
@@ -218,7 +215,7 @@ function renderQuestion(){
          if(savedAnswer.good) { b.style.borderColor="var(--good)"; b.style.color="var(--good)"; }
          else { b.style.borderColor="var(--bad)"; }
       }
-      if (b.textContent.includes(q.a) || b.textContent.includes(q.o[q.a])) {
+      if (b.textContent.includes(q.a)) {
          if(!savedAnswer.good) { b.style.borderColor="var(--good)"; b.style.color="var(--good)"; }
       }
     });
@@ -227,7 +224,7 @@ function renderQuestion(){
       $("feedback").textContent="آفرین! پاسخ درست است. "+q.why;
     } else {
       $("feedback").className="feedback bad";
-      $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.o[q.a]+". "+q.why;
+      $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.a+". "+q.why;
     }
     $("next").textContent = idx===gameQuestions.length-1 ? "دیدن نتیجه ←" : "پرسش بعدی ←";
     $("next").classList.remove("hidden");
@@ -238,7 +235,7 @@ function choose(op,button){
   if (answers[idx]) return; // اگر قبلا جواب داده شده کاری نکن
 
   const q=gameQuestions[idx],all=[...$("options").querySelectorAll("button")];all.forEach(b=>b.disabled=true);
-  const good=op===q.o[q.a];
+  const good=op===q.a;
   answers[idx] = { chosen: op, good: good };
   
   if(good){
@@ -248,9 +245,9 @@ function choose(op,button){
     button.style.borderColor="var(--good)";button.style.color="var(--good)";
   } else {
     $("feedback").className="feedback bad";
-    $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.o[q.a]+". "+q.why;
+    $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.a+". "+q.why;
     button.style.borderColor="var(--bad)";
-    all.forEach(b=>{if(b.textContent.includes(q.o[q.a])){b.style.borderColor="var(--good)";b.style.color="var(--good)"}});
+    all.forEach(b=>{if(b.textContent.includes(q.a)){b.style.borderColor="var(--good)";b.style.color="var(--good)"}});
   }
   
   $("scoreTag").textContent=fa(score);
@@ -272,7 +269,7 @@ function finish(){
     if(!a) return; // اگه سوالی بی جواب مونده بود رد شو
     const li=document.createElement("li");
     li.className=a.good?"correct":"wrong";
-    li.innerHTML="<strong>"+fa(i+1)+". "+gameQuestions[i].q+"</strong><br>پاسخ صحیح: "+gameQuestions[i].o[gameQuestions[i].a]+"<br><span style='color:var(--muted)'>"+gameQuestions[i].why+"</span>";
+    li.innerHTML="<strong>"+fa(i+1)+". "+gameQuestions[i].q+"</strong><br>پاسخ صحیح: "+gameQuestions[i].a+"<br><span style='color:var(--muted)'>"+gameQuestions[i].why+"</span>";
     $("review").appendChild(li);
   });
 

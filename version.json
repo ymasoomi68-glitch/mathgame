@@ -1,11 +1,11 @@
 {
-  "version": "1.0.8",
-  "releasedAt": "2026-11-05T09:42:19.400Z",
-  "notes": "update games",
+  "version": "1.0.9",
+  "releasedAt": "2026-11-05T10:05:11.096Z",
+  "notes": "Fix Time Lab correct answer bug",
   "hashes": {
     "index": "6ecf8b581a89ed4e14bb2c58954df456",
     "css": "7a3b9dbe96547639ebee65f6962ba8a2",
     "app": "22289bf3123071f244563cafe49cfe0f",
-    "sw": "9dda07a86f23430a2a62016e8aa8c7dd"
+    "sw": "54e0f6a3fae2863735c3c7f92df6a18d"
   }
 }
