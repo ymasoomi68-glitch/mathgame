@@ -45,6 +45,7 @@ main{padding:22px}
 .primary{background:linear-gradient(90deg,#2563eb,#7c3aed);color:white;box-shadow:0 5px 0 #c7d2fe}
 .secondary{background:white;border:1px solid #cbd5e1;color:#334155}
 .gold{background:linear-gradient(90deg,#facc15,#f59e0b);color:#422006;box-shadow:0 4px 0 #fde68a}
+.danger{background:#ef4444;color:white;box-shadow:0 4px 0 #fecaca}
 .wide{width:100%}
 .start-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
 #game,#result{display:none}
@@ -127,10 +128,11 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
         <div class="panel">
           <h2>🎒 آماده‌ای، قهرمان؟</h2>
           <p style="line-height:1.9;margin-top:0">یک مرحله را انتخاب کن و ماجراجویی را شروع کن. هر پاسخ درست، تو را یک قدم به گنجینه نزدیک‌تر می‌کند.</p>
-          <div class="start-actions">
+          <div class="start-actions" style="grid-template-columns: 1fr;">
             <button class="btn primary" id="startBtn" type="button">🗺️ انتخاب مرحله</button>
+            <button class="btn secondary hidden" id="resumeBtn" style="background:#d1fae5; color:#065f46; border-color:#a7f3d0;" type="button">🚀 ادامه بازی قبلی</button>
+            <button class="btn secondary hidden" id="resetHomeBtn" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5;" type="button">🧹 پاک کردن پیشرفت و شروع دوباره</button>
           </div>
-          <button class="btn secondary hidden" id="resumeBtn" style="width:100%; margin-top:10px; background:#d1fae5; color:#065f46; border-color:#a7f3d0;" type="button">🚀 ادامه بازی قبلی</button>
         </div>
         <div class="panel hidden" id="guidePanel">
           <h3>چطور بازی کنم؟</h3>
@@ -179,7 +181,6 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
             <button class="btn secondary" id="hintBtn" type="button">💡 راهنمایی</button>
             <button class="btn secondary" id="homeBtn" type="button">⌂ بازگشت به صفحهٔ اول</button>
             <button class="btn primary hidden" id="nextBtn" type="button">سؤال بعدی ←</button>
-            <button class="btn danger hidden" id="resetBtn" type="button">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
           </div>
           <div class="feedback hidden" id="hintBox"></div>
         </div>
@@ -249,7 +250,7 @@ const questions = [
 const faDigits = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
 const $ = id => document.getElementById(id);
 
-let player='', order=[], allOrder=[], idx=0, score=0, wrong=0, keys=0, answered=false, soundOn=false, audioCtx=null;
+let order=[], allOrder=[], idx=0, score=0, wrong=0, keys=0, answered=false, soundOn=false, audioCtx=null;
 let records=[], firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
 
 // --- ذخیره و بازیابی پیشرفت ---
@@ -322,7 +323,7 @@ function renderQuestion(){
   $('progressBar').style.width=(idx/order.length*100)+'%';
   $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
 
-  // بازیابی وضعیت سوال قبلی در صورت وجود
+  // بازیابی وضعیت سوال قبلی
   if(firstTry[order[idx]] !== undefined && records.find(r=>r.qid===order[idx])) {
     const prevRec = records.find(r=>r.qid===order[idx]);
     const all = [...$('options').querySelectorAll('button')];
@@ -433,35 +434,35 @@ function beginStage(stageIndex){
   renderQuestion();window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function startNewGame(){
+function resetAll() {
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
     clearProgress();
     score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    idx = 0;
     $('resumeBtn').classList.add('hidden');
+    $('resetHomeBtn').classList.add('hidden');
     showStageSelect();
   }
 }
 
 function resumeGame(){
   if(loadProgress()) {
-    if(currentStage !== undefined && idx < order.length) {
-      // برگردوندن بازیکن دقیقا به وسط بازی
+    if(!completedStages.has(currentStage) && currentStage !== undefined && idx < order.length) {
       document.body.classList.remove('in-stage-select');document.body.classList.add('in-game');
       $('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';
       $('welcome').textContent='خوش برگشتی قهرمان!';
       renderQuestion();
     } else {
-      // اگه بازی قبلا تموم شده بود یا تو مرحله بود ولی سوالی نمونده بود، بره به نقشه
       showStageSelect();
     }
   }
 }
 
-// Event Listeners
-$('startBtn').addEventListener('click',startNewGame);
-$('resumeBtn').addEventListener('click',resumeGame);
-$('hintBtn').addEventListener('click',showHint);
-$('nextBtn').addEventListener('click',nextQuestion);
+$('startBtn').addEventListener('click', showStageSelect);
+$('resumeBtn').addEventListener('click', resumeGame);
+$('resetHomeBtn').addEventListener('click', resetAll);
+$('hintBtn').addEventListener('click', showHint);
+$('nextBtn').addEventListener('click', nextQuestion);
 $('homeBtn').addEventListener('click',()=>{
   if(confirm('به صفحهٔ انتخاب مرحله برگردی؟ پیشرفت شما ذخیره شده است.')) returnHome(false);
 });
@@ -474,6 +475,7 @@ $('restartBtn').addEventListener('click',()=>{
     $('result').style.display='none';$('stageSelect').style.display='none';$('start').style.display='block';
     const notice=$('stageNotice');if(notice)notice.remove();
     $('resumeBtn').classList.add('hidden');
+    $('resetHomeBtn').classList.add('hidden');
   }
 });
 $('soundBtn').addEventListener('click',()=>{
@@ -481,10 +483,10 @@ $('soundBtn').addEventListener('click',()=>{
   $('soundBtn').setAttribute('aria-pressed',String(soundOn));if(soundOn)playTone(660);
 });
 
-// شروع
 window.addEventListener('DOMContentLoaded', () => {
-  if(loadProgress() && completedStages.size > 0) {
+  if(loadProgress() && (completedStages.size > 0 || Object.keys(firstTry).length > 0)) {
     $('resumeBtn').classList.remove('hidden');
+    $('resetHomeBtn').classList.remove('hidden');
   }
   renderStageMenu();
 });

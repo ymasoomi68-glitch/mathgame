@@ -1,6 +1,6 @@
 // سرویس‌ورکر کاوشگر پنجم — پشتیبانی آفلاین و نصب‌پذیری
 // نکته: CACHE_VERSION را make-version.js خودکار به‌روز می‌کند.
-const CACHE_VERSION = 'kavoshgar5-v1.0.9';
+const CACHE_VERSION = 'kavoshgar5-v1.0.10';
 const FONT_CACHE = 'kavoshgar5-fonts';
 const ASSETS = [
   './',

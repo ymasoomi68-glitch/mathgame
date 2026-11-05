@@ -1,11 +1,11 @@
 {
-  "version": "1.0.9",
-  "releasedAt": "2026-11-05T10:05:11.096Z",
-  "notes": "Fix Time Lab correct answer bug",
+  "version": "1.0.10",
+  "releasedAt": "2026-11-05T10:09:33.818Z",
+  "notes": "Fix Fractions Game: Resume button and Stage Select logic",
   "hashes": {
     "index": "6ecf8b581a89ed4e14bb2c58954df456",
     "css": "7a3b9dbe96547639ebee65f6962ba8a2",
     "app": "22289bf3123071f244563cafe49cfe0f",
-    "sw": "54e0f6a3fae2863735c3c7f92df6a18d"
+    "sw": "4ce3c75b72c8009671610a932620841c"
   }
 }
