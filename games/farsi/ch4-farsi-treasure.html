@@ -10,19 +10,35 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padd
 .wrap{max-width:980px;margin:auto;padding:18px}.hero{position:relative;overflow:hidden;text-align:center;padding:26px 18px 22px;border-radius:28px;background:linear-gradient(115deg,#6755d9 0%,#398be5 27%,#1fb9b0 52%,#6fc76b 75%,#ffbd4a 100%);color:white;box-shadow:0 12px 30px #294a3b24}
 .hero:before,.hero:after{content:'✦';position:absolute;font-size:46px;color:#ffdf7b;opacity:.8}.hero:before{left:7%;top:14%}.hero:after{right:8%;bottom:10%;font-size:32px}.brand{font-size:13px;letter-spacing:.2px;opacity:.95}.hero h1{margin:10px 0;font-size:clamp(25px,5vw,40px)}.hero p{margin:0;line-height:1.9}.badge{display:inline-block;margin-top:12px;background:#ffffff25;border:1px solid #ffffff55;border-radius:30px;padding:7px 14px;font-size:13px}
 .card{background:#ffffffdb;border:1px solid #fff;box-shadow:0 10px 26px #3e5d4910;border-radius:24px;padding:22px;margin-top:18px}.hidden{display:none!important}.section-title{margin:0 0 12px;font-size:22px;color:var(--green)}.sub{line-height:1.9;color:#526071}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.fields input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fffdf8;outline-color:#83a98e}.primary{background:linear-gradient(120deg,#ffcb43,#ff9a54);color:#53361a}.secondary{background:linear-gradient(120deg,#d8f7ff,#d9e4ff);color:#344a9a}.soft{background:linear-gradient(120deg,#ffe0ef,#ffe9d8);color:#9b4268}.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.stage{border-radius:20px;padding:18px 14px;text-align:center;border:2px solid transparent;min-height:170px;display:flex;flex-direction:column;justify-content:space-between}.stage h3{margin:8px 0}.stage p{font-size:13px;line-height:1.8;margin:0 0 12px}.merchant{background:linear-gradient(145deg,#fff0a8,#ffc78f 55%,#ffb5cb);border-color:#ffad62}.firefly{background:linear-gradient(145deg,#d7f7ff,#c7d4ff 55%,#e6c9ff);border-color:#9ba8ff}.writer{background:linear-gradient(145deg,#d6ffd9,#baf3e8 55%,#ffe0f0);border-color:#7adab4}.emoji{font-size:34px}.stage button{background:#fffdf8;color:#315d4c;border:1px solid #ffffff}.stage.completed{filter:saturate(.65);opacity:.86;position:relative}.stage.completed:after{content:"✅ انجام شد؛ این ایستگاه قفل است";display:block;margin-top:10px;background:#dff2e3;color:#28613a;border-radius:10px;padding:8px;font-size:12px;font-weight:bold}.stage button:disabled{background:#dfe9df;color:#46624c;opacity:1;border-color:#c8dccb}.stage.done{filter:saturate(.72);opacity:.88;position:relative}.stage.done:after{content:"✓ تکمیل شد";display:block;margin-top:8px;color:#27613b;font-weight:bold}.stage.done button{background:#dcefe0;color:#27613b;cursor:not-allowed}.stage.done button:hover{transform:none;filter:none}
-.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.progress{height:10px;background:#edf0e8;border-radius:20px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffbd39,#ff6fae,#7e67ef,#22c7c8,#64ce70);transition:width .3s}.pill{background:#edf4e9;border-radius:99px;padding:8px 12px;font-size:13px}.qtext{font-size:20px;line-height:1.9;margin:18px 0}.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.option{background:#fffdf7;border:1px solid #e9e0cc;text-align:right;color:#243247;line-height:1.7}.option.correct{background:#dff2e3;border-color:#67a77a}.option.wrong{background:#fbe4e3;border-color:#d98888}.feedback{padding:12px 14px;border-radius:14px;margin-top:14px;line-height:1.8}.good{background:#e4f4e6;color:#28613a}.bad{background:#fff0df;color:#855624}.controls{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}.controls .primary{margin-right:auto}.note{font-size:12px;color:#687386;line-height:1.8}.end-score{font-size:34px;color:var(--green);font-weight:bold;margin:12px}.trophy{font-size:54px}.footer{text-align:center;padding:22px 8px 10px;color:#647264;font-size:13px;line-height:2}.footer strong{color:#315d4c}.mini{font-size:12px;color:#6b7280}
-@media(max-width:650px){.wrap{padding:10px}.card{padding:16px}.fields,.stages,.options{grid-template-columns:1fr}.stage{min-height:140px}.hero{padding:23px 12px}.qtext{font-size:18px}}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.progress{height:10px;background:#edf0e8;border-radius:20px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffbd39,#ff6fae,#7e67ef,#22c7c8,#64ce70);transition:width .3s}.pill{background:#edf4e9;border-radius:99px;padding:8px 12px;font-size:13px}.qtext{font-size:20px;line-height:1.9;margin:18px 0}.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.option{background:#fffdf7;border:1px solid #e9e0cc;text-align:right;color:#243247;line-height:1.7}.option.correct{background:#dff2e3;border-color:#67a77a}.option.wrong{background:#fbe4e3;border-color:#d98888}.feedback{padding:12px 14px;border-radius:14px;margin-top:14px;line-height:1.8}.good{background:#e4f4e6;color:#28613a}.bad{background:#fff0df;color:#855624}.controls{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap;align-items:center}.controls .primary{margin-right:auto}.note{font-size:12px;color:#687386;line-height:1.8}.end-score{font-size:34px;color:var(--green);font-weight:bold;margin:12px}.trophy{font-size:54px}.footer{text-align:center;padding:22px 8px 10px;color:#647264;font-size:13px;line-height:2}.footer strong{color:#315d4c}.mini{font-size:12px;color:#6b7280}
+@media(max-width:650px){.wrap{padding:10px}.card{padding:16px}.stages,.options{grid-template-columns:1fr}.stage{min-height:140px}.hero{padding:23px 12px}.qtext{font-size:18px}}
 </style></head>
 <body><div class="wrap">
-<header class="hero"><div class="brand">🌿 طراح و تهیه‌کننده: یوسف معصومی 🌿</div><h1>🔐 راز گنجینهٔ دانایی</h1><p>ماجراجویی تعاملی فارسی پنجم ـ درس چهارم</p><div class="badge">بازرگان و پسران ✦ کرم شب‌تاب ✦ نگارش</div></header>
-<section id="welcome" class="card"><h2 class="section-title">سلام، قهرمان دانایی! ✨</h2><p class="sub">برای بازشدن صندوقچهٔ دانایی، از سه ایستگاه عبور کن. در هر ایستگاه ۱۲ پرسش داری؛ هر پاسخ درست یک امتیاز دارد و در پایان می‌توانی از ۳۶ امتیاز بگیری. با دقت بخوان، فکر کن و پاسخ بده!</p><div class="fields"><input id="firstName" placeholder="نام (مثلاً پارمیس)" maxlength="30"><input id="lastName" placeholder="نام خانوادگی" maxlength="40"></div><button id="startBtn" class="primary" onclick="startGame()">🚪 ورود به ماجراجویی</button><p id="nameError" class="feedback bad hidden">لطفاً نام و نام خانوادگی‌ات را بنویس.</p><p class="note">این بازی برای تمرین و یادگیری طراحی شده است. پرسش‌ها از متن «بازرگان و پسران»، داستان «کرم شب‌تاب» و فعالیت‌های نگارش درس چهارم انتخاب شده‌اند.</p></section>
+<header class="hero"><div class="brand">🌿 طراح و تهیه‌کننده: خانم صادقی 🌿</div><h1>🔐 راز گنجینهٔ دانایی</h1><p>ماجراجویی تعاملی فارسی پنجم ـ درس چهارم</p><div class="badge">بازرگان و پسران ✦ کرم شب‌تاب ✦ نگارش</div></header>
+<section id="welcome" class="card"><h2 class="section-title">سلام، قهرمان دانایی! ✨</h2><p class="sub">برای بازشدن صندوقچهٔ دانایی، از سه ایستگاه عبور کن. در هر ایستگاه ۱۲ پرسش داری؛ هر پاسخ درست یک امتیاز دارد و در پایان می‌توانی از ۳۶ امتیاز بگیری. با دقت بخوان، فکر کن و پاسخ بده!</p>
+<div class="controls" style="justify-content:center; margin-top:15px;">
+  <button id="startBtn" class="primary" onclick="startGame()">🚪 شروع ماجراجویی</button>
+  <button id="resumeBtn" class="primary hidden" onclick="resumeGame()" style="background:#10b981; color:white;">ادامه مأموریت ←</button>
+  <button id="resetWelcomeBtn" class="secondary hidden" onclick="startGame()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🧹 شروع دوباره</button>
+</div>
+<p class="note">این بازی برای تمرین و یادگیری طراحی شده است. پرسش‌ها از متن «بازرگان و پسران»، داستان «کرم شب‌تاب» و فعالیت‌های نگارش درس چهارم انتخاب شده‌اند.</p></section>
 <section id="map" class="card hidden"><div class="topline"><div><h2 class="section-title" style="margin-bottom:4px">نقشهٔ مأموریت</h2><div id="hello" class="sub"></div></div><div class="pill">⭐ امتیاز کل: <b id="mapScore">۰</b> از ۳۶</div></div><div class="stages">
 <div id="stageCard0" class="stage merchant"><div><div class="emoji">🧔🏻‍♂️</div><h3>بازار بازرگان دانا</h3><p>پیام داستان، واژه‌ها و پندهای بازرگان</p></div><button id="stageBtn0" onclick="enterStage(0)">ورود به بازار ←</button></div>
 <div id="stageCard1" class="stage firefly"><div><div class="emoji">✨🪲</div><h3>باغ کرم شب‌تاب</h3><p>شخصیت‌ها، رویدادها و پیام داستان</p></div><button id="stageBtn1" onclick="enterStage(1)">روشن‌کردن چراغ‌ها ←</button></div>
-<div id="stageCard2" class="stage writer"><div><div class="emoji">📚✍️</div><h3>کارگاه نویسندگان</h3><p>گوش‌دادنی و شنیدنی، «هم» و «نیز» و حکایت</p></div><button id="stageBtn2" onclick="enterStage(2)">ورود به کارگاه ←</button></div></div><p class="note">هر ایستگاه فقط یک‌بار قابل انجام است. پس از تکمیل، قفل می‌شود و دیگر نمی‌توانی وارد آن شوی. هر ایستگاه ۱۲ پرسش دارد؛ مجموع بازی ۳۶ امتیاز است. پس از تکمیل هر ایستگاه، همان ایستگاه قفل می‌شود. پیشرفتت در همین مرورگر ذخیره می‌شود.</p></section>
-<section id="quiz" class="card hidden"><div class="topline"><div><div class="pill" id="stageLabel">مرحله</div><h2 class="section-title" id="stageHeading">پرسش</h2></div><div class="pill">پرسش <b id="qNumber">۱</b> از <b id="qTotal">۱۲</b></div></div><div class="progress"><span id="bar"></span></div><div class="topline"><span class="mini" id="studentLabel"></span><span class="pill">⭐ امتیاز کل: <b id="score">۰</b></span></div><div id="questionText" class="qtext"></div><div id="options" class="options"></div><div id="feedback" class="feedback hidden" aria-live="polite"></div><div class="controls"><button class="secondary" onclick="backToMap()">↩ بازگشت به نقشه</button><button id="nextBtn" class="primary" disabled onclick="nextQuestion()">پرسش بعدی ←</button></div></section>
-<section id="result" class="card hidden" style="text-align:center"><div class="trophy" id="trophy">🏆</div><h2 class="section-title" id="resultTitle">آفرین!</h2><p id="resultMessage" class="sub"></p><div class="end-score" id="finalScore">۰</div><p id="resultDetail" class="sub"></p><div class="feedback good">📸 از امتیاز فعلی‌ات عکس بگیر و برای آموزگارت بفرست.</div><div class="controls" style="justify-content:center"><button class="secondary" onclick="backToMap()">🗺 بازگشت به نقشه</button><button id="treasureBtn" class="primary hidden" onclick="showFinal()">🎁 دیدن گنجینهٔ دانایی</button></div><div id="treasure" class="feedback good hidden">🎉 صندوقچه باز شد! دانایی، تلاش و به‌کاربستن آموخته‌ها، گنج واقعی توست. 🌟</div></section>
-<footer class="footer"><strong>طراح و تهیه‌کننده: یوسف معصومی</strong></footer>
+<div id="stageCard2" class="stage writer"><div><div class="emoji">📚✍️</div><h3>کارگاه نویسندگان</h3><p>گوش‌دادنی و شنیدنی، «هم» و «نیز» و حکایت</p></div><button id="stageBtn2" onclick="enterStage(2)">ورود به کارگاه ←</button></div></div><p class="note">هر ایستگاه فقط یک‌بار قابل انجام است. پس از تکمیل، قفل می‌شود و دیگر نمی‌توانی وارد آن شوی. هر ایستگاه ۱۲ پرسش دارد؛ مجموع بازی ۳۶ امتیاز است. پیشرفتت در همین مرورگر ذخیره می‌شود.</p>
+<div class="controls" style="justify-content:center; margin-top:10px;">
+   <button class="secondary" onclick="startGame()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
+</div>
+</section>
+<section id="quiz" class="card hidden"><div class="topline"><div><div class="pill" id="stageLabel">مرحله</div><h2 class="section-title" id="stageHeading">پرسش</h2></div><div class="pill">پرسش <b id="qNumber">۱</b> از <b id="qTotal">۱۲</b></div></div><div class="progress"><span id="bar"></span></div><div class="topline"><span class="mini"></span><span class="pill">⭐ امتیاز کل: <b id="score">۰</b></span></div><div id="questionText" class="qtext"></div><div id="options" class="options"></div><div id="feedback" class="feedback hidden" aria-live="polite"></div><div class="controls"><button class="secondary" onclick="backToMap()">↩ بازگشت به نقشه</button><button id="nextBtn" class="primary" disabled onclick="nextQuestion()">پرسش بعدی ←</button></div></section>
+<section id="result" class="card hidden" style="text-align:center"><div class="trophy" id="trophy">🏆</div><h2 class="section-title" id="resultTitle">آفرین!</h2><p id="resultMessage" class="sub"></p><div class="end-score" id="finalScore">۰</div><p id="resultDetail" class="sub"></p>
+<div class="controls" style="justify-content:center">
+  <button class="secondary" onclick="backToMap()">🗺 بازگشت به نقشه</button>
+  <button id="treasureBtn" class="primary hidden" onclick="showFinal()">🎁 دیدن گنجینهٔ دانایی</button>
+  <button class="secondary" onclick="startGame()" style="background:#fecdd3; color:#9f1239; border-color:#fda4af;">🔄 شروع دوباره</button>
+</div>
+<div id="treasure" class="feedback good hidden">🎉 صندوقچه باز شد! دانایی، تلاش و به‌کاربستن آموخته‌ها، گنج واقعی توست. 🌟</div></section>
+<footer class="footer"><strong>طراح و تهیه‌کننده: خانم صادقی</strong></footer>
 </div>
 <script>
 const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -70,54 +86,256 @@ const stages=[
 {q:'کدام گزینه واژهٔ درستِ آمده در متن نگارش است؟',o:['خصلت','خسلت','خصلد','خسلتت'],a:0,e:'املای درست واژه «خصلت» است.'}
 ]}
 ];
-let first='',last='',score=0,answered=0,completed=[false,false,false],stageScores=[0,0,0],currentStage=0,index=0,locked=false,storageKey='',sessionStageScore=0;
-function makeStorageKey(){return 'raz_ganjine_danai_v3_'+(first+'_'+last).toLocaleLowerCase('fa').replace(/\s+/g,'_')}
-function saveProgress(){if(!storageKey)return;try{localStorage.setItem(storageKey,JSON.stringify({first,last,score,completed,stageScores}))}catch(e){}}
-function loadProgress(){score=0;completed=[false,false,false];stageScores=[0,0,0];try{const raw=localStorage.getItem(storageKey);if(raw){const d=JSON.parse(raw);completed=Array.isArray(d.completed)&&d.completed.length===3?d.completed.map(Boolean):[false,false,false];stageScores=Array.isArray(d.stageScores)&&d.stageScores.length===3?d.stageScores.map(n=>Math.max(0,Number(n)||0)):[0,0,0];score=stageScores.reduce((a,b)=>a+b,0)}}catch(e){score=0;completed=[false,false,false];stageScores=[0,0,0]}}
-function startGame(){first=document.getElementById('firstName').value.trim();last=document.getElementById('lastName').value.trim();if(!first||!last){document.getElementById('nameError').classList.remove('hidden');return}document.getElementById('nameError').classList.add('hidden');storageKey=makeStorageKey();loadProgress();document.getElementById('welcome').classList.add('hidden');document.getElementById('map').classList.remove('hidden');document.getElementById('hello').textContent=`خوش آمدی ${first} ${last}! ${completed.every(Boolean)?'تو هر سه ایستگاه را فتح کرده‌ای! 🏆':'آماده‌ای مأموریتت را ادامه بدهی؟'}`;document.getElementById('studentLabel').textContent=`دانش‌آموز: ${first} ${last}`;renderMap();updateScore()}
-function renderMap(){document.querySelectorAll('.stage').forEach((el,i)=>{const btn=el.querySelector('button');if(completed[i]){el.classList.add('done');btn.disabled=true;btn.textContent='🔒 این ایستگاه تکمیل شده'}else{el.classList.remove('done');btn.disabled=false;btn.textContent=['ورود به بازار ←','روشن‌کردن چراغ‌ها ←','ورود به کارگاه ←'][i]}})}
-function enterStage(s){if(completed[s])return;currentStage=s;index=0;sessionStageScore=0;document.getElementById('map').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('quiz').classList.remove('hidden');renderQuestion()}
-function renderQuestion(){locked=false;const st=stages[currentStage],q=st.qs[index];document.getElementById('stageLabel').textContent=st.label;document.getElementById('stageHeading').textContent=st.icon+' '+st.title;document.getElementById('qNumber').textContent=fa(index+1);document.getElementById('qTotal').textContent=fa(st.qs.length);document.getElementById('bar').style.width=(index/st.qs.length*100)+'%';document.getElementById('questionText').textContent=q.q;const box=document.getElementById('options');box.innerHTML='';q.o.forEach((opt,i)=>{let b=document.createElement('button');b.className='option';b.textContent=['الف','ب','پ','ت'][i]+' ـ '+opt;b.onclick=()=>choose(i,b);box.appendChild(b)});let f=document.getElementById('feedback');f.className='feedback hidden';f.textContent='';let next=document.getElementById('nextBtn');next.disabled=true;next.textContent=index===st.qs.length-1?'پایان این مرحله ✓':'پرسش بعدی ←';updateScore()}
-function choose(i,btn){if(locked)return;locked=true;answered++;let q=stages[currentStage].qs[index],buttons=[...document.querySelectorAll('.option')];buttons.forEach((b,j)=>{b.disabled=true;if(j===q.a)b.classList.add('correct')});let f=document.getElementById('feedback');if(i===q.a){sessionStageScore++;f.className='feedback good';f.textContent='آفرین! پاسخ درست است. 🌟 '+q.e}else{btn.classList.add('wrong');f.className='feedback bad';f.textContent='این بار نشد؛ پاسخ درست با رنگ سبز مشخص شده است. 🌱 '+q.e}document.getElementById('bar').style.width=((index+1)/stages[currentStage].qs.length*100)+'%';document.getElementById('nextBtn').disabled=false;updateScore()}
-function nextQuestion(){
-  if(!locked)return;
+
+let score=0, completed=[false,false,false], stageScores=[0,0,0], currentStage=0, index=0, locked=false, sessionStageScore=0, currentChosen=null;
+
+function saveProgress() {
+  localStorage.setItem('farsi_treasure_progress', JSON.stringify({
+    score, completed, stageScores, currentStage, index, sessionStageScore, locked, currentChosen
+  }));
+}
+
+function loadProgress() {
+  const raw = localStorage.getItem('farsi_treasure_progress');
+  if(!raw) return false;
+  try {
+    const d = JSON.parse(raw);
+    score = d.score || 0;
+    completed = d.completed || [false,false,false];
+    stageScores = d.stageScores || [0,0,0];
+    currentStage = d.currentStage || 0;
+    index = d.index || 0;
+    sessionStageScore = d.sessionStageScore || 0;
+    locked = d.locked || false;
+    currentChosen = d.currentChosen !== undefined ? d.currentChosen : null;
+    return true;
+  } catch(e) { return false; }
+}
+
+function clearProgress() {
+  localStorage.removeItem('farsi_treasure_progress');
+}
+
+function startGame() {
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
+    clearProgress();
+    score=0; completed=[false,false,false]; stageScores=[0,0,0];
+    currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null;
+    
+    document.getElementById('welcome').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('map').classList.remove('hidden');
+    document.getElementById('hello').textContent = "سلام قهرمان! آماده‌ای مأموریتت را شروع کنی؟";
+    
+    document.getElementById('resumeBtn').classList.add('hidden');
+    document.getElementById('resetWelcomeBtn').classList.add('hidden');
+    document.getElementById('startBtn').classList.add('hidden');
+
+    renderMap();
+    updateScore();
+  }
+}
+
+function resumeGame() {
+  if(loadProgress()) {
+    document.getElementById('welcome').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('map').classList.add('hidden');
+
+    if(completed.every(Boolean)) {
+      document.getElementById('result').classList.remove('hidden');
+      document.getElementById('resultTitle').textContent='تو قهرمان گنجینهٔ دانایی هستی!';
+      document.getElementById('resultMessage').textContent='تو از سه سرزمین دانایی گذشتی و ثابت کردی که با اندیشه، تلاش و به‌کاربستن آموخته‌ها می‌توانی هر گنجی را پیدا کنی! 🏆🗝️✨';
+      document.getElementById('finalScore').textContent=`${fa(score)} از ۳۶ امتیاز`;
+      document.getElementById('resultDetail').textContent=`هر سه ایستگاه را کامل کردی و از ۳۶ پرسش بازی، ${fa(score)} پاسخ درست داشتی.`;
+      document.getElementById('trophy').textContent='🏆🎉';
+      document.querySelector('#result .controls .secondary').textContent='🗺 دیدن نقشهٔ قهرمانی';
+      document.querySelector('#result .controls .primary').classList.remove('hidden');
+      document.getElementById('treasure').classList.add('hidden');
+    } else if(!completed[currentStage]) {
+      document.getElementById('quiz').classList.remove('hidden');
+      renderQuestion();
+    } else {
+      document.getElementById('map').classList.remove('hidden');
+      document.getElementById('hello').textContent = "خوش برگشتی قهرمان! ادامه بده.";
+      renderMap();
+      updateScore();
+    }
+  }
+}
+
+function renderMap() {
+  document.querySelectorAll('.stage').forEach((el,i)=>{
+    const btn=el.querySelector('button');
+    if(completed[i]){
+      el.classList.add('done');
+      btn.disabled=true;
+      btn.textContent='🔒 این ایستگاه تکمیل شده';
+    } else {
+      el.classList.remove('done');
+      btn.disabled=false;
+      btn.textContent=['ورود به بازار ←','روشن‌کردن چراغ‌ها ←','ورود به کارگاه ←'][i];
+    }
+  });
+}
+
+function enterStage(s) {
+  if(completed[s]) return;
+  currentStage=s;
+  index=0;
+  sessionStageScore=0;
+  locked=false;
+  currentChosen=null;
+  saveProgress();
+  document.getElementById('map').classList.add('hidden');
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const st=stages[currentStage], q=st.qs[index];
+  document.getElementById('stageLabel').textContent=st.label;
+  document.getElementById('stageHeading').textContent=st.icon+' '+st.title;
+  document.getElementById('qNumber').textContent=fa(index+1);
+  document.getElementById('qTotal').textContent=fa(st.qs.length);
+  document.getElementById('bar').style.width=(index/st.qs.length*100)+'%';
+  document.getElementById('questionText').textContent=q.q;
+  
+  const box=document.getElementById('options');
+  box.innerHTML='';
+  
+  q.o.forEach((opt,i)=>{
+    let b=document.createElement('button');
+    b.className='option';
+    b.textContent=['الف','ب','پ','ت'][i]+' ـ '+opt;
+    b.onclick=()=>choose(i,b);
+    box.appendChild(b);
+  });
+  
+  let f=document.getElementById('feedback');
+  let next=document.getElementById('nextBtn');
+  
+  if (locked && currentChosen !== null) {
+     let buttons = [...document.querySelectorAll('.option')];
+     buttons.forEach((b,j)=>{
+        b.disabled=true;
+        if(j===q.a) b.classList.add('correct');
+     });
+     if(currentChosen === q.a){
+        f.className='feedback good';
+        f.textContent='آفرین! پاسخ درست است. 🌟 '+q.e;
+     } else {
+        buttons[currentChosen].classList.add('wrong');
+        f.className='feedback bad';
+        f.textContent='این بار نشد؛ پاسخ درست با رنگ سبز مشخص شده است. 🌱 '+q.e;
+     }
+     next.disabled=false;
+     next.textContent=index===st.qs.length-1?'پایان این مرحله ✓':'پرسش بعدی ←';
+  } else {
+     f.className='feedback hidden';
+     f.textContent='';
+     next.disabled=true;
+     next.textContent=index===st.qs.length-1?'پایان این مرحله ✓':'پرسش بعدی ←';
+  }
+  updateScore();
+}
+
+function choose(i, btn) {
+  if(locked) return;
+  locked=true;
+  currentChosen=i;
+  let q=stages[currentStage].qs[index];
+  let buttons=[...document.querySelectorAll('.option')];
+  
+  buttons.forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.a) b.classList.add('correct');
+  });
+  
+  let f=document.getElementById('feedback');
+  if(i===q.a){
+    sessionStageScore++;
+    f.className='feedback good';
+    f.textContent='آفرین! پاسخ درست است. 🌟 '+q.e;
+  } else {
+    btn.classList.add('wrong');
+    f.className='feedback bad';
+    f.textContent='این بار نشد؛ پاسخ درست با رنگ سبز مشخص شده است. 🌱 '+q.e;
+  }
+  
+  document.getElementById('bar').style.width=((index+1)/stages[currentStage].qs.length*100)+'%';
+  document.getElementById('nextBtn').disabled=false;
+  saveProgress();
+  updateScore();
+}
+
+function nextQuestion() {
+  if(!locked) return;
   let st=stages[currentStage];
   if(index<st.qs.length-1){
-    index++;renderQuestion()
+    index++;
+    locked=false;
+    currentChosen=null;
+    saveProgress();
+    renderQuestion();
   } else {
     completed[currentStage]=true;
     stageScores[currentStage]=sessionStageScore;
     score=stageScores.reduce((a,b)=>a+b,0);
     saveProgress();
+    
     document.getElementById('quiz').classList.add('hidden');
     document.getElementById('result').classList.remove('hidden');
+    
     const allDone=completed.every(Boolean);
     document.getElementById('resultTitle').textContent=allDone?'تو قهرمان گنجینهٔ دانایی هستی!':'یک ایستگاه دیگر با موفقیت فتح شد!';
-    document.getElementById('resultMessage').textContent=allDone?`${first} ${last} عزیز، تو از سه سرزمین دانایی گذشتی و ثابت کردی که با اندیشه، تلاش و به‌کاربستن آموخته‌ها می‌توانی هر گنجی را پیدا کنی! 🏆🗝️✨`: `${first} ${last} عزیز، یک قدم دیگر به گنجینه نزدیک شدی. این ایستگاه قفل شد؛ عالی پیش می‌روی! 🌟`;
+    document.getElementById('resultMessage').textContent=allDone?'تو از سه سرزمین دانایی گذشتی و ثابت کردی که با اندیشه، تلاش و به‌کاربستن آموخته‌ها می‌توانی هر گنجی را پیدا کنی! 🏆🗝️✨':'یک قدم دیگر به گنجینه نزدیک شدی. این ایستگاه قفل شد؛ عالی پیش می‌روی! 🌟';
     document.getElementById('finalScore').textContent=`${fa(score)} از ۳۶ امتیاز`;
     document.getElementById('resultDetail').textContent=allDone?`هر سه ایستگاه را کامل کردی و از ۳۶ پرسش بازی، ${fa(score)} پاسخ درست داشتی.`:`ایستگاه «${st.title}» تکمیل شد و دیگر باز نمی‌شود. برای ادامهٔ مأموریت، به نقشه برگرد و یکی از ایستگاه‌های باز را انتخاب کن.`;
     document.getElementById('trophy').textContent=allDone?'🏆🎉':'🔐🌟';
     document.querySelector('#result .controls .secondary').textContent=allDone?'🗺 دیدن نقشهٔ قهرمانی':'🗺 ادامهٔ مأموریت';
     document.querySelector('#result .controls .primary').classList.toggle('hidden',!allDone);
-    document.getElementById('treasure').textContent='🎉 مأموریت با موفقیت انجام شد! تو ثابت کردی که دانایی فقط دانستن نیست؛ به‌کاربستن آموخته‌هاست. حالا تو قهرمان گنجینهٔ دانایی هستی! 🌟🏆';
-    document.getElementById('treasure').classList.add('hidden');
+    
+    if (allDone) {
+       clearProgress();
+       try { window.parent.postMessage({ type: 'GAME_FINISHED', gameId: 'ch4-farsi-treasure', score: score, total: 36 }, '*'); } catch (e) {}
+    } else {
+       saveProgress();
+    }
     renderMap();
     updateScore();
-
-    // 🆕 ارسال امتیاز به اپ اصلی
-    if (allDone) {
-      try {
-        window.parent.postMessage({
-          type: 'GAME_FINISHED',
-          gameId: 'ch4-farsi-treasure',
-          score: score,
-          total: 36
-        }, '*');
-      } catch (e) {}
-    }
   }
 }
-function updateScore(){const displayScore=score+(document.getElementById('quiz').classList.contains('hidden')?0:sessionStageScore);document.getElementById('score').textContent=fa(displayScore);document.getElementById('mapScore').textContent=fa(score)}
-function backToMap(){document.getElementById('quiz').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('map').classList.remove('hidden');renderMap();updateScore()}
-function showFinal(){if(completed.every(Boolean))document.getElementById('treasure').classList.remove('hidden')}
+
+function updateScore() {
+  const displayScore = score + (document.getElementById('quiz').classList.contains('hidden') ? 0 : sessionStageScore);
+  document.getElementById('score').textContent=fa(displayScore);
+  document.getElementById('mapScore').textContent=fa(score);
+}
+
+function backToMap() {
+  if (!completed[currentStage]) saveProgress();
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('map').classList.remove('hidden');
+  renderMap();
+  updateScore();
+}
+
+function showFinal() {
+  if(completed.every(Boolean)) {
+    document.getElementById('treasure').classList.remove('hidden');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (loadProgress()) {
+    document.getElementById('resumeBtn').classList.remove('hidden');
+    document.getElementById('resetWelcomeBtn').classList.remove('hidden');
+    document.getElementById('startBtn').classList.add('hidden');
+  }
+});
 </script></body></html>

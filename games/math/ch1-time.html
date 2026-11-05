@@ -29,6 +29,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:13px;padding:12px 19p
 button:hover{transform:translateY(-2px);filter:brightness(1.07)}
 .primary{background:var(--teal);color:#08202b}
 .secondary{background:#263f5c;color:var(--ink);border:1px solid #42617f}
+.danger{background:#ff7c9c;color:#fff;box-shadow:0 4px 10px rgba(255,124,156,0.3)}
 .hud{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}
 .hud strong{color:var(--ink)}
 .stage{font-size:.82rem;color:var(--orange);font-weight:800;margin:18px 0 8px}
@@ -43,7 +44,7 @@ button:hover{transform:translateY(-2px);filter:brightness(1.07)}
 .feedback{min-height:52px;border-radius:14px;margin:16px 0 12px;padding:12px 14px;line-height:1.9;color:var(--muted);background:#0c1b2d}
 .feedback.good{color:var(--good);border:1px solid #327650;background:#102b2b}
 .feedback.bad{color:var(--bad);border:1px solid #76552f;background:#30271d}
-.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
 .result{text-align:center}
 .score{font-size:clamp(2.6rem,10vw,4.5rem);font-weight:900;color:var(--teal);margin:8px 0}
 .result p{line-height:1.9;color:var(--muted)}
@@ -55,7 +56,7 @@ button:hover{transform:translateY(-2px);filter:brightness(1.07)}
 footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
 @media(max-width:560px){body{padding:10px}.topic-grid{grid-template-columns:1fr}.options{grid-template-columns:1fr}.panel{border-radius:18px}.tag{font-size:.78rem}}
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"><link rel="stylesheet" href="../../css/game-theme.css"></head>
+</head>
 <body>
 <div class="wrap">
 <header><div class="brand"><div class="logo">◷</div><div>آزمایشگاه ریاضی <div style="font-size:.78rem;color:var(--muted);font-weight:500">پایهٔ پنجم ابتدایی</div></div></div><div class="tag">۲۰ مأموریت • چهار مرحله</div></header>
@@ -70,7 +71,8 @@ footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
 <div class="topic"><b>۰۳</b>الگوها و مسئله‌های کاربردی</div>
 </div>
 <button id="start" class="primary">شروع مأموریت ←</button>
-<p style="font-size:.85rem">یادآوری: هر ۱ دقیقه = ۶۰ ثانیه و هر ۱ ساعت = ۶۰ دقیقه.</p>
+<button id="resume" class="primary hidden" style="background:var(--good); color:#0b1728; margin-top:10px;">ادامه مأموریت قبلی ←</button>
+<p style="font-size:.85rem; margin-top:15px;">یادآوری: هر ۱ دقیقه = ۶۰ ثانیه و هر ۱ ساعت = ۶۰ دقیقه.</p>
 </section>
 <section id="game" class="panel hidden">
 <div class="hud"><span id="stageLabel">مرحلهٔ اول</span><span>پرسش <strong id="counter">۱ از ۲۰</strong></span><span>امتیاز: <strong id="scoreTag">۰</strong></span></div>
@@ -79,7 +81,11 @@ footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
 <div class="question" id="question"></div><div class="equation" id="equation"></div>
 <div class="options" id="options"></div>
 <div id="feedback" class="feedback" aria-live="polite">با دقت فکر کن و یکی از گزینه‌ها را انتخاب کن.</div>
-<div class="actions"><span class="tag" id="hint">هر پاسخ درست یک امتیاز</span><button id="next" class="primary hidden">پرسش بعدی ←</button></div>
+<div class="actions">
+  <span class="tag" id="hint">هر پاسخ درست یک امتیاز</span>
+  <button id="next" class="primary hidden">پرسش بعدی ←</button>
+  <button id="restart-game" class="secondary" style="margin-right:auto; background:#ff7c9c22; color:#ff7c9c; border-color:#ff7c9c55;">شروع دوباره</button>
+</div>
 </section>
 <section id="result" class="panel result hidden">
 <h2>مأموریت به پایان رسید!</h2><p>نتیجهٔ تلاش تو:</p><div class="score" id="finalScore">۰ از ۲۰</div>
@@ -87,7 +93,7 @@ footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
 <div class="actions" style="justify-content:center"><button id="again" class="primary">شروع دوباره</button><button id="showReview" class="secondary">مرور پاسخ‌ها</button></div>
 <ol id="review" class="review hidden"></ol>
 </section>
-<footer>ریاضی پنجم • یادگیری با فکر کردن، تمرین و کشف اشتباه‌ها</footer>
+<footer>ریاضی پنجم • یادگیری با فکر کردن، تمرین و کشف اشتباه‌ها | طراح: خانم صادقی</footer>
 </div>
 <script>
 const questions = [
@@ -112,50 +118,206 @@ const questions = [
 {q:"۱۹) در یک محاسبه نوشته شده است: ۳ دقیقه و ۵۰ ثانیه + ۲۰ ثانیه = ۳ دقیقه و ۷۰ ثانیه. پاسخ نهایی را درست کن.",e:"۳:۵۰ + ۰:۲۰ = ؟",a:"۴ دقیقه و ۱۰ ثانیه",o:["۳ دقیقه و ۷۰ ثانیه","۴ دقیقه و ۱۰ ثانیه","۴ دقیقه و ۷۰ ثانیه","۳ دقیقه و ۱۰ ثانیه"],why:"۷۰ ثانیه برابر با ۱ دقیقه و ۱۰ ثانیه است؛ پس حاصل نهایی ۴ دقیقه و ۱۰ ثانیه است."},
 {q:"۲۰) کدام جمله دربارهٔ عددهای مرکب زمان درست است؟",e:"یک واحد بزرگ‌تر را به واحد کوچک‌تر تبدیل می‌کنیم.",a:"هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است.",o:["هر ساعت ۱۰۰ دقیقه است.","هر دقیقه ۱۰۰ ثانیه است.","هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است.","برای جمع زمان‌ها نیازی به تبدیل واحد نیست."],why:"در اندازه‌گیری زمان، هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است؛ هنگام جمع و تفریق باید به این رابطه‌ها توجه کنیم."}
 ];
+
 const stages=["شناخت و تبدیل","جمع و تفریق","مسئله‌های کاربردی","کارآگاه خطا"];
-let idx=0,score=0,answers=[];
+let idx=0, score=0, answers=[], gameQuestions=[];
 const $=id=>document.getElementById(id);
 const fa=n=>String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[+d]);
+
+// تابع برای به هم ریختن آرایه
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// آماده سازی سوالات (تصادفی کردن گزینه ها)
+function prepareQuestions() {
+  gameQuestions = questions.map(q => {
+    let originalOptions = [...q.o];
+    let correctAnswerText = originalOptions[q.a];
+    let shuffledOptions = shuffleArray([...originalOptions]);
+    let newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
+    return { ...q, o: shuffledOptions, a: newCorrectIndex };
+  });
+}
+
+// ذخیره پیشرفت
+function saveProgress() {
+  localStorage.setItem('time_lab_progress', JSON.stringify({ idx, score, answers }));
+}
+
+// بازیابی پیشرفت
+function loadProgress() {
+  const saved = localStorage.getItem('time_lab_progress');
+  if (saved) {
+    const data = JSON.parse(saved);
+    idx = data.idx;
+    score = data.score;
+    answers = data.answers;
+    return true;
+  }
+  return false;
+}
+
+// پاک کردن پیشرفت
+function clearProgress() {
+  localStorage.removeItem('time_lab_progress');
+}
+
 function stageFor(i){return Math.floor(i/5)}
-function startGame(){idx=0;score=0;answers=[];$("intro").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");renderQuestion()}
+
+function startGame(isNew = true){
+  if (isNew) {
+    if (!confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) return;
+    clearProgress();
+    idx = 0; score = 0; answers = [];
+    prepareQuestions();
+  }
+  $("intro").classList.add("hidden");
+  $("result").classList.add("hidden");
+  $("game").classList.remove("hidden");
+  renderQuestion();
+}
+
+function resumeGame() {
+  if (!gameQuestions || gameQuestions.length === 0) prepareQuestions();
+  $("intro").classList.add("hidden");
+  $("result").classList.add("hidden");
+  $("game").classList.remove("hidden");
+  renderQuestion();
+}
+
 function renderQuestion(){
- const q=questions[idx],st=stageFor(idx);
- $("counter").textContent=fa(idx+1)+" از "+fa(questions.length);$("scoreTag").textContent=fa(score);
- $("stageLabel").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st];
- $("stageName").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st]+" • "+stages[st];
- $("bar").style.width=(idx/questions.length*100)+"%";
- $("question").textContent=q.q;$("equation").textContent=q.e;
- $("feedback").className="feedback";$("feedback").textContent="با دقت فکر کن و یکی از گزینه‌ها را انتخاب کن.";
- $("next").classList.add("hidden");$("options").innerHTML="";
- q.o.forEach((op,i)=>{const b=document.createElement("button");b.className="opt";b.textContent=["الف) ","ب) ","پ) ","ت) "][i]+op;b.addEventListener("click",()=>choose(op,b));$("options").appendChild(b)})
+  const q=gameQuestions[idx],st=stageFor(idx);
+  $("counter").textContent=fa(idx+1)+" از ۲۰";$("scoreTag").textContent=fa(score);
+  $("stageLabel").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st];
+  $("stageName").textContent="مرحلهٔ "+["اول","دوم","سوم","چهارم"][st]+" • "+stages[st];
+  $("bar").style.width=(idx/gameQuestions.length*100)+"%";
+  $("question").textContent=q.q;$("equation").textContent=q.e;
+  $("feedback").className="feedback";$("feedback").textContent="با دقت فکر کن و یکی از گزینه‌ها را انتخاب کن.";
+  $("next").classList.add("hidden");$("options").innerHTML="";
+  
+  q.o.forEach((op,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.textContent=["الف) ","ب) ","پ) ","ت) "][i]+op;
+    b.addEventListener("click",()=>choose(op,b));
+    $("options").appendChild(b);
+  });
+
+  // اگر قبلا پاسخ داده شده بود، وضعیت را بازسازی کن (برای زمانی که کاربر برمیگرده)
+  if (answers[idx]) {
+    const savedAnswer = answers[idx];
+    const all = [...$("options").querySelectorAll("button")];
+    all.forEach(b => {
+      b.disabled = true;
+      if (b.textContent.includes(savedAnswer.chosen)) {
+         if(savedAnswer.good) { b.style.borderColor="var(--good)"; b.style.color="var(--good)"; }
+         else { b.style.borderColor="var(--bad)"; }
+      }
+      if (b.textContent.includes(q.a) || b.textContent.includes(q.o[q.a])) {
+         if(!savedAnswer.good) { b.style.borderColor="var(--good)"; b.style.color="var(--good)"; }
+      }
+    });
+    if (savedAnswer.good) {
+      $("feedback").className="feedback good";
+      $("feedback").textContent="آفرین! پاسخ درست است. "+q.why;
+    } else {
+      $("feedback").className="feedback bad";
+      $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.o[q.a]+". "+q.why;
+    }
+    $("next").textContent = idx===gameQuestions.length-1 ? "دیدن نتیجه ←" : "پرسش بعدی ←";
+    $("next").classList.remove("hidden");
+  }
 }
+
 function choose(op,button){
- const q=questions[idx],all=[...$("options").querySelectorAll("button")];all.forEach(b=>b.disabled=true);
- const good=op===q.a;answers.push({chosen:op,correct:q.a,good,question:q.q,why:q.why});const f=$("feedback");
- if(good){score++;f.className="feedback good";f.textContent="آفرین! پاسخ درست است. "+q.why;button.style.borderColor="var(--good)";button.style.color="var(--good)"}
- else{f.className="feedback bad";f.textContent="این بار درست نبود. پاسخ صحیح: "+q.a+". "+q.why;button.style.borderColor="var(--bad)";all.forEach(b=>{if(b.textContent.endsWith(q.a)){b.style.borderColor="var(--good)";b.style.color="var(--good)"}})}
- $("scoreTag").textContent=fa(score);$("bar").style.width=((idx+1)/questions.length*100)+"%";
- $("next").textContent=idx===questions.length-1?"دیدن نتیجه ←":"پرسش بعدی ←";$("next").classList.remove("hidden")
+  if (answers[idx]) return; // اگر قبلا جواب داده شده کاری نکن
+
+  const q=gameQuestions[idx],all=[...$("options").querySelectorAll("button")];all.forEach(b=>b.disabled=true);
+  const good=op===q.o[q.a];
+  answers[idx] = { chosen: op, good: good };
+  
+  if(good){
+    score++; // فقط یکبار امتیاز اضافه میشه
+    $("feedback").className="feedback good";
+    $("feedback").textContent="آفرین! پاسخ درست است. "+q.why;
+    button.style.borderColor="var(--good)";button.style.color="var(--good)";
+  } else {
+    $("feedback").className="feedback bad";
+    $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.o[q.a]+". "+q.why;
+    button.style.borderColor="var(--bad)";
+    all.forEach(b=>{if(b.textContent.includes(q.o[q.a])){b.style.borderColor="var(--good)";b.style.color="var(--good)"}});
+  }
+  
+  $("scoreTag").textContent=fa(score);
+  $("bar").style.width=((idx+1)/gameQuestions.length*100)+"%";
+  $("next").textContent=idx===gameQuestions.length-1?"دیدن نتیجه ←":"پرسش بعدی ←";
+  $("next").classList.remove("hidden");
+  
+  saveProgress(); // ذخیره وضعیت جدید
 }
+
 function finish(){
- $("game").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=fa(score)+" از "+fa(questions.length);
- $("resultMessage").textContent=score>=18?"درخشان بود! تسلط بسیار خوبی بر اعداد مرکب داری.":score>=14?"آفرین! بیشتر مباحث را خوب بلدی؛ پاسخ‌ها را مرور کن.":score>=10?"خوب پیش رفتی. با مرور تبدیل‌ها و قرض گرفتن از واحد بزرگ‌تر، قوی‌تر می‌شوی.":"تلاش ارزشمندی بود. پاسخ‌ها و توضیح‌ها را مرور کن و دوباره امتحان کن.";
- const b=$("badges");b.innerHTML="";const labels=score>=18?["استاد اعداد مرکب","دقت عالی","حلّال مسئله"]:score>=14?["محاسبه‌گر پرتلاش","در مسیر تسلط"]:["کاوشگر ریاضی","تمرین‌کنندهٔ شجاع"];
- labels.forEach(t=>{const el=document.createElement("span");el.className="badge";el.textContent="✦ "+t;b.appendChild(el)});
- $("review").innerHTML="";answers.forEach((a,i)=>{const li=document.createElement("li");li.className=a.good?"correct":"wrong";li.innerHTML="<strong>"+fa(i+1)+". "+a.question+"</strong><br>پاسخ صحیح: "+a.correct+"<br><span style='color:var(--muted)'>"+a.why+"</span>";$("review").appendChild(li)});
- try {
-   window.parent.postMessage({
-     type: 'GAME_FINISHED',
-     gameId: 'ch1-time',
-     score: score,
-     total: questions.length
-   }, location.origin);
- } catch (e) {}
+  clearProgress(); // پایان بازی، پیشرفت پاک بشه
+  $("game").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=fa(score)+" از ۲۰";
+  $("resultMessage").textContent=score>=18?"درخشان بود! تسلط بسیار خوبی بر اعداد مرکب داری.":score>=14?"آفرین! بیشتر مباحث را خوب بلدی؛ پاسخ‌ها را مرور کن.":score>=10?"خوب پیش رفتی. با مرور تبدیل‌ها و قرض گرفتن از واحد بزرگ‌تر، قوی‌تر می‌شوی.":"تلاش ارزشمندی بود. پاسخ‌ها و توضیح‌ها را مرور کن و دوباره امتحان کن.";
+  const b=$("badges");b.innerHTML="";const labels=score>=18?["استاد اعداد مرکب","دقت عالی","حلّال مسئله"]:score>=14?["محاسبه‌گر پرتلاش","در مسیر تسلط"]:["کاوشگر ریاضی","تمرین‌کنندهٔ شجاع"];
+  labels.forEach(t=>{const el=document.createElement("span");el.className="badge";el.textContent="✦ "+t;b.appendChild(el)});
+  $("review").innerHTML="";
+  answers.forEach((a,i)=>{
+    if(!a) return; // اگه سوالی بی جواب مونده بود رد شو
+    const li=document.createElement("li");
+    li.className=a.good?"correct":"wrong";
+    li.innerHTML="<strong>"+fa(i+1)+". "+gameQuestions[i].q+"</strong><br>پاسخ صحیح: "+gameQuestions[i].o[gameQuestions[i].a]+"<br><span style='color:var(--muted)'>"+gameQuestions[i].why+"</span>";
+    $("review").appendChild(li);
+  });
+
+  // ارسال امتیاز به اپ اصلی
+  try {
+    window.parent.postMessage({
+      type: 'GAME_FINISHED',
+      gameId: 'ch1-time',
+      score: score,
+      total: gameQuestions.length
+    }, '*');
+  } catch (e) {}
 }
-$("start").addEventListener("click",startGame);
-$("next").addEventListener("click",()=>{if(idx<questions.length-1){idx++;renderQuestion()}else finish()});
-$("again").addEventListener("click",()=>{$("review").classList.add("hidden");$("showReview").textContent="مرور پاسخ‌ها";startGame()});
-$("showReview").addEventListener("click",()=>{$("review").classList.toggle("hidden");$("showReview").textContent=$("review").classList.contains("hidden")?"مرور پاسخ‌ها":"پنهان کردن پاسخ‌ها"});
+
+// Event Listeners
+$("start").addEventListener("click",()=>startGame(true));
+$("resume").addEventListener("click",resumeGame);
+$("next").addEventListener("click",()=>{
+  if(idx<gameQuestions.length-1){
+    idx++;renderQuestion();
+  } else {
+    finish();
+  }
+});
+$("again").addEventListener("click",()=>{
+  $("review").classList.add("hidden");
+  $("showReview").textContent="مرور پاسخ‌ها";
+  startGame(true);
+});
+$("restart-game").addEventListener("click",()=>{
+  startGame(true);
+});
+$("showReview").addEventListener("click",()=>{
+  $("review").classList.toggle("hidden");
+  $("showReview").textContent=$("review").classList.contains("hidden")?"مرور پاسخ‌ها":"پنهان کردن پاسخ‌ها";
+});
+
+// شروع برنامه
+window.addEventListener('DOMContentLoaded', () => {
+  prepareQuestions();
+  if (loadProgress() && idx < questions.length) {
+    // اگر پیشرفت ذخیره شده وجود داشت، دکمه ادامه رو نشون بده
+    $("resume").classList.remove("hidden");
+  }
+});
 </script>
 </body>
 </html>

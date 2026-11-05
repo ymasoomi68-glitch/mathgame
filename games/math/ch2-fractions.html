@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#172554">
-<title>قهرمانان عددهای مخلوط | ریاضی پنجم</title>
+<title>قهرمانان اعداد مخلوط | ریاضی پنجم</title>
 <style>
 :root{--navy:#172554;--blue:#2563eb;--cyan:#06b6d4;--purple:#7c3aed;--gold:#facc15;--ink:#172033;--muted:#64748b;--paper:#fff;--good:#15803d;--bad:#b91c1c;--line:#dbeafe}
 *{box-sizing:border-box}
@@ -19,7 +19,6 @@ button:focus-visible,input:focus-visible{outline:3px solid #38bdf8;outline-offse
 .pill{border:1px solid #cbd5e1;border-radius:999px;background:#ffffffb8;padding:8px 12px;color:#334155;font-size:13px;font-weight:700}
 .creator-tag{font-size:12px;line-height:1.9;color:#334155;background:#ffffffd9;border:1px solid #bfdbfe;border-radius:12px;padding:7px 11px;text-align:center;box-shadow:0 3px 10px #17255412}
 .creator-tag b{color:#312e81}
-.creator-tag [dir="ltr"]{font-weight:900;color:#1d4ed8;white-space:nowrap}
 .card{background:#fff;border:1px solid #dbeafe;border-radius:25px;overflow:hidden;box-shadow:0 18px 55px #1e3a8a14}
 .hero{position:relative;overflow:hidden;padding:28px 22px;color:#fff;background:linear-gradient(120deg,#172554,#4338ca 56%,#0891b2)}
 .hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:#ffffff10}
@@ -39,8 +38,6 @@ main{padding:22px}
 .panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px;margin-bottom:16px}
 .panel h2,.panel h3{margin-top:0;color:var(--navy)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:block;font-size:14px;font-weight:800;margin-bottom:7px}
-input{width:100%;border:2px solid #cbd5e1;border-radius:12px;padding:12px 13px;background:#fff;min-height:48px}
 .hint{font-size:12px;color:var(--muted);line-height:1.8;margin:7px 0 0}
 .btn{border:0;border-radius:13px;padding:12px 18px;font-weight:800;transition:transform .15s,filter .15s;min-height:46px}
 .btn:hover{filter:brightness(1.04);transform:translateY(-1px)}
@@ -49,7 +46,7 @@ input{width:100%;border:2px solid #cbd5e1;border-radius:12px;padding:12px 13px;b
 .secondary{background:white;border:1px solid #cbd5e1;color:#334155}
 .gold{background:linear-gradient(90deg,#facc15,#f59e0b);color:#422006;box-shadow:0 4px 0 #fde68a}
 .wide{width:100%}
-.start-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.start-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
 #game,#result{display:none}
 .section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
 .section-head h2{margin:0;color:var(--navy);font-size:22px}
@@ -103,13 +100,13 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{body{background:white;padding:0}.topbar,#start,.controls,.footer,.map{display:none!important}.card{box-shadow:none;border:0}.hero{print-color-adjust:exact}.panel{break-inside:avoid}}
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"><link rel="stylesheet" href="../../css/game-theme.css"></head>
+</head>
 <body>
 <div class="shell">
   <div class="topbar">
     <div class="brand"><span class="brand-mark">½</span><span>باشگاه قهرمانان ریاضی</span></div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-      <div class="creator-tag"><b>طراح: یوسف معصومی</b></div>
+      <div class="creator-tag"><b>طراح: خانم صادقی</b></div>
       <span class="pill">پایه پنجم ابتدایی</span>
     </div>
   </div>
@@ -118,9 +115,9 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
       <div class="hero-inner">
         <div>
           <div class="eyebrow">✦ یک ماجراجویی ریاضی آغاز می‌شود ✦</div>
-          <h1>قهرمانان عددهای مخلوط</h1>
+          <h1>قهرمانان اعداد مخلوط</h1>
           <p>برای بازسازی پل‌ها، بازکردن دروازه‌ها و پیدا کردن گنجینهٔ شهر کسرها، باید با فکر و دقت مسئله‌ها را حل کنی.</p>
-          <div class="hero-credit"><strong>طراح: یوسف معصومی</strong></div>
+          <div class="hero-credit"><strong>طراح: خانم صادقی</strong></div>
         </div>
         <div class="world-art" aria-label="قلعه و گنجینه خیالی">🏰<span class="float f1">✨</span><span class="float f2">🗝️</span></div>
       </div>
@@ -129,26 +126,22 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
       <section id="start">
         <div class="panel">
           <h2>🎒 آماده‌ای، قهرمان؟</h2>
-          <p style="line-height:1.9;margin-top:0">نامت را وارد کن و پنج مأموریت شهر کسرها را پشت سر بگذار. هر پاسخ درست، تو را یک قدم به گنجینه نزدیک‌تر می‌کند.</p>
-          <div class="form-grid">
-            <div><label for="firstName">نام</label><input id="firstName" maxlength="40" autocomplete="given-name" placeholder="مثلاً پارمیس" required></div>
-            <div><label for="lastName">نام خانوادگی</label><input id="lastName" maxlength="50" autocomplete="family-name" placeholder="مثلاً بی‌نیاز" required></div>
-          </div>
+          <p style="line-height:1.9;margin-top:0">یک مرحله را انتخاب کن و ماجراجویی را شروع کن. هر پاسخ درست، تو را یک قدم به گنجینه نزدیک‌تر می‌کند.</p>
           <div class="start-actions">
-            <button class="btn primary" id="startBtn" type="button">🚀 ثبت نام و انتخاب مرحله</button>
-            <button class="btn secondary" id="guideBtn" type="button">📘 راهنمای بازی</button>
+            <button class="btn primary" id="startBtn" type="button">🗺️ انتخاب مرحله</button>
           </div>
+          <button class="btn secondary hidden" id="resumeBtn" style="width:100%; margin-top:10px; background:#d1fae5; color:#065f46; border-color:#a7f3d0;" type="button">🚀 ادامه بازی قبلی</button>
         </div>
         <div class="panel hidden" id="guidePanel">
           <h3>چطور بازی کنم؟</h3>
-          <p style="line-height:2;margin-bottom:0">۱) نام و نام خانوادگی را وارد کن. ۲) مأموریت‌ها را به‌ترتیب انجام بده. ۳) برای هر سؤال، پاسخ را انتخاب کن. ۴) اگر اشتباه کردی، راهنمایی را بخوان و دوباره تلاش کن. ۵) پس از پاسخ درست، می‌توانی مراحل حل را در «آزمایشگاه محاسبات» ببینی. در پایان، کارنامه‌ات نمایش داده می‌شود.</p>
+          <p style="line-height:2;margin-bottom:0">۱) یک مرحله را انتخاب کن. ۲) برای هر سؤال، پاسخ را انتخاب کن. ۳) اگر اشتباه کردی، راهنمایی را بخوان و دوباره تلاش کن. ۴) پس از پاسخ درست، می‌توانی مراحل حل را در «آزمایشگاه محاسبات» ببینی. در پایان، کارنامه‌ات نمایش داده می‌شود.</p>
         </div>
       </section>
 
       <section id="stageSelect" style="display:none">
         <div class="panel">
           <h2>🗺️ انتخاب مرحله</h2>
-          <p style="line-height:1.9">سلام <b id="stagePlayerName"></b>! مرحلهٔ موردنظرت را انتخاب کن. بعد از پایان هر مرحله، دوباره به همین صفحه برمی‌گردی تا مرحلهٔ بعدی را شروع کنی.</p>
+          <p style="line-height:1.9">مرحلهٔ موردنظرت را انتخاب کن. بعد از پایان هر مرحله، دوباره به همین صفحه برمی‌گردی تا مرحلهٔ بعدی را شروع کنی.</p>
           <div class="stage-menu" id="stageMenu"></div>
         </div>
       </section>
@@ -186,6 +179,7 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
             <button class="btn secondary" id="hintBtn" type="button">💡 راهنمایی</button>
             <button class="btn secondary" id="homeBtn" type="button">⌂ بازگشت به صفحهٔ اول</button>
             <button class="btn primary hidden" id="nextBtn" type="button">سؤال بعدی ←</button>
+            <button class="btn danger hidden" id="resetBtn" type="button">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
           </div>
           <div class="feedback hidden" id="hintBox"></div>
         </div>
@@ -196,7 +190,6 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
           <div class="trophy">🏆</div>
           <div class="score" id="finalScore">۰</div>
           <h2 id="resultTitle">قهرمان شهر کسرها!</h2>
-          <p id="resultName"></p>
           <p id="resultMessage">با تلاش و فکر، مأموریتت را به پایان رساندی.</p>
         </div>
         <div class="result-grid">
@@ -214,12 +207,12 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
         </div>
         <div class="controls">
           <button class="btn primary" id="printBtn" type="button">🖨️ چاپ / ذخیرهٔ کارنامه</button>
-          <button class="btn gold" id="restartBtn" type="button">🔄 بازی دوباره</button>
+          <button class="btn gold" id="restartBtn" type="button">🔄 شروع دوباره</button>
         </div>
       </section>
     </main>
   </div>
-  <div class="footer">طراح: یوسف معصومی</div>
+  <div class="footer">طراح: خانم صادقی</div>
 </div>
 <script>
 (() => {
@@ -255,23 +248,166 @@ const questions = [
 ];
 const faDigits = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
 const $ = id => document.getElementById(id);
+
 let player='', order=[], allOrder=[], idx=0, score=0, wrong=0, keys=0, answered=false, soundOn=false, audioCtx=null;
 let records=[], firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
+
+// --- ذخیره و بازیابی پیشرفت ---
+function saveProgress() {
+  const data = {
+    score, wrong, keys, unlockedStage, currentStage, idx,
+    firstTry, completedStages: [...completedStages],
+    allOrder, order
+  };
+  localStorage.setItem('fractions_game_progress', JSON.stringify(data));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem('fractions_game_progress');
+  if (!saved) return false;
+  try {
+    const data = JSON.parse(saved);
+    score = data.score || 0; wrong = data.wrong || 0; keys = data.keys || 0;
+    unlockedStage = data.unlockedStage || 0; currentStage = data.currentStage || 0;
+    idx = data.idx || 0; firstTry = data.firstTry || {};
+    completedStages = new Set(data.completedStages || []);
+    allOrder = data.allOrder || []; order = data.order || [];
+    return true;
+  } catch(e) { return false; }
+}
+
+function clearProgress() {
+  localStorage.removeItem('fractions_game_progress');
+}
+
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function playTone(freq=660,duration=.11){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.08,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.start();o.stop(audioCtx.currentTime+duration);}catch(e){}}
-function mathHTML(str){return String(str).replace(/([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
+function mathHTML(str){return String(str).replace(/([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
 function setFeedback(kind,title,text){const el=$('feedback');el.className='feedback show '+kind;el.innerHTML='<strong>'+title+'</strong><span>'+mathHTML(text)+'</span>';}
 function showHint(){const q=questions[order[idx]],box=$('hintBox');box.className='feedback show';box.style.background='#fffbeb';box.style.border='1px solid #fde68a';box.style.color='#854d0e';box.innerHTML='💡 راهنمایی: '+mathHTML(q.hint);}
-function renderStageMenu(){ $('stageMenu').innerHTML=stages.map((s,i)=>{const done=completedStages.has(i),open=i<=unlockedStage;return `<button type="button" class="stage-pick ${done?'done':open?'unlocked':''}" data-stage="${i}" ${open?'':'disabled'}><span>${done?'✅':s.icon}</span><strong>${s.name}</strong><small>${done?'تکمیل شد':open?'آمادهٔ شروع':'🔒 قفل است'}</small></button>`}).join('');$('stageMenu').querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{if(Number(b.dataset.stage)>unlockedStage)return;beginStage(Number(b.dataset.stage));}));}
-function showStageSelect(){ document.body.classList.remove('in-game');document.body.classList.add('in-stage-select');$('start').style.display='none';$('game').style.display='none';$('result').style.display='none';$('stageSelect').style.display='block';$('stagePlayerName').textContent=player;renderStageMenu();window.scrollTo({top:0,behavior:'smooth'});}
-function renderQuestion(){answered=false;const q=questions[order[idx]],stage=stages[q.stage];$('missionIcon').textContent=stage.icon;$('missionTitle').textContent=stage.name;$('missionDesc').textContent=stage.desc;$('topic').textContent=q.skill;$('qNumber').textContent=`سؤال ${faDigits(idx+1)} از ${faDigits(order.length)}`;$('difficulty').textContent='سطح '+q.level;$('questionText').innerHTML='<span class="math">'+mathHTML(q.q)+'</span>';$('options').innerHTML='';shuffle(q.opts.map((v,i)=>({v,original:i}))).forEach(item=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML='<span class="math">'+mathHTML(item.v)+'</span>';b.addEventListener('click',()=>choose(item.original,b));$('options').appendChild(b);});$('feedback').className='feedback';$('feedback').textContent='';$('hintBox').className='feedback hidden';$('lab').classList.add('hidden');$('lab').open=false;$('nextBtn').classList.add('hidden');$('hintBtn').disabled=false;$('progressBar').style.width=(idx/order.length*100)+'%';$('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);}
-function choose(original,button){if(answered)return;const q=questions[order[idx]],buttons=[...$('options').querySelectorAll('button')];if(original===q.a){answered=true;if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=true;score+=10;keys+=1;buttons.forEach(b=>{b.disabled=true});button.classList.add('correct');setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');playTone(790);$('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');$('lab').classList.remove('hidden');$('nextBtn').classList.remove('hidden');$('hintBtn').disabled=true;records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true,steps:q.steps});$('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);}else{if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=false;wrong++;button.classList.add('wrong');button.disabled=true;setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');playTone(260);records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false,steps:q.steps});$('hintBtn').disabled=false;}}
-function nextQuestion(){if(!answered)return;idx++;if(idx>=order.length){completedStages.add(currentStage);if(currentStage===stages.length-1){showResult();return;}unlockedStage=Math.max(unlockedStage,currentStage+1);returnHome(true);return;}renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
-function returnHome(stageDone=false){document.body.classList.remove('in-game');document.body.classList.add('in-stage-select');$('game').style.display='none';$('result').style.display='none';$('start').style.display='none';$('stageSelect').style.display='block';renderStageMenu();if(stageDone){const old=$('stageNotice');if(old)old.remove();const notice=document.createElement('div');notice.id='stageNotice';notice.className='panel';notice.innerHTML=`<h3>🎉 ${stages[currentStage].name} به پایان رسید!</h3><p style="line-height:1.9;margin-bottom:0">آفرین ${player}! امتیازت تا اینجا ${faDigits(score)} است. حالا مرحلهٔ بعدی را از فهرست انتخاب کن.</p>`;$('stageSelect').querySelector('.panel').insertAdjacentElement('afterbegin',notice);}window.scrollTo({top:0,behavior:'smooth'});}
+
+function renderStageMenu(){
+  $('stageMenu').innerHTML=stages.map((s,i)=>{
+    const done=completedStages.has(i),open=i<=unlockedStage;
+    return `<button type="button" class="stage-pick ${done?'done':open?'unlocked':''}" data-stage="${i}" ${open?'':'disabled'}><span>${done?'✅':s.icon}</span><strong>${s.name}</strong><small>${done?'تکمیل شد':open?'آمادهٔ شروع':'🔒 قفل است'}</small></button>`
+  }).join('');
+  $('stageMenu').querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{
+    if(Number(b.dataset.stage)>unlockedStage)return;
+    beginStage(Number(b.dataset.stage));
+  }));
+}
+
+function showStageSelect(){
+  document.body.classList.remove('in-game');
+  document.body.classList.add('in-stage-select');
+  $('start').style.display='none';$('game').style.display='none';$('result').style.display='none';
+  $('stageSelect').style.display='block';
+  renderStageMenu();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderQuestion(){
+  answered=false;const q=questions[order[idx]],stage=stages[q.stage];
+  $('missionIcon').textContent=stage.icon;$('missionTitle').textContent=stage.name;$('missionDesc').textContent=stage.desc;
+  $('topic').textContent=q.skill;$('qNumber').textContent=`سؤال ${faDigits(idx+1)} از ${faDigits(order.length)}`;
+  $('difficulty').textContent='سطح '+q.level;$('questionText').innerHTML='<span class="math">'+mathHTML(q.q)+'</span>';
+  $('options').innerHTML='';
+  shuffle(q.opts.map((v,i)=>({v,original:i}))).forEach(item=>{
+    const b=document.createElement('button');b.type='button';b.className='opt';
+    b.innerHTML='<span class="math">'+mathHTML(item.v)+'</span>';
+    b.addEventListener('click',()=>choose(item.original,b));$('options').appendChild(b);
+  });
+  $('feedback').className='feedback';$('feedback').textContent='';
+  $('hintBox').className='feedback hidden';$('lab').classList.add('hidden');$('lab').open=false;
+  $('nextBtn').classList.add('hidden');$('hintBtn').disabled=false;
+  $('progressBar').style.width=(idx/order.length*100)+'%';
+  $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
+
+  // بازیابی وضعیت سوال قبلی در صورت وجود
+  if(firstTry[order[idx]] !== undefined && records.find(r=>r.qid===order[idx])) {
+    const prevRec = records.find(r=>r.qid===order[idx]);
+    const all = [...$('options').querySelectorAll('button')];
+    all.forEach(b => {
+      b.disabled = true;
+      if (b.innerHTML.includes(mathHTML(prevRec.chosen))) {
+        b.style.borderColor = prevRec.correct ? "var(--good)" : "var(--bad)";
+        b.style.color = prevRec.correct ? "var(--good)" : "var(--bad)";
+      }
+      if (!prevRec.correct && b.innerHTML.includes(mathHTML(q.opts[q.a]))) {
+        b.style.borderColor = "var(--good)"; b.style.color = "var(--good)";
+      }
+    });
+    if (prevRec.correct) {
+      setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
+      $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
+      $('lab').classList.remove('hidden');
+      $('hintBtn').disabled = true;
+    } else {
+      setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');
+    }
+    answered = true;
+    $('nextBtn').classList.remove('hidden');
+    $('nextBtn').textContent = idx===order.length-1?'پایان مرحله ←':'سؤال بعدی ←';
+  }
+}
+
+function choose(original,button){
+  if(answered)return;const q=questions[order[idx]],buttons=[...$('options').querySelectorAll('button')];
+  if(original===q.a){
+    answered=true;
+    if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=true;
+    score+=10;keys+=1;buttons.forEach(b=>{b.disabled=true});
+    button.classList.add('correct');
+    setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
+    playTone(790);
+    $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
+    $('lab').classList.remove('hidden');$('nextBtn').classList.remove('hidden');$('hintBtn').disabled=true;
+    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true,steps:q.steps});
+    $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
+  } else {
+    if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=false;
+    wrong++;button.classList.add('wrong');button.disabled=true;
+    setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');
+    playTone(260);
+    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false,steps:q.steps});
+    $('hintBtn').disabled=false;
+  }
+  saveProgress();
+}
+
+function nextQuestion(){
+  if(!answered)return;
+  idx++;
+  if(idx>=order.length){
+    completedStages.add(currentStage);
+    if(currentStage===4){showResult();return;}
+    unlockedStage=Math.max(unlockedStage,currentStage+1);
+    saveProgress();
+    returnHome(true);return;
+  }
+  saveProgress();
+  renderQuestion();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function returnHome(stageDone=false){
+  document.body.classList.remove('in-game');document.body.classList.add('in-stage-select');
+  $('game').style.display='none';$('result').style.display='none';$('start').style.display='none';$('stageSelect').style.display='block';
+  renderStageMenu();
+  if(stageDone){
+    const old=$('stageNotice');if(old)old.remove();
+    const notice=document.createElement('div');notice.id='stageNotice';notice.className='panel';
+    notice.innerHTML=`<h3>🎉 ${stages[currentStage].name} به پایان رسید!</h3><p style="line-height:1.9;margin-bottom:0">آفرین قهرمان! امتیازت تا اینجا ${faDigits(score)} است. حالا مرحلهٔ بعدی را از فهرست انتخاب کن.</p>`;
+    $('stageSelect').querySelector('.panel').insertAdjacentElement('afterbegin',notice);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function showResult(){
-  document.body.classList.remove('in-game','in-stage-select');$('game').style.display='none';$('result').style.display='block';$('progressBar').style.width='100%';
+  clearProgress(); // بازی تموم شده، پیشرفت پاک شه
+  document.body.classList.remove('in-game','in-stage-select');
+  $('game').style.display='none';$('result').style.display='block';$('progressBar').style.width='100%';
   const played=allOrder,total=played.length,correct=played.filter(qid=>firstTry[qid]===true).length,pct=Math.round(correct/total*100);
-  $('finalScore').textContent=faDigits(score)+' امتیاز';$('resultName').textContent='کارنامهٔ '+player;$('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(wrong);$('percent').textContent=faDigits(pct)+'٪';
+  $('finalScore').textContent=faDigits(score)+' امتیاز';
+  $('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(wrong);$('percent').textContent=faDigits(pct)+'٪';
   $('resultTitle').textContent=pct>=85?'قهرمان درخشان شهر کسرها!':pct>=65?'قهرمان پرتلاش شهر کسرها!':'قهرمان آیندهٔ شهر کسرها!';
   $('resultMessage').textContent=pct>=85?'با دقت و پشتکار، گنجینه را پیدا کردی!':pct>=65?'آفرین! با مرور چند نکته می‌توانی قوی‌تر شوی.':'هر تمرین فرصتی برای یادگیری است؛ سؤال‌ها را مرور کن و دوباره تلاش کن.';
   const skills=[...new Set(played.map(qid=>questions[qid].skill))];
@@ -279,19 +415,79 @@ function showResult(){
   $('reviewList').innerHTML=played.map((qid,i)=>{const q=questions[qid];return `<details class="review-item"><summary>${firstTry[qid]===true?'✅ پاسخ درست در تلاش اول':'🔎 نیازمند تمرین بیشتر'} · سؤال ${faDigits(i+1)} · ${q.skill}</summary><p><b>مسئله:</b> <span class="math">${mathHTML(q.q)}</span></p><p><b>پاسخ درست:</b> <span class="math">${mathHTML(q.opts[q.a])}</span></p><p><b>روش حل:</b> ${q.steps.map(mathHTML).join(' ')}</p></details>`}).join('');
   window.scrollTo({top:0,behavior:'smooth'});
 
-  // 🆕 ارسال امتیاز به اپ اصلی
   try {
-    window.parent.postMessage({
-      type: 'GAME_FINISHED',
-      gameId: 'ch2-fractions',
-      score: correct,
-      total: total
-    }, location.origin);
+    window.parent.postMessage({ type: 'GAME_FINISHED', gameId: 'ch2-fractions', score: correct, total: total }, '*');
   } catch (e) {}
 }
-function beginStage(stageIndex){if(stageIndex>unlockedStage)return;document.body.classList.remove('in-stage-select');document.body.classList.add('in-game');currentStage=stageIndex;order=questions.map((q,i)=>({q,i})).filter(x=>x.q.stage===stageIndex).map(x=>x.i);allOrder=[...allOrder.filter(i=>questions[i].stage!==stageIndex),...order];idx=0;$('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';$('welcome').textContent='سلام '+player+'، آماده‌ای؟';renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
-function startGame(){document.body.classList.remove('in-game','in-stage-select');const f=$('firstName').value.trim(),l=$('lastName').value.trim();if(!f){alert('لطفاً نام دانش‌آموز را وارد کن.');$('firstName').focus();return;}if(!l){alert('لطفاً نام خانوادگی دانش‌آموز را وارد کن.');$('lastName').focus();return;}player=f+' '+l;score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;const notice=$('stageNotice');if(notice)notice.remove();showStageSelect();}
-$('startBtn').addEventListener('click',startGame);$('guideBtn').addEventListener('click',()=>$('guidePanel').classList.toggle('hidden'));$('hintBtn').addEventListener('click',showHint);$('nextBtn').addEventListener('click',nextQuestion);$('homeBtn').addEventListener('click',()=>{if(confirm('به صفحهٔ انتخاب مرحله برگردی؟ پیشرفت این مرحله ذخیره نمی‌شود.'))returnHome(false);});$('printBtn').addEventListener('click',()=>window.print());$('restartBtn').addEventListener('click',()=>{document.body.classList.remove('in-game','in-stage-select');player='';$('firstName').value='';$('lastName').value='';$('result').style.display='none';$('stageSelect').style.display='none';$('start').style.display='block';const notice=$('stageNotice');if(notice)notice.remove();$('firstName').focus();});$('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊 صدا: روشن':'🔈 صدا: خاموش';$('soundBtn').setAttribute('aria-pressed',String(soundOn));if(soundOn)playTone(660);});renderStageMenu();
+
+function beginStage(stageIndex){
+  if(stageIndex>unlockedStage)return;
+  document.body.classList.remove('in-stage-select');document.body.classList.add('in-game');
+  currentStage=stageIndex;
+  order=questions.map((q,i)=>({q,i})).filter(x=>x.q.stage===stageIndex).map(x=>x.i);
+  allOrder=[...allOrder.filter(i=>questions[i].stage!==stageIndex),...order];
+  idx=0;
+  $('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';
+  $('welcome').textContent='سلام قهرمان، آماده‌ای؟';
+  saveProgress();
+  renderQuestion();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startNewGame(){
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
+    clearProgress();
+    score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    $('resumeBtn').classList.add('hidden');
+    showStageSelect();
+  }
+}
+
+function resumeGame(){
+  if(loadProgress()) {
+    if(currentStage !== undefined && idx < order.length) {
+      // برگردوندن بازیکن دقیقا به وسط بازی
+      document.body.classList.remove('in-stage-select');document.body.classList.add('in-game');
+      $('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';
+      $('welcome').textContent='خوش برگشتی قهرمان!';
+      renderQuestion();
+    } else {
+      // اگه بازی قبلا تموم شده بود یا تو مرحله بود ولی سوالی نمونده بود، بره به نقشه
+      showStageSelect();
+    }
+  }
+}
+
+// Event Listeners
+$('startBtn').addEventListener('click',startNewGame);
+$('resumeBtn').addEventListener('click',resumeGame);
+$('hintBtn').addEventListener('click',showHint);
+$('nextBtn').addEventListener('click',nextQuestion);
+$('homeBtn').addEventListener('click',()=>{
+  if(confirm('به صفحهٔ انتخاب مرحله برگردی؟ پیشرفت شما ذخیره شده است.')) returnHome(false);
+});
+$('printBtn').addEventListener('click',()=>window.print());
+$('restartBtn').addEventListener('click',()=>{
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
+    clearProgress();
+    score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    document.body.classList.remove('in-game','in-stage-select');
+    $('result').style.display='none';$('stageSelect').style.display='none';$('start').style.display='block';
+    const notice=$('stageNotice');if(notice)notice.remove();
+    $('resumeBtn').classList.add('hidden');
+  }
+});
+$('soundBtn').addEventListener('click',()=>{
+  soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊 صدا: روشن':'🔈 صدا: خاموش';
+  $('soundBtn').setAttribute('aria-pressed',String(soundOn));if(soundOn)playTone(660);
+});
+
+// شروع
+window.addEventListener('DOMContentLoaded', () => {
+  if(loadProgress() && completedStages.size > 0) {
+    $('resumeBtn').classList.remove('hidden');
+  }
+  renderStageMenu();
+});
 })();
 </script>
 </body>
