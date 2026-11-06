@@ -1,6 +1,6 @@
 // سرویس‌ورکر کاوشگر پنجم — پشتیبانی آفلاین و نصب‌پذیری
 // نکته: CACHE_VERSION را make-version.js خودکار به‌روز می‌کند.
-const CACHE_VERSION = 'kavoshgar5-v1.0.11';
+const CACHE_VERSION = 'kavoshgar5-v1.0.12';
 const FONT_CACHE = 'kavoshgar5-fonts';
 const ASSETS = [
   './',
@@ -32,7 +32,11 @@ const ASSETS = [
   './games/math/ch3-multiply-fractions.html',
   './games/science/ch3-rainbow.html',
   './games/math/ch2-multiply-fractions-quiz.html',
-  './games/farsi/ch4-farsi-treasure.html'
+  './games/farsi/ch4-farsi-treasure.html',
+  './games/math/ch2-fraction-butterfly.html',
+  './games/math/ch2-fractions-adventure.html',
+  './games/science/ch3-science-quiz.html',
+  './games/social/ch1-social-quiz.html'
 ];
 
 self.addEventListener('install', (event) => {

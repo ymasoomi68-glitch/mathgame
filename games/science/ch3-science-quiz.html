@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>آزمون آنلاین علوم پنجم ـ رنگین‌کمان و ذره‌بین</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:18px;background:radial-gradient(circle at 15% 15%,#fff4b8 0,transparent 24%),radial-gradient(circle at 88% 22%,#d8f8ff 0,transparent 25%),linear-gradient(140deg,#34266f,#267da5 55%,#38b9a5);font-family:Tahoma,Arial,sans-serif;color:#173451;display:flex;justify-content:center;align-items:center;overflow-x:hidden}
+main{width:min(780px,100%)}
+.card{background:linear-gradient(155deg,#ffffff 0%,#f7fcff 68%,#f4f1ff 100%);border:2px solid #ffffff;border-radius:26px;padding:clamp(18px,4vw,34px);box-shadow:0 22px 60px #081b3b55;position:relative;overflow:hidden;animation:pop .45s ease-out}@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+h1{text-align:center;line-height:1.9;color:#164e77;font-size:clamp(1.3rem,4vw,1.9rem);text-shadow:0 2px 0 #e4f4ff}
+.sub{text-align:center;color:#5b7890;line-height:2}
+button{font:inherit;font-weight:bold;border:0;border-radius:12px;padding:13px 16px;cursor:pointer}
+.primary{background:linear-gradient(110deg,#2879e8,#7a55d9);color:white;width:100%;box-shadow:0 7px 18px #4e68d533;transition:transform .18s,filter .18s;margin-top:15px;}.primary:hover,.again:hover,.finish:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.secondary{background:#e6f1f8;color:#214f70}
+.danger{background:#fecdd3;color:#9f1239;}
+.finish,.again{background:linear-gradient(110deg,#0b9a78,#42b883);color:white;width:100%;margin-top:16px;box-shadow:0 7px 18px #16835b25}
+.hidden{display:none!important}
+.count{text-align:center;color:#50738d;font-weight:bold}
+.progress{height:8px;background:#e1ebf5;border-radius:9px;margin:14px 0 22px;overflow:hidden}
+.progress span{display:block;height:100%;background:#28a2b8}
+.qt{background:linear-gradient(115deg,#e7f8ff,#f0ebff);border-right:6px solid #28a2b8;border-radius:16px;padding:16px;font-size:clamp(1.05rem,3.7vw,1.35rem);line-height:2;font-weight:bold;margin-bottom:20px;box-shadow:0 5px 15px #8ebed522}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:right;background:linear-gradient(110deg,#fff,#f8fbff);border:2px solid #d7e6ef;color:#203f60;padding:12px;border-radius:14px;line-height:1.8;width:100%;transition:transform .16s,border-color .16s,background .16s}.opt:hover{transform:translateX(-3px);border-color:#79b9e0}
+.opt b{flex:0 0 30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#eaf3f8;color:#235a78}
+.opt.sel{border-color:#2787b7;background:linear-gradient(110deg,#dcf6ff,#eae5ff);box-shadow:0 5px 14px #2787b722}
+.nav{display:flex;gap:12px;margin-top:20px}
+.nav button{flex:1}
+.score{text-align:center;font-size:2.6rem;font-weight:900;color:#1677a7;margin:15px}.sticker{text-align:center;font-size:3.5rem;animation:bounce 1.5s ease-in-out infinite alternate}@keyframes bounce{to{transform:translateY(-5px) rotate(2deg)}}.decor{text-align:center;font-size:1.5rem;letter-spacing:8px;margin:2px 0 8px}
+.feedback{text-align:center;font-size:1.05rem;font-weight:bold;color:#174b6b;line-height:2;white-space:pre-line;background:#eef8fb;border-radius:14px;padding:16px}
+.row{border:1px solid #d7e5ed;border-radius:12px;padding:13px;margin:10px 0;line-height:1.9;background:white}
+.good{color:#18845b;font-weight:bold}.bad{color:#bd3d4b;font-weight:bold}
+@media(max-width:560px){.nav{flex-direction:column}}
+</style>
+</head>
+<body><main>
+<section class="card" id="start">
+<div class="decor">🌈 🔍 ⭐ 🦋 ✨</div>
+<h1>آزمون آنلاین علوم پنجم</h1>
+<div style="text-align:center;background:linear-gradient(110deg,#fff3cc,#ffe4f2);border:1px solid #f3d7a5;border-radius:15px;padding:12px 10px;margin:12px 0 18px;line-height:2">
+<div style="color:#2869a1;font-weight:bold">طراح: خانم صادقی</div>
+</div>
+<p class="sub">درس: رنگین‌کمان و ذره‌بین<br>۲۰ سؤال · هر سؤال ۱ امتیاز</p>
+<p class="sub" style="font-size:.9rem;color:#bd3d4b;">⚠️ توجه: با خروج از آزمون، پاسخ‌های داده‌شده ذخیره می‌شوند و می‌توانید بعداً ادامه دهید.</p>
+
+<button class="primary" id="startBtn">شروع آزمون</button>
+<button class="primary hidden" id="resumeBtn" style="background:linear-gradient(110deg,#20c88d,#087d66);">ادامه آزمون قبلی ←</button>
+<button class="danger hidden" id="resetBtn" style="width:100%;">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
+</section>
+
+<section class="card hidden" id="quiz">
+<div class="decor">🌟 📚 🌈</div><div class="count" id="count"></div><div class="progress"><span id="bar"></span></div>
+<div class="qt" id="qt"></div><div class="opts" id="opts"></div>
+<div class="nav"><button class="secondary" id="prev">سؤال قبل</button><button class="secondary" id="next">سؤال بعد</button></div>
+<button class="finish hidden" id="finish">پایان آزمون و مشاهده نتیجه</button>
+</section>
+
+<section class="card hidden" id="result">
+<div class="decor">🎉 🏆 ✨</div><h1>نتیجهٔ آزمون</h1><div class="sticker" id="sticker">🌟</div><p class="sub" id="student"></p><div class="score"><span id="score"></span> از ۲۰</div>
+<div class="feedback" id="feedback"></div>
+<button class="secondary" id="toggle" style="width:100%;margin-top:15px">مشاهده پاسخنامه</button>
+<div id="key" class="hidden"></div>
+<button class="again" id="again">آزمون دوباره</button>
+</section>
+</main>
+<script>
+const raw=[
+["نور خورشید در ظاهر چه رنگی به نظر می‌رسد؟",["سفید","قرمز","سبز","بنفش"],0],
+["نور سفید خورشید از چه چیزی تشکیل شده است؟",["فقط رنگ زرد","رنگ‌های گوناگون","فقط قرمز و آبی","فقط نور آبی"],1],
+["رنگین‌کمان چه زمانی تشکیل می‌شود؟",["وقتی نور سفید در قطره‌های آب تجزیه شود","وقتی هوا کاملاً خشک باشد","وقتی نور به دیوار تیره بتابد","وقتی خورشید پشت ابرها باشد و قطره آبی وجود نداشته باشد"],0],
+["برای تشکیل رنگین‌کمان معمولاً چه دو شرطی لازم است؟",["وجود گردوغبار و باد شدید","وجود قطره‌های آب در هوا و تابش نور خورشید","وجود برف و هوای سرد","وجود ابرهای تیره و نبود نور"],1],
+["کدام گزینه ترتیب رنگ‌های رنگین‌کمان را درست نشان می‌دهد؟",["قرمز، نارنجی، زرد، سبز، آبی، نیلی، بنفش","آبی، سبز، زرد، قرمز، بنفش، نیلی، نارنجی","قرمز، زرد، بنفش، سبز، نارنجی، آبی، نیلی","بنفش، نیلی، آبی، سبز، زرد، نارنجی، قرمز"],0],
+["کدام وسیله می‌تواند نور سفید را به رنگ‌های گوناگون تجزیه کند؟",["منشور","آینه تخت","خط‌کش چوبی","کاغذ سفید"],0],
+["در آزمایش تشکیل رنگین‌کمان با شلنگ آب، چه چیزی به تشکیل آن کمک می‌کند؟",["پاشیدن آب در هوا در روز آفتابی","خاموش کردن همه چراغ‌ها","قرار دادن شلنگ در اتاق تاریک","تاباندن نور به زمین خشک"],0],
+["کدام عبارت دربارهٔ نور سفید درست است؟",["نور سفید از رنگ‌های گوناگون تشکیل شده است","نور سفید فقط از رنگ زرد تشکیل شده است","نور سفید هنگام عبور از منشور ناپدید می‌شود","نور سفید هیچ رنگی در خود ندارد"],0],
+["منشور معمولاً چه شکلی دارد؟",["وسیله‌ای شفاف با شکل مثلثی","صفحه‌ای کاملاً کدر","آینه‌ای تخت و فلزی","لوله‌ای از جنس چوب"],0],
+["وقتی نور سفید از منشور عبور می‌کند، چه اتفاقی می‌افتد؟",["به رنگ‌های گوناگون تجزیه می‌شود","کاملاً ناپدید می‌شود","فقط به نور قرمز تبدیل می‌شود","همیشه به همان شکل باقی می‌ماند"],0],
+["ذره‌بین برای چه کاری به کار می‌رود؟",["بزرگ‌تر دیدن اجسام و نوشته‌های ریز","تجزیه آب به گازها","تولید نور خورشید","اندازه‌گیری دمای هوا"],0],
+["ذره‌بین معمولاً از چه چیزی ساخته می‌شود؟",["شیشه یا پلاستیک شفاف","چوب کدر","پارچه نازک","فلز مات"],0],
+["کانون عدسی به چه نقطه‌ای گفته می‌شود؟",["نقطه‌ای که پرتوهای نور پس از عبور از عدسی در آن جمع می‌شوند","جایی که نور کاملاً ناپدید می‌شود","مرکز دستهٔ ذره‌بین","نقطه‌ای روی لبهٔ کاغذ"],0],
+["چرا نباید با ذره‌بین به خورشید نگاه کرد؟",["زیرا نور خورشید می‌تواند به چشم آسیب برساند","چون ذره‌بین نور را کاملاً خاموش می‌کند","چون خورشید هیچ نوری ندارد","زیرا ذره‌بین فقط در شب کار می‌کند"],0],
+["اگر کاغذ را در کانون عدسی و زیر نور خورشید نگه داریم، چه خطری وجود دارد؟",["ممکن است کاغذ داغ شود و بسوزد","کاغذ حتماً به آب تبدیل می‌شود","نور خورشید سردتر می‌شود","عدسی نور را به صدا تبدیل می‌کند"],0],
+["با تغییر فاصلهٔ جسم از عدسی، اندازهٔ تصویر چه تغییری می‌تواند بکند؟",["ممکن است بزرگ‌تر یا کوچک‌تر شود","همیشه ثابت می‌ماند","همیشه ناپدید می‌شود","فقط رنگ آن تغییر می‌کند"],0],
+["برای تشکیل تصویر روی صفحه، کدام وسیله در آزمایش استفاده می‌شود؟",["عدسی و صفحهٔ دریافت تصویر","فقط یک لیوان کدر","آینه بدون نور","کاغذی درون جعبهٔ بسته"],0],
+["تصویر تشکیل‌شده روی صفحه در آزمایش شمع و عدسی می‌تواند چگونه باشد؟",["وارونه","همیشه بدون تصویر","فقط به شکل صدا","همیشه بزرگ‌تر از هر جسمی"],0],
+["کدام وسیله برای مشاهدهٔ اجسام بسیار ریز کاربرد دارد؟",["میکروسکوپ","تلسکوپ","دوربین عکاسی","عینک آفتابی"],0],
+["کدام گزینه یکی از کاربردهای عدسی در زندگی روزانه است؟",["عینک، دوربین عکاسی و تلسکوپ","فقط قاشق و چنگال","فقط مداد و پاک‌کن","فقط لیوان و بشقاب"],0]
+];
+const fa=n=>String(n).replace(/[0-9]/g,d=>"۰۱۲۳۴۵۶۷۸۹"[+d]),$=id=>document.getElementById(id);
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+let qs=[],at=0,ans=[];
+
+function saveProgress() {
+  if (at >= qs.length && qs.length > 0) {
+    localStorage.removeItem('science_quiz_progress');
+    return;
+  }
+  localStorage.setItem('science_quiz_progress', JSON.stringify({ qs, at, ans }));
+}
+
+function loadProgress() {
+  const s = localStorage.getItem('science_quiz_progress');
+  if(!s) return false;
+  try {
+    const d = JSON.parse(s);
+    qs = d.qs || [];
+    at = d.at || 0;
+    ans = d.ans || [];
+    return true;
+  } catch(e) { return false; }
+}
+
+function clearProgress() {
+  localStorage.removeItem('science_quiz_progress');
+}
+
+$("startBtn").onclick=()=>{
+ clearProgress();
+ qs=shuffle(raw.map(x=>({q:x[0],opts:shuffle(x[1].map((t,i)=>({t,ok:i===x[2]})))})));
+ ans=Array(qs.length).fill(null);
+ at=0;
+ $("start").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");
+ saveProgress();
+ draw();
+};
+
+function resumeExam() {
+  if(loadProgress()) {
+    $("start").classList.add("hidden");
+    $("result").classList.add("hidden");
+    $("quiz").classList.remove("hidden");
+    draw();
+  }
+}
+
+$("resetBtn").onclick = () => {
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام پاسخ‌ها و پیشرفت شما پاک خواهد شد.')){
+    clearProgress();
+    $("startBtn").classList.remove("hidden");
+    $("resumeBtn").classList.add("hidden");
+    $("resetBtn").classList.add("hidden");
+  }
+}
+
+function draw(){
+ const q=qs[at];$("count").textContent="سؤال "+fa(at+1)+" از "+fa(qs.length);
+ $("bar").style.width=((at+1)/qs.length*100)+"%";$("qt").textContent=q.q;$("opts").innerHTML="";
+ 
+ q.opts.forEach((o,i)=>{
+   let b=document.createElement("button");
+   b.className="opt"+(ans[at]===i?" sel":"");
+   let n=document.createElement("b");n.textContent=fa(i+1);
+   let t=document.createElement("span");t.textContent=o.t;
+   b.append(n,t);
+   b.onclick=()=>{
+     ans[at]=i;
+     saveProgress();
+     draw();
+     [...$("opts").children].forEach(x=>x.disabled=true);
+     setTimeout(()=>{
+       if(at<qs.length-1){
+         at++;
+         saveProgress();
+         draw();
+       }else{
+         $("finish").classList.remove("hidden");
+         $("finish").focus();
+       }
+     },550);
+   };
+   $("opts").appendChild(b);
+ });
+
+ $("prev").disabled=at===0;
+ $("next").disabled=at===qs.length-1;
+ $("finish").classList.toggle("hidden",at!==qs.length-1);
+}
+
+$("prev").onclick=()=>{if(at>0){at--;saveProgress();draw()}};
+$("next").onclick=()=>{if(at<qs.length-1){at++;saveProgress();draw()}};
+$("finish").onclick=finish;
+
+function finish(){
+ if(ans.some(x=>x===null)){alert("هنوز به همهٔ سؤال‌ها پاسخ نداده‌ای. سؤال‌های بی‌پاسخ را کامل کن.");return}
+ clearProgress();
+ const sc=qs.reduce((s,q,i)=>s+(q.opts[ans[i]].ok?1:0),0);
+ $("quiz").classList.add("hidden");$("result").classList.remove("hidden");
+ $("student").textContent="دانش‌آموز عزیز 🌷";$("score").textContent=fa(sc);
+ $("sticker").textContent=sc>=18?"🏆🌟🎉":sc>=15?"🥇🌈😊":sc>=10?"🌈👏💫":"💪📚💛";
+ let msg=sc>=18?"آفرین! تسلطت بر درس بسیار خوب است. 🌟":sc>=15?"آفرین! نتیجه‌ات خوب است؛ پاسخ‌های نادرست را مرور کن. 💐":sc>=10?"خسته نباشی! با مرور پاسخنامه می‌توانی بهتر شوی. 🌈":"خسته نباشی! اشتباه‌ها فرصتی برای یادگیری‌اند؛ درس را مرور کن و دوباره امتحان بده. 💛";
+ $("feedback").textContent=msg+"\nامتیاز تو: "+fa(sc)+" از ۲۰";
+ 
+ const key=$("key");key.innerHTML="";
+ qs.forEach((q,i)=>{
+   let r=document.createElement("div");r.className="row";
+   let h=document.createElement("strong");h.textContent="سؤال "+fa(i+1)+": "+q.q;r.append(h);
+   let p=document.createElement("p");p.textContent="پاسخ تو: "+q.opts[ans[i]].t;r.append(p);
+   let correct=q.opts.find(o=>o.ok);
+   let p2=document.createElement("p");p2.textContent="پاسخ درست: "+correct.t;r.append(p2);
+   let p3=document.createElement("p");p3.className=q.opts[ans[i]].ok?"good":"bad";p3.textContent=q.opts[ans[i]].ok?"پاسخ درست بود":"پاسخ نادرست بود";r.append(p3);
+   key.append(r)
+ });
+
+ try {
+    window.parent.postMessage({
+      type: 'GAME_FINISHED',
+      gameId: 'ch3-science-quiz',
+      score: sc,
+      total: 20
+    }, '*');
+ } catch (e) {}
+}
+
+$("toggle").onclick=()=>{const hidden=$("key").classList.toggle("hidden");$("toggle").textContent=hidden?"مشاهده پاسخنامه":"بستن پاسخنامه"};
+$("again").onclick=()=>{
+  $("result").classList.add("hidden");
+  $("start").classList.remove("hidden");
+  $("key").classList.add("hidden");
+  $("toggle").textContent="مشاهده پاسخنامه";
+  $("sticker").textContent="🌟";
+};
+
+$("resumeBtn").addEventListener("click", resumeExam);
+
+window.addEventListener('DOMContentLoaded', () => {
+  if(loadProgress() && at > 0 && at < qs.length) {
+    $("startBtn").classList.add("hidden");
+    $("resumeBtn").classList.remove("hidden");
+    $("resetBtn").classList.remove("hidden");
+  }
+});
+</script></body></html>

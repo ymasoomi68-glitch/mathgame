@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>باغ پروانه‌های کسر | نیره شریفی</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+ --ink:#183d45;--teal:#087e83;--mint:#b9eadb;
+ --pale:#effaf6;--gold:#d8a83d;--white:#fff;
+ --muted:#6b8586;--green:#16845e;--red:#bd5260;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;
+ font-family:'Vazirmatn',Tahoma,sans-serif;
+ color:var(--ink);
+ background:
+ radial-gradient(circle at 10% 10%,#d9f5e9 0,transparent 32%),
+ radial-gradient(circle at 90% 85%,#c9e8e8 0,transparent 35%),
+ linear-gradient(135deg,#f8fcf9,#dff2ed);
+}
+button,input{font-family:inherit}
+.page{min-height:100vh;padding:22px 14px 40px}
+.wrap{max-width:780px;margin:auto}
+header{text-align:center;margin-bottom:18px}
+.brand{
+ display:inline-flex;align-items:center;justify-content:center;
+ gap:9px;color:var(--teal);font-size:13px;font-weight:700;
+}
+.brand-mark{
+ width:38px;height:38px;border-radius:13px;
+ display:grid;place-items:center;background:#d8f2e9;
+ border:1px solid #a8dbca;font-size:23px;
+}
+h1{margin:10px 0 4px;font-size:clamp(25px,5vw,37px);
+ font-weight:900;color:#176d70}
+.subtitle{font-size:14px;color:var(--muted)}
+.signature{font-size:12px;color:#638a84;margin-top:9px}
+.sound-control{
+ margin:14px auto 0;display:inline-flex;align-items:center;
+ gap:8px;border:1px solid #b9ddd3;background:#fff;
+ border-radius:30px;padding:9px 17px;color:#176d70;
+ font-weight:700;cursor:pointer;
+}
+.card{
+ background:#ffffffed;border:1px solid #d4eae2;
+ border-radius:25px;padding:24px 20px;
+ box-shadow:0 14px 38px #235d5120;
+}
+.intro{text-align:center}
+.intro-icon{width:112px;height:100px;margin:0 auto 10px}
+.intro h2{font-size:22px;color:#176d70}
+.intro p{font-size:14px;color:var(--muted);line-height:2}
+.btn{
+ border:0;border-radius:14px;padding:13px 24px;
+ background:linear-gradient(120deg,#f6d77f,#eac15c);
+ color:#493b1d;font-size:15px;font-weight:800;
+ cursor:pointer;box-shadow:0 5px 12px #a68a3c25;
+ transition:.2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.start-btn{margin-top:17px;width:100%}
+.game{display:none}
+.topline{
+ display:flex;justify-content:space-between;align-items:center;
+ gap:8px;flex-wrap:wrap;margin-bottom:13px;
+}
+.info{
+ background:#eaf7f2;color:#276a66;padding:10px 14px;
+ border-radius:13px;font-weight:700;font-size:13px;
+}
+.progress{
+ width:100%;height:9px;background:#e6f1ed;
+ border-radius:20px;overflow:hidden;margin:12px 0 22px;
+}
+.progress-fill{
+ height:100%;width:0;
+ background:linear-gradient(90deg,#5bbda5,#0d8888);
+ border-radius:20px;transition:width .4s;
+}
+.question-head{text-align:center}
+.question-head h2{font-size:21px;color:#176d70;margin:0 0 7px}
+.question-head p{font-size:14px;color:var(--muted);margin:0;line-height:2}
+.butterfly-wrap{width:125px;height:100px;margin:0 auto 8px}
+.fractions{
+ display:flex;justify-content:center;align-items:center;
+ gap:30px;margin:27px 0;direction:rtl;
+}
+.fraction{
+ display:flex;flex-direction:column;align-items:center;
+ min-width:75px;font-size:31px;font-weight:900;color:#185c62;
+}
+.fraction .line{
+ width:72px;height:3px;border-radius:3px;
+ background:#258c88;margin:6px 0;
+}
+.symbol{font-size:32px;font-weight:900;color:var(--gold);min-width:30px}
+.choices{display:flex;justify-content:center;gap:12px;margin:20px 0}
+.choice{
+ width:75px;height:58px;border-radius:15px;
+ border:2px solid #b9ddd3;background:#eff9f5;
+ color:#216c69;font-size:28px;font-weight:900;cursor:pointer;
+}
+.choice.selected{
+ background:#087e83;color:white;border-color:#087e83;
+ box-shadow:0 5px 12px #087e8330;
+}
+.feedback{
+ min-height:40px;margin:14px 0;font-weight:700;
+ line-height:1.8;text-align:center;
+}
+.correct{color:var(--green)}
+.incorrect{color:var(--red)}
+.praise{
+ display:none;margin:8px auto 15px;padding:12px;
+ max-width:390px;border-radius:15px;
+ color:#167c5b;background:#e1f7eb;
+ border:1px solid #b5e6c8;font-weight:800;
+ animation:praise .5s ease;
+}
+@keyframes praise{
+ 0%{transform:scale(.85);opacity:0}
+ 70%{transform:scale(1.05)}
+ 100%{transform:scale(1);opacity:1}
+}
+.method{
+ display:none;margin-top:18px;padding:19px 12px;
+ border-radius:19px;background:linear-gradient(135deg,#f0faf6,#e1f3ef);
+ border:1px solid #cde8dc;animation:appear .45s ease;
+}
+@keyframes appear{
+ from{opacity:0;transform:translateY(10px)}
+ to{opacity:1;transform:translateY(0)}
+}
+.method h3{text-align:center;margin:0 0 15px;font-size:17px;color:#167a76}
+.calc-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+.calc{
+ background:white;border:1px solid #d5ebe2;border-radius:14px;
+ padding:12px 20px;min-width:125px;text-align:center;
+ font-size:18px;font-weight:800;
+}
+.calc strong{color:#bd9132}
+.explanation{text-align:center;font-weight:700;line-height:2;margin-top:14px;color:#236b66}
+.next-area{text-align:center;margin-top:16px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.next-btn{display:none}
+.end{display:none;text-align:center}
+.trophy{font-size:65px}
+.end h2{color:#147a76;font-size:25px}
+.end p{line-height:2}
+.final-number{font-size:25px;font-weight:900;color:#b38a2d}
+.footer{text-align:center;color:#70918a;font-size:12px;margin-top:20px}
+@media(max-width:480px){
+ .card{padding:19px 12px}
+ .fractions{gap:16px}
+ .fraction{font-size:28px}
+ .choice{width:68px}
+ .topline{justify-content:center}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+<div class="wrap">
+
+<header>
+ <div class="brand">
+  <span class="brand-mark">🦋</span>
+  <span>یک تجربهٔ یادگیری تعاملی</span>
+ </div>
+ <h1>باغ پروانه‌های کسر</h1>
+ <div class="subtitle">ماجراجویی در دنیای مقایسهٔ کسرها</div>
+ <div class="signature">طراحی آموزشی: نیره شریفی</div>
+ <button class="sound-control" id="soundToggle">🔊 صدا روشن است</button>
+</header>
+
+<section class="card intro" id="intro">
+<svg class="intro-icon" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="w1" x2="1" y2="1">
+   <stop stop-color="#68c9b4"/><stop offset="1" stop-color="#178d91"/>
+  </linearGradient>
+  <linearGradient id="w2" x2="0" y2="1">
+   <stop stop-color="#f8d77c"/><stop offset="1" stop-color="#e6aa52"/>
+  </linearGradient>
+ </defs>
+ <path d="M70 54 C40 -9 1 8 9 53 C14 78 47 80 72 67Z" fill="url(#w1)" stroke="white" stroke-width="3"/>
+ <path d="M80 54 C110 -9 149 8 141 53 C136 78 103 80 78 67Z" fill="url(#w1)" stroke="white" stroke-width="3"/>
+ <path d="M71 66 C27 55 16 92 42 108 C58 119 73 92 77 73Z" fill="url(#w2)" stroke="white" stroke-width="3"/>
+ <path d="M79 66 C123 55 134 92 108 108 C92 119 77 92 73 73Z" fill="url(#w2)" stroke="white" stroke-width="3"/>
+ <g fill="#fff5d2">
+  <circle cx="36" cy="46" r="7"/><circle cx="54" cy="65" r="5"/>
+  <circle cx="114" cy="46" r="7"/><circle cx="96" cy="65" r="5"/>
+ </g>
+ <ellipse cx="75" cy="68" rx="6" ry="24" fill="#315b58"/>
+ <circle cx="75" cy="40" r="9" fill="#f3c08b"/>
+ <path d="M70 31 Q60 14 57 27 M80 31 Q90 14 93 27" stroke="#315b58" stroke-width="2.5" fill="none"/>
+</svg>
+
+<h2>به باغ پروانه‌های کسر خوش آمدی!</h2>
+<p>در این بازی باید کسرها را با دقت مقایسه کنی.<br>
+با روش پروانه‌ای پاسخ‌ها را بررسی کن و امتیاز بگیر.</p>
+
+<button class="btn start-btn" id="start">شروع ماجراجویی</button>
+<button class="btn start-btn hidden" id="resume" style="background:#b9eadb; color:#176d70;">ادامه بازی قبلی ←</button>
+<button class="btn start-btn hidden" id="reset" style="background:#fecdd3; color:#9f1239;">🧹 شروع دوباره</button>
+</section>
+
+<section class="card game" id="game">
+<div class="topline">
+ <div class="info">⭐ امتیاز: <span id="score">۰</span></div>
+ <div class="info">مرحله: <span id="stage">۱</span> از ۱۰</div>
+</div>
+
+<div class="progress"><div class="progress-fill" id="progress"></div></div>
+
+<div class="question-head">
+ <div class="butterfly-wrap">
+  <svg viewBox="0 0 150 115" width="125" height="100" xmlns="http://www.w3.org/2000/svg">
+   <defs>
+    <linearGradient id="wing" x2="1" y2="1">
+     <stop stop-color="#6bd2ba"/><stop offset=".55" stop-color="#168c91"/><stop offset="1" stop-color="#f4ce71"/>
+    </linearGradient>
+   </defs>
+   <path d="M72 52 C42 -7 2 5 8 50 C12 76 45 82 73 65Z" fill="url(#wing)" stroke="white" stroke-width="3"/>
+   <path d="M78 52 C108 -7 148 5 142 50 C138 76 105 82 77 65Z" fill="url(#wing)" stroke="white" stroke-width="3"/>
+   <path d="M72 65 C32 57 17 91 43 105 C60 115 75 89 77 70Z" fill="#eec66b" stroke="white" stroke-width="3"/>
+   <path d="M78 65 C118 57 133 91 107 105 C90 115 75 89 73 70Z" fill="#eec66b" stroke="white" stroke-width="3"/>
+   <g fill="#fff5d2"><circle cx="35" cy="45" r="7"/><circle cx="55" cy="63" r="5"/><circle cx="115" cy="45" r="7"/><circle cx="95" cy="63" r="5"/></g>
+   <ellipse cx="75" cy="66" rx="6" ry="23" fill="#315b58"/>
+   <circle cx="75" cy="40" r="8" fill="#f3c08b"/>
+   <path d="M70 32 Q61 16 58 26 M80 32 Q89 16 92 26" stroke="#315b58" stroke-width="2" fill="none"/>
+  </svg>
+ </div>
+ <h2>کدام کسر بزرگ‌تر است؟</h2>
+ <p>علامت مناسب را انتخاب کن و پاسخ را ثبت کن.</p>
+</div>
+
+<div class="fractions">
+ <div class="fraction"><span id="aN">۳</span><div class="line"></div><span id="aD">۴</span></div>
+ <div class="symbol" id="chosen">؟</div>
+ <div class="fraction"><span id="bN">۲</span><div class="line"></div><span id="bD">۵</span></div>
+</div>
+
+<div class="choices">
+ <button class="choice" data-value=">">&gt;</button>
+ <button class="choice" data-value="<">&lt;</button>
+ <button class="choice" data-value="=">=</button>
+</div>
+
+<button class="btn" id="submit">ثبت پاسخ</button>
+<div class="feedback" id="feedback"></div>
+<div class="praise" id="praise">🌟 آفرین! عالی بود! به همین ترتیب ادامه بده! 🌟</div>
+
+<div class="method" id="method">
+ <h3>روش پروانه‌ای</h3>
+ <div class="calc-grid">
+  <div class="calc"><span id="calc1"></span><br><strong id="result1"></strong></div>
+  <div class="calc"><span id="calc2"></span><br><strong id="result2"></strong></div>
+ </div>
+ <div class="explanation" id="explanation"></div>
+</div>
+
+<div class="next-area">
+ <button class="btn" onclick="goHome()" style="background:#e2e8f0; color:#475569; display:none;" id="homeBtn">🏠 بازگشت به خانه</button>
+ <button class="btn next-btn" id="next">مرحله بعدی</button>
+</div>
+</section>
+
+<section class="card end" id="ending">
+ <div class="trophy">🏆</div>
+ <h2>پایان ماجراجویی!</h2>
+ <p>آفرین قهرمان!</p>
+ <p>تو بازی مقایسهٔ کسرها را به پایان رساندی.</p>
+ <div class="final-number" id="finalScore"></div>
+ <p id="finalMessage"></p>
+ <button class="btn" id="restart">شروع دوباره بازی</button>
+ <div class="signature">طراحی آموزشی: نیره شریفی</div>
+</section>
+
+<div class="footer">باغ پروانه‌های کسر | نیره شریفی</div>
+</div>
+</div>
+
+<script>
+/* ---------------------------
+   صدای بازی با Web Audio
+---------------------------- */
+let audioContext=null;
+let soundEnabled=true;
+let ambientNodes=[];
+let melodyTimer=null;
+
+function getAudio(){
+ if(!audioContext){
+  const AudioClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioClass)return null;
+  audioContext=new AudioClass();
+ }
+ if(audioContext.state==="suspended")audioContext.resume();
+ return audioContext;
+}
+
+function stopAmbient(){
+ if(melodyTimer){
+  clearInterval(melodyTimer);
+  melodyTimer=null;
+ }
+ ambientNodes.forEach(node=>{
+  try{node.stop()}catch(e){}
+ });
+ ambientNodes=[];
+}
+
+function playSoftNote(freq,duration,volume){
+ const ctx=getAudio();
+ if(!ctx||!soundEnabled)return;
+
+ const osc=ctx.createOscillator();
+ const gain=ctx.createGain();
+
+ osc.type="sine";
+ osc.frequency.setValueAtTime(freq,ctx.currentTime);
+
+ gain.gain.setValueAtTime(0.0001,ctx.currentTime);
+ gain.gain.exponentialRampToValueAtTime(volume,ctx.currentTime+.25);
+ gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+duration);
+
+ osc.connect(gain);
+ gain.connect(ctx.destination);
+ osc.start();
+ osc.stop(ctx.currentTime+duration+.1);
+}
+
+function startAmbient(){
+ if(!soundEnabled||melodyTimer)return;
+ const ctx=getAudio();
+ if(!ctx)return;
+
+ const chord=[174.61,220,261.63];
+ chord.forEach(freq=>{
+  const osc=ctx.createOscillator();
+  const gain=ctx.createGain();
+  osc.type="sine";
+  osc.frequency.value=freq;
+  gain.gain.value=.008;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  ambientNodes.push(osc);
+ });
+
+ const notes=[392,440,523.25,440,349.23,392];
+ let n=0;
+ melodyTimer=setInterval(()=>{
+  if(!soundEnabled)return;
+  playSoftNote(notes[n%notes.length],2.3,.012);
+  n++;
+ },3200);
+}
+
+function playCorrectSound(){
+ if(!soundEnabled)return;
+ playSoftNote(523.25,.65,.09);
+ setTimeout(()=>playSoftNote(659.25,.7,.08),150);
+ setTimeout(()=>playSoftNote(783.99,1,.08),300);
+}
+
+function playFinishSound(){
+ if(!soundEnabled)return;
+ [523.25,659.25,783.99,1046.5].forEach((f,i)=>{
+  setTimeout(()=>playSoftNote(f,1,.07),i*180);
+ });
+}
+
+function updateSoundButton(){
+ const b=document.getElementById("soundToggle");
+ b.textContent=soundEnabled?"🔊 صدا روشن است":"🔇 صدا خاموش است";
+}
+
+document.getElementById("soundToggle").addEventListener("click",()=>{
+ soundEnabled=!soundEnabled;
+ updateSoundButton();
+
+ if(soundEnabled){
+  if(document.getElementById("game").style.display==="block"){
+   startAmbient();
+  }
+ }else{
+  stopAmbient();
+ }
+});
+
+/* ---------------------------
+   اطلاعات و مراحل بازی
+---------------------------- */
+const questions=[
+ {a:3,b:4,c:2,d:5},
+ {a:5,b:6,c:4,d:9},
+ {a:2,b:3,c:3,d:5},
+ {a:4,b:7,c:5,d:8},
+ {a:3,b:5,c:6,d:10},
+ {a:7,b:8,c:5,d:6},
+ {a:2,b:7,c:3,d:8},
+ {a:5,b:9,c:4,d:7},
+ {a:6,b:11,c:3,d:5},
+ {a:4,b:6,c:8,d:12}
+];
+
+const fa=n=>String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
+const el=id=>document.getElementById(id);
+
+let index=0;
+let score=0;
+let selected=null;
+let answered=false;
+
+function saveProgress() {
+  if (index === 10) {
+    localStorage.removeItem('butterfly_progress');
+    return;
+  }
+  localStorage.setItem('butterfly_progress', JSON.stringify({ index, score }));
+}
+
+function loadProgress() {
+  const s = localStorage.getItem('butterfly_progress');
+  if(!s) return false;
+  try {
+    const d = JSON.parse(s);
+    index = d.index || 0;
+    score = d.score || 0;
+    return true;
+  } catch(e) { return false; }
+}
+
+function answerOf(q){
+ const x=q.a*q.d;
+ const y=q.c*q.b;
+ if(x>y)return ">";
+ if(x<y)return "<";
+ return "=";
+}
+
+el("start").addEventListener("click",()=>{
+ index=0;
+ score=0;
+ el("intro").style.display="none";
+ el("ending").style.display="none";
+ el("game").style.display="block";
+ el("homeBtn").style.display="inline-block";
+
+ if(soundEnabled)startAmbient();
+ loadQuestion();
+});
+
+function resumeGame() {
+  if(loadProgress()) {
+    el("intro").style.display="none";
+    el("ending").style.display="none";
+    el("game").style.display="block";
+    el("homeBtn").style.display="inline-block";
+    if(soundEnabled)startAmbient();
+    loadQuestion();
+  }
+}
+
+el("reset").addEventListener("click",()=>{
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت شما پاک خواهد شد.')) {
+    localStorage.removeItem('butterfly_progress');
+    index=0;
+    score=0;
+    el("resume").classList.add("hidden");
+    el("reset").classList.add("hidden");
+    el("start").classList.remove("hidden");
+  }
+});
+
+function goHome() {
+  if(confirm('به صفحه اول برگردی؟ پیشرفت شما ذخیره شده است.')) {
+    stopAmbient();
+    el("game").style.display="none";
+    el("intro").style.display="block";
+    saveProgress();
+  }
+}
+
+function loadQuestion(){
+ const q=questions[index];
+ selected=null;
+ answered=false;
+
+ el("stage").textContent=fa(index+1);
+ el("score").textContent=fa(score);
+ el("progress").style.width=(index/10*100)+"%";
+
+ el("aN").textContent=fa(q.a);
+ el("aD").textContent=fa(q.b);
+ el("bN").textContent=fa(q.c);
+ el("bD").textContent=fa(q.d);
+ el("chosen").textContent="؟";
+
+ el("feedback").textContent="";
+ el("feedback").className="feedback";
+ el("praise").style.display="none";
+ el("method").style.display="none";
+ el("next").style.display="none";
+ el("submit").disabled=false;
+
+ document.querySelectorAll(".choice").forEach(btn=>{
+  btn.disabled=false;
+  btn.classList.remove("selected");
+ });
+}
+
+document.querySelectorAll(".choice").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  if(answered)return;
+  selected=btn.dataset.value;
+  el("chosen").textContent=selected;
+
+  document.querySelectorAll(".choice").forEach(b=>{
+   b.classList.toggle("selected",b===btn);
+  });
+ });
+});
+
+function showMethod(q){
+ const x=q.a*q.d;
+ const y=q.c*q.b;
+
+ el("calc1").textContent=fa(q.a)+" × "+fa(q.d);
+ el("calc2").textContent=fa(q.c)+" × "+fa(q.b);
+ el("result1").textContent="= "+fa(x);
+ el("result2").textContent="= "+fa(y);
+
+ let text;
+ if(x>y){
+  text="چون "+fa(x)+" بزرگ‌تر از "+fa(y)+" است، کسر اول بزرگ‌تر است.";
+ }else if(x<y){
+  text="چون "+fa(x)+" کوچک‌تر از "+fa(y)+" است، کسر اول کوچک‌تر است.";
+ }else{
+  text="چون دو حاصل‌ضرب برابرند، دو کسر مساوی‌اند.";
+ }
+
+ el("explanation").textContent=text;
+ el("method").style.display="block";
+}
+
+el("submit").addEventListener("click",()=>{
+ if(answered)return;
+
+ if(selected===null){
+  el("feedback").textContent="ابتدا یکی از علامت‌ها را انتخاب کن.";
+  el("feedback").className="feedback incorrect";
+  return;
+ }
+
+ answered=true;
+ const q=questions[index];
+ const correct=answerOf(q);
+ const isCorrect=selected===correct;
+
+ el("chosen").textContent=correct;
+
+ if(isCorrect){
+  score+=10;
+  el("feedback").textContent="آفرین! پاسخ تو درست است.";
+  el("feedback").className="feedback correct";
+  el("praise").style.display="block";
+  playCorrectSound();
+ }else{
+  el("feedback").textContent="پاسخ درست نبود؛ محاسبه را بررسی کن و یاد بگیر.";
+  el("feedback").className="feedback incorrect";
+ }
+
+ el("score").textContent=fa(score);
+ el("submit").disabled=true;
+
+ document.querySelectorAll(".choice").forEach(btn=>{
+  btn.disabled=true;
+  btn.classList.toggle("selected",btn.dataset.value===correct);
+ });
+
+ showMethod(q);
+
+ el("next").style.display="inline-block";
+ el("next").textContent=index===9?"مشاهده نتیجه نهایی":"مرحله بعدی";
+
+ saveProgress();
+});
+
+el("next").addEventListener("click",()=>{
+ index++;
+ if(index<10){
+  loadQuestion();
+ }else{
+  stopAmbient();
+  el("game").style.display="none";
+  el("ending").style.display="block";
+  el("progress").style.width="100%";
+  el("finalScore").textContent=fa(score)+" از ۱۰۰ امتیاز";
+
+  if(score===100){
+   el("finalMessage").textContent="فوق‌العاده بود! همهٔ پاسخ‌ها درست بودند.";
+  }else if(score>=70){
+   el("finalMessage").textContent="عملکرد بسیار خوبی داشتی!";
+  }else{
+   el("finalMessage").textContent="با تمرین بیشتر، استاد مقایسهٔ کسرها می‌شوی!";
+  }
+
+  if(soundEnabled)playFinishSound();
+  
+  localStorage.removeItem('butterfly_progress');
+
+  // ارسال امتیاز به اپ اصلی
+  try {
+    window.parent.postMessage({
+      type: 'GAME_FINISHED',
+      gameId: 'ch2-fraction-butterfly',
+      score: score,
+      total: 100
+    }, '*');
+  } catch (e) {}
+ }
+});
+
+el("restart").addEventListener("click",()=>{
+ index=0;
+ score=0;
+ el("ending").style.display="none";
+ el("intro").style.display="block";
+ el("resume").classList.add("hidden");
+ el("reset").classList.add("hidden");
+ el("start").classList.remove("hidden");
+});
+
+// بررسی وضعیت اولیه
+window.addEventListener('DOMContentLoaded', () => {
+  if(loadProgress() && index > 0 && index < 10) {
+    el("start").classList.add("hidden");
+    el("resume").classList.remove("hidden");
+    el("reset").classList.remove("hidden");
+  }
+});
+
+updateSoundButton();
+</script>
+</body>
+</html>

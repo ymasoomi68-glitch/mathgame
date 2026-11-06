@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>آزمون مطالعات پنجم - درس 1 (من با دیگران ارتباط برقرار می‌کنم)</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #ffffff;
+            --primary-lilac: #c084fc;
+            --light-lilac: #f3e8ff;
+            --gold: #fbbf24;
+            --gold-light: #fef3c7;
+            --text-color: #1f2937;
+            --green-feedback: #dcfce7;
+            --green-border: #16a34a;
+            --neon: #39ff14;
+            --orange-fun: #f97316;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.8; animation: float 5s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; } 50% { transform: translateY(-20px) scale(1.2); opacity: 0.4; } }
+
+        .container {
+            width: 90%; max-width: 800px; margin: 15px auto; background: var(--card-bg);
+            border: 4px solid var(--primary-lilac); outline: 3px solid var(--gold); outline-offset: -6px;
+            border-radius: 15px; padding: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 10; position: relative; flex: 1;
+        }
+
+        #start-screen { text-align: center; }
+        h1 { color: var(--primary-lilac); text-shadow: 1px 1px 2px #000; margin-bottom: 8px; font-size: 24px; }
+        .lesson-title { font-size: 1em; color: #555; margin-bottom: 15px; border-bottom: 2px dashed var(--gold); padding-bottom: 8px; display: inline-block; }
+
+        .btn-primary { border: none; padding: 10px 24px; font-size: 18px; border-radius: 35px; cursor: pointer; transition: transform 0.2s; font-family: 'Vazirmatn', sans-serif; margin: 5px; font-weight: bold; }
+        .btn-primary:hover { transform: scale(1.05); }
+        .btn-lesson { background: linear-gradient(45deg, #f97316, #ff8c42); color: white; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4); }
+        .btn-start-quiz { background: var(--neon); color: #000; text-shadow: none; box-shadow: 0 0 12px var(--neon); }
+        .btn-resume { background: #20c88d; color: white; box-shadow: 0 4px 15px rgba(32, 200, 141, 0.4); }
+        .btn-reset { background: #fecdd3; color: #9f1239; }
+        .button-group { display: flex; justify-content: center; gap: 15px; margin-top: 12px; flex-wrap: wrap; }
+        .hidden { display: none !important; }
+
+        .lesson-note { background: #fffbeb; border: 2px solid var(--gold); border-radius: 15px; padding: 12px; margin-top: 15px; text-align: right; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .lesson-note h3 { color: #b45309; border-right: 5px solid var(--gold); padding-right: 10px; margin-top: 0; font-size: 1.2rem; }
+        .lesson-note h4 { color: #92400e; margin: 10px 0 5px; }
+        .lesson-note ul, .lesson-note p { margin: 8px 0; line-height: 1.6; }
+        .lesson-note li { margin: 5px 0; }
+        .close-lesson { background: #fde68a; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; margin-top: 8px; color: #78350f; }
+
+        #quiz-screen { display: none; }
+        .timer-bar { background: var(--gold-light); color: #78350f; padding: 6px 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; border: 2px solid var(--gold); font-size: 14px; }
+        .question-counter { font-size: 12px; }
+        .question-box { background: linear-gradient(to bottom, #fff, var(--light-lilac)); border: 2px solid var(--primary-lilac); border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
+        .question-text { font-size: 18px; font-weight: bold; line-height: 1.5; color: var(--text-color); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+
+        .option-label { display: flex; align-items: center; padding: 8px 12px; background: white; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.2s; }
+        .option-label:hover { border-color: var(--primary-lilac); background: #faf5ff; }
+        .option-label input { display: none; }
+        .option-label.selected { border-color: var(--primary-lilac); background: var(--light-lilac); box-shadow: 0 0 5px var(--primary-lilac); }
+        .option-letter { font-weight: 900; color: var(--primary-lilac); margin-left: 8px; font-size: 15px; min-width: 24px; }
+        .option-text { font-size: 14px; }
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 10px; }
+        .btn-nav { background: var(--gold); color: #78350f; border: none; padding: 10px 28px; border-radius: 35px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; font-weight: bold; transition: all 0.2s; font-size: 17px; }
+        .btn-nav:hover { background: #f59e0b; transform: scale(1.02); }
+        .btn-nav:disabled { background: #fde68a; color: #b45309; cursor: not-allowed; transform: none; }
+        .btn-finish { background: var(--neon) !important; color: #000 !important; box-shadow: 0 0 10px var(--neon) !important; }
+
+        #result-screen { display: none; text-align: center; }
+        .score-card { background: linear-gradient(135deg, #fff, var(--light-lilac)); border: 3px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .sticker-pack { font-size: 32px; letter-spacing: 6px; margin-bottom: 8px; animation: bounce 1s ease infinite alternate; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+        .score-title { font-size: 18px; color: #4b5563; margin-bottom: 8px; }
+        .score-value { font-size: 36px; font-weight: 900; color: var(--primary-lilac); margin: 8px 0; }
+        .feedback-box { background: var(--green-feedback); border: 2px solid var(--green-border); border-radius: 15px; padding: 12px; margin-top: 10px; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2); }
+        .feedback-line { font-size: 15px; margin: 6px 0; color: #14532d; font-weight: 500; }
+
+        .btn-answer-key { background: var(--neon); color: #000; border: none; padding: 10px 24px; border-radius: 35px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; box-shadow: 0 0 10px var(--neon); transition: 0.2s; font-family: 'Vazirmatn', sans-serif; }
+        .btn-answer-key:hover { transform: scale(1.02); background: #65ff35; }
+
+        .answer-key-box { background: #fffbeb; border: 2px solid var(--gold); border-radius: 15px; padding: 15px; margin-top: 15px; text-align: right; display: none; max-height: 300px; overflow-y: auto; }
+        .answer-key-box h4 { color: #b45309; border-right: 5px solid var(--gold); padding-right: 10px; margin-bottom: 12px; }
+        .answer-item { padding: 6px 0; border-bottom: 1px dashed #fde68a; font-size: 13px; }
+        .answer-item.correct { color: #16a34a; }
+        .answer-item.wrong { color: #dc2626; }
+        .answer-letter { font-weight: bold; color: #92400e; margin-left: 8px; }
+
+        footer { background: transparent; padding: 5px 10px; margin-top: auto; text-align: center; line-height: 1.5; }
+        .footer-line { font-size: 10px; color: #94a3b8; margin: 1px 0; }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars-container"></div>
+
+    <div class="container">
+        <div id="start-screen">
+            <h1>آزمون مطالعات پنجم</h1>
+            <div class="lesson-title">درس 1: «من با دیگران ارتباط برقرار می‌کنم»</div>
+            
+            <p style="margin-bottom: 15px; color: #555;">آماده‌ای برای آزمون؟ با دقت بخوان و به همه سوالات پاسخ بده.</p>
+
+            <div class="button-group">
+                <button class="btn-primary btn-start-quiz" id="start-quiz-btn">🎯 شروع آزمون (۲۰ دقیقه)</button>
+                <button class="btn-primary btn-resume hidden" id="resume-quiz-btn">🚀 ادامه آزمون قبلی</button>
+                <button class="btn-primary btn-reset hidden" id="reset-quiz-btn">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
+            </div>
+            <div class="button-group" style="margin-top: 15px;">
+                <button class="btn-primary btn-lesson" id="show-lesson-btn" style="font-size: 15px; padding: 8px 15px;">📘 مشاهده درسنامه</button>
+            </div>
+
+            <div id="lesson-note" class="lesson-note">
+                <h3>📖 جزوه کامل درس 1: من با دیگران ارتباط برقرار می‌کنم</h3>
+                <p><strong>🔹 نیاز به ارتباط:</strong> انسان‌ها علاوه بر آب، غذا و هوا، به <strong>ارتباط با دیگران</strong> نیاز دارند. در نبود ارتباط، احساس تنهایی می‌کنیم.</p>
+                <h4>🗣️ گفت‌وگو (مهم‌ترین راه ارتباط)</h4>
+                <p>هر گفت‌وگو دو طرف دارد: <strong>گوینده</strong> (کسی که صحبت می‌کند) و <strong>شنونده</strong> (کسی که گوش می‌دهد).</p>
+                <h4>👂 خوب گوش کنیم:</h4>
+                <ul>
+                    <li>به حرف‌های او دقت و توجه کنیم (حواسمان پرت نباشد).</li>
+                    <li>کلام گوینده را قطع نکنیم؛ صبر کنیم حرفش تمام شود.</li>
+                    <li>به گوینده نگاه کنیم (نگاه نکردن یعنی دوست نداریم گوش دهیم).</li>
+                    <li>با تکان دادن سر یا سؤال کردن، گوینده را تشویق کنیم.</li>
+                </ul>
+                <h4>💬 خوب صحبت کنیم:</h4>
+                <ul>
+                    <li>به شنونده نگاه کنیم.</li>
+                    <li>با صدای مناسب (نه خیلی بلند، نه خیلی آهسته، نه تند و کند). اگر صدایمان مناسب نباشد، دیگران زود خسته می‌شوند.</li>
+                    <li>منظور خود را روشن و واضح بیان کنیم.</li>
+                    <li>زمان مناسب را انتخاب کنیم (مثلاً وقتی کسی مشغول کاری است مزاحم نشویم).</li>
+                    <li>از کلمات مؤدبانه استفاده کنیم: «لطفاً»، «خواهش می‌کنم»، «معذرت می‌خواهم».</li>
+                    <li>در گفت‌وگو با بزرگترها به جای «تو» از «شما» استفاده کنیم.</li>
+                </ul>
+                <h4>🔒 حریم شخصی:</h4>
+                <p><strong>حریم شخصی</strong> یعنی محدوده‌ای که هیچ کس نباید بدون اجازه وارد آن شود (مثل خانه‌ی ما). همچنین افراد دوست ندارند دیگران درباره موضوعات خصوصی‌شان (مثل درآمد پدر، پول توجیبی، رابطه با خواهر/برادر) سؤال کنند. ما حق نداریم کنجکاوی کنیم و وارد حریم شخصی دیگران شویم.</p>
+                <h4>🤝 ارتباط غیرکلامی:</h4>
+                <p>انتقال مفاهیم بدون صحبت کردن، مثل تکان دادن سر، حرکات صورت (تعجب، شادی، غم، عصبانیت). در ارتباط خوب، حالت‌های چهره و رفتارهای ما هم مهم است.</p>
+                <button class="close-lesson" id="close-lesson-btn">بستن 📚</button>
+            </div>
+        </div>
+
+        <div id="quiz-screen">
+            <div class="timer-bar">
+                <span id="timer">20:00</span>
+                <span class="question-counter" id="q-counter">سوال 1 از 20</span>
+            </div>
+            <div class="question-box">
+                <div class="question-text" id="q-text"></div>
+            </div>
+            <div class="options-grid" id="options-container"></div>
+            <div class="nav-buttons">
+                <button class="btn-nav" id="prev-btn" onclick="prevQuestion()" disabled>قبلی</button>
+                <button class="btn-nav" id="next-btn" onclick="nextQuestion()">بعدی</button>
+                <button class="btn-nav btn-finish" id="finish-btn" onclick="finishQuiz()" style="display: none;">پایان آزمون</button>
+            </div>
+        </div>
+
+        <div id="result-screen">
+            <div class="score-card">
+                <div class="sticker-pack">🌸🎉⭐🍀📚💜✨</div>
+                <div class="score-title" id="result-name">🌟 نمره‌ی شما، قهرمان عزیز</div>
+                <div class="score-value" id="final-score">0 از 20</div>
+            </div>
+            <div class="feedback-box" id="feedback-content"></div>
+            <button class="btn-answer-key" id="answer-key-btn" style="display: none;">📋 پاسخنامه</button>
+            <div id="answer-key-box" class="answer-key-box" style="display: none;"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-line">📘 مطالعات پنجم دبستان</div>
+        <div class="footer-line">طراح: خانم صادقی</div>
+    </footer>
+
+    <script>
+        const questions = [
+            { text: "انسان‌ها برای زندگی کردن، علاوه بر آب، غذا و هوا به چه چیزی نیاز دارند؟", options: ["ثروت و پول", "ارتباط با دیگران", "مسکن بزرگ", "وسایل لوکس"], correct: 1 },
+            { text: "اگر ارتباط با دیگران نباشد، انسان چه احساسی پیدا می‌کند؟", options: ["احساس خوشحالی", "احساس ترس", "احساس تنهایی", "احساس قدرت"], correct: 2 },
+            { text: "مهم‌ترین راه ارتباط انسان‌ها با یکدیگر چیست؟", options: ["نوشتن نامه", "گفت‌وگو (کلامی)", "ارتباط غیرکلامی", "اینترنت"], correct: 1 },
+            { text: "در یک گفت‌وگو، به کسی که صحبت می‌کند چه می‌گویند؟", options: ["شنونده", "گوینده", "بیننده", "پرسشگر"], correct: 1 },
+            { text: "کدام یک از موارد زیر از اصول «خوب گوش دادن» نیست؟", options: ["قطع کردن حرف گوینده", "نگاه کردن به گوینده", "دقت و توجه به حرف‌ها", "تشویق با تکان دادن سر"], correct: 0 },
+            { text: "چرا باید هنگام صحبت کردن به شنونده نگاه کنیم؟", options: ["تا ترسناک به نظر برسیم", "تا گوینده احساس کند به حرف‌هایش توجه داریم", "تا خجالت بکشد", "تا حرفش را فراموش کند"], correct: 1 },
+            { text: "برای تشویق گوینده به ادامه صحبت، چه کاری مناسب است؟", options: ["تکان دادن سر یا سؤال پرسیدن", "بلند شدن از جای خود", "قطع کردن حرف او", "نگاه کردن به ساعت"], correct: 0 },
+            { text: "صدای مناسب هنگام صحبت کردن چگونه باید باشد؟", options: ["خیلی بلند", "خیلی آهسته", "نه خیلی بلند و نه خیلی آهسته", "بسیار تند"], correct: 2 },
+            { text: "اگر موقع صحبت کردن صدایمان مناسب نباشد، چه اتفاقی می‌افتد؟", options: ["دیگران بیشتر توجه می‌کنند", "دیگران زود خسته می‌شوند", "صحبت ما جذاب‌تر می‌شود", "اتفاق خاصی نمی‌افتد"], correct: 1 },
+            { text: "کدام یک از موارد زیر از اصول «خوب صحبت کردن» نیست؟", options: ["نگاه به شنونده", "صدای خیلی بلند", "بیان روشن منظور", "انتخاب زمان مناسب"], correct: 1 },
+            { text: "«حریم شخصی» یعنی چه؟", options: ["محدوده‌ای که همه می‌توانند وارد شوند", "محدوده‌ای که بدون اجازه نباید وارد آن شد", "فضای مدرسه", "فضای عمومی پارک"], correct: 1 },
+            { text: "کدام یک از موارد زیر جزو حریم شخصی افراد محسوب می‌شود؟", options: ["درس‌های مدرسه", "درآمد ماهیانه پدر", "رنگ لباس فرم", "ساعت شروع کلاس"], correct: 1 },
+            { text: "اگر کسی دوست نداشت درباره مسائل خصوصی‌اش توضیح دهد، ما چه وظیفه‌ای داریم؟", options: ["حق داریم کنجکاوی کنیم", "حق نداریم وارد حریم شخصی او شویم", "باید از دیگران بپرسیم", "باید اصرار کنیم"], correct: 1 },
+            { text: "در گفت‌وگو با بزرگترها به جای واژه «تو» از چه واژه‌ای استفاده می‌کنیم؟", options: ["ایشان", "او", "شما", "جناب"], correct: 2 },
+            { text: "وقتی درخواستی داریم، استفاده از کدام عبارت مؤدبانه‌تر است؟", options: ["بده", "می‌خواهم", "لطفاً و خواهش می‌کنم", "سریع باش"], correct: 2 },
+            { text: "امین در اتوبوس جای خود را به پیرمردی داد و پیرمرد تشکر کرد. امین در جواب چه باید بگوید؟", options: ["خواهش می‌کنم", "چشم", "باشه", "مشکلی نیست"], correct: 0 },
+            { text: "آزاده در حیاط مدرسه ناخواسته به دانش‌آموز کلاس دومی برخورد کرد. او باید چه بگوید؟", options: ["حواسم نبود", "معذرت می‌خواهم", "تو راه رفتی", "جلویم را بگیر"], correct: 1 },
+            { text: "در موقعیت زیر کدام اصل گفت‌وگو رعایت نشده است؟ «ناهید ناراحت است و با دوستش صحبت می‌کند، اما دوستش مدام کتاب ورق می‌زند.»", options: ["خوب صحبت کردن", "خوب گوش دادن (دقت و توجه)", "حریم شخصی", "صدای مناسب"], correct: 1 },
+            { text: "در موقعیت زیر کدام اصل گفت‌وگو رعایت نشده است؟ «پدر مرتضی مشغول تعمیر ماشین است، اما مرتضی دارد ماجرای فوتبال را برای او تعریف می‌کند.»", options: ["انتخاب زمان مناسب", "قطع نکردن حرف گوینده", "حفظ حریم شخصی", "نگاه کردن به شنونده"], correct: 0 },
+            { text: "به انتقال مفاهیم بدون صحبت کردن (مثل تکان دادن سر، حرکات صورت) چه می‌گویند؟", options: ["ارتباط کلامی", "ارتباط غیرکلامی", "گفت‌وگو", "نوشتاری"], correct: 1 }
+        ];
+
+        const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d]);
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 20 * 60;
+        let quizFinished = false;
+
+        // --- ذخیره و بازیابی ---
+        function saveProgress() {
+            if (quizFinished) return;
+            localStorage.setItem('social_quiz_progress', JSON.stringify({
+                currentQuestionIndex, userAnswers, timeLeft
+            }));
+        }
+
+        function loadProgress() {
+            const s = localStorage.getItem('social_quiz_progress');
+            if (!s) return false;
+            try {
+                const d = JSON.parse(s);
+                currentQuestionIndex = d.currentQuestionIndex || 0;
+                userAnswers = d.userAnswers || Array(questions.length).fill(null);
+                timeLeft = d.timeLeft || (20 * 60);
+                return true;
+            } catch(e) { return false; }
+        }
+
+        function clearProgress() {
+            localStorage.removeItem('social_quiz_progress');
+        }
+
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 5 + 2;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        function setupLessonNote() {
+            const showBtn = document.getElementById('show-lesson-btn');
+            const noteDiv = document.getElementById('lesson-note');
+            const closeBtn = document.getElementById('close-lesson-btn');
+            showBtn.onclick = () => { noteDiv.style.display = 'block'; };
+            closeBtn.onclick = () => { noteDiv.style.display = 'none'; };
+        }
+
+        function startQuiz() {
+            if (quizFinished) {
+                alert("❗ شما قبلاً در این آزمون شرکت کرده‌اید. برای شروع دوباره از دکمه ریست استفاده کنید.");
+                return;
+            }
+            clearProgress();
+            currentQuestionIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 20 * 60;
+            
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            
+            loadQuestion(0);
+            startTimer();
+            saveProgress();
+        }
+
+        function resumeQuiz() {
+            if (loadProgress()) {
+                document.getElementById('start-screen').style.display = 'none';
+                document.getElementById('quiz-screen').style.display = 'block';
+                loadQuestion(currentQuestionIndex);
+                startTimer();
+            }
+        }
+
+        function resetAll() {
+            if(confirm('آیا مطمئن هستید؟ تمام پاسخ‌ها و پیشرفت شما پاک خواهد شد.')) {
+                clearProgress();
+                quizFinished = false;
+                clearInterval(timerInterval);
+                document.getElementById('start-quiz-btn').classList.remove('hidden');
+                document.getElementById('resume-quiz-btn').classList.add('hidden');
+                document.getElementById('reset-quiz-btn').classList.add('hidden');
+            }
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                if (quizFinished) return;
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft % 5 === 0) saveProgress(); // ذخیره زمان
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerDisplay = document.getElementById('timer');
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${fa(minutes)}:${seconds < 10 ? '۰' : ''}${fa(seconds)}`;
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = questions[index];
+            document.getElementById('q-text').textContent = `${fa(index + 1)}. ${q.text}`;
+            document.getElementById('q-counter').textContent = `سوال ${fa(index + 1)} از ${fa(questions.length)}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            const letters = ['الف', 'ب', 'ج', 'د'];
+
+            q.options.forEach((opt, i) => {
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                if (userAnswers[index] === i) label.classList.add('selected');
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `q_${index}`;
+                input.value = i;
+                input.onclick = () => selectOption(index, i);
+
+                const letterSpan = document.createElement('span');
+                letterSpan.className = 'option-letter';
+                letterSpan.textContent = letters[i] + ')';
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'option-text';
+                textSpan.textContent = opt;
+
+                label.appendChild(input);
+                label.appendChild(letterSpan);
+                label.appendChild(textSpan);
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            const nextBtn = document.getElementById('next-btn');
+            const finishBtn = document.getElementById('finish-btn');
+            if (index === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                finishBtn.style.display = 'inline-block';
+            } else {
+                nextBtn.style.display = 'inline-block';
+                finishBtn.style.display = 'none';
+            }
+        }
+
+        function selectOption(qIndex, optIndex) {
+            userAnswers[qIndex] = optIndex;
+            const labels = document.querySelectorAll('.option-label');
+            labels.forEach((lbl, i) => {
+                if (i === optIndex) lbl.classList.add('selected');
+                else lbl.classList.remove('selected');
+            });
+            saveProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function showAnswerKey() {
+            const answerBox = document.getElementById('answer-key-box');
+            const letters = ['الف', 'ب', 'ج', 'د'];
+            
+            let html = '<h4>📋 پاسخنامه</h4>';
+            questions.forEach((q, i) => {
+                const userAnswer = userAnswers[i];
+                const isCorrect = (userAnswer === q.correct);
+                const correctLetter = letters[q.correct];
+                const userLetter = (userAnswer !== null) ? letters[userAnswer] : 'پاسخ داده نشده';
+                
+                html += `<div class="answer-item ${isCorrect ? 'correct' : 'wrong'}">
+                            <strong>${fa(i+1)}.</strong> 
+                            <span class="answer-letter">پاسخ صحیح: ${correctLetter}</span>
+                            ${userAnswer !== null ? `| پاسخ شما: ${userLetter}` : '| پاسخ شما: --'}
+                            ${isCorrect ? ' ✓' : ' ✗'}
+                         </div>`;
+            });
+            answerBox.innerHTML = html;
+            answerBox.style.display = 'block';
+        }
+
+        function finishQuiz(isAuto = false) {
+            if (quizFinished) return;
+
+            const unanswered = userAnswers.filter(ans => ans === null).length;
+            if (unanswered > 0 && !isAuto) {
+                alert(`⚠️ شما به ${fa(unanswered)} سوال پاسخ نداده‌اید. لطفاً ابتدا به تمام سوالات پاسخ دهید.`);
+                return;
+            }
+
+            clearInterval(timerInterval);
+            quizFinished = true;
+            clearProgress();
+            
+            let score = 0;
+            questions.forEach((q, i) => {
+                if (userAnswers[i] === q.correct) score++;
+            });
+
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('final-score').textContent = `${fa(score)} از ۲۰`;
+
+            const feedbackBox = document.getElementById('feedback-content');
+            if (score >= 18) {
+                feedbackBox.innerHTML = `<div class="feedback-line">🎉 عالی! نمره‌ات خیلی خوبه 🎉</div><div class="feedback-line">🌟 مسلماً درس را کامل یاد گرفته‌ای.</div><div class="feedback-line">💪 به دیگران هم کمک کن تا یاد بگیرند.</div>`;
+            } else if (score >= 15) {
+                feedbackBox.innerHTML = `<div class="feedback-line">👍 خوب کار کردی! قابل تحسین است.</div><div class="feedback-line">📖 یک بار دیگر جزوه را مرور کن تا به ۲۰ برسی.</div><div class="feedback-line">🍀 موفق باشی.</div>`;
+            } else {
+                feedbackBox.innerHTML = `<div class="feedback-line">🌸 نگران نباش! با کمی تلاش نتیجه عالی می‌شود.</div><div class="feedback-line">📘 درسنامه را دوباره بخوان و دقت کن.</div><div class="feedback-line">💪 آزمون بعدی قهرمان خواهی شد.</div>`;
+            }
+
+            const answerBtn = document.getElementById('answer-key-btn');
+            answerBtn.style.display = 'inline-block';
+            answerBtn.onclick = () => showAnswerKey();
+
+            try {
+                window.parent.postMessage({
+                    type: 'GAME_FINISHED',
+                    gameId: 'ch1-social-quiz',
+                    score: score,
+                    total: 20
+                }, '*');
+            } catch (e) {}
+        }
+
+        document.getElementById('start-quiz-btn').addEventListener('click', startQuiz);
+        document.getElementById('resume-quiz-btn').addEventListener('click', resumeQuiz);
+        document.getElementById('reset-quiz-btn').addEventListener('click', resetAll);
+        
+        createStars();
+        setupLessonNote();
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (loadProgress() && timeLeft > 0 && currentQuestionIndex < questions.length) {
+                document.getElementById('start-quiz-btn').classList.add('hidden');
+                document.getElementById('resume-quiz-btn').classList.remove('hidden');
+                document.getElementById('reset-quiz-btn').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

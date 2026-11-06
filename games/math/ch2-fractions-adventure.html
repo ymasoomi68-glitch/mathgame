@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111044">
+<title>ماجراجویی در سرزمین کسرها</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ min-height:100vh;
+ font-family:Tahoma,"Segoe UI",sans-serif;
+ color:#fff;
+ background:
+ radial-gradient(circle at 15% 15%,#5526b5 0,transparent 30%),
+ radial-gradient(circle at 85% 80%,#007dba 0,transparent 30%),
+ linear-gradient(135deg,#090927,#17104e 55%,#071c49);
+ overflow-x:hidden;
+}
+
+body:before{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ background-image:
+ radial-gradient(#fff 1px,transparent 1.5px),
+ radial-gradient(#7cf7ff 1px,transparent 1.5px);
+ background-size:83px 83px,127px 127px;
+ opacity:.3;
+}
+
+.wrap{
+ width:min(900px,94%);
+ margin:auto;
+ padding:20px 0 35px;
+ position:relative;
+}
+
+header{text-align:center;margin:8px 0 22px}
+.logo{font-size:3.2rem;filter:drop-shadow(0 0 18px #ff62dc)}
+
+h1{
+ font-size:clamp(1.5rem,4vw,2.5rem);
+ margin:2px 0;
+ text-shadow:0 0 12px #42dfff,0 0 28px #a44dff;
+}
+
+.subtitle{color:#d7eaff}
+
+.panel{
+ background:linear-gradient(145deg,#ffffff25,#ffffff0b);
+ border:1px solid #ffffff55;
+ border-radius:26px;
+ padding:clamp(18px,4vw,32px);
+ box-shadow:0 0 28px #5a39ff55,inset 0 0 22px #ffffff0d;
+ backdrop-filter:blur(12px);
+}
+
+.screen{display:none}
+.screen.active{display:block;animation:pop .35s ease}
+
+@keyframes pop{
+ from{opacity:0;transform:translateY(10px)}
+ to{opacity:1;transform:none}
+}
+
+h2{color:#ffe66d;margin-top:0}
+p{line-height:1.9}
+
+input,select{
+ width:100%;
+ padding:14px;
+ border-radius:15px;
+ border:2px solid #83edff;
+ background:#101044;
+ color:white;
+ font:inherit;
+ font-size:1rem;
+ margin:8px 0 14px;
+}
+
+select option{background:#101044}
+
+button{
+ font:inherit;
+ font-weight:800;
+ border:0;
+ cursor:pointer;
+ border-radius:15px;
+ padding:13px 20px;
+ color:#101044;
+ background:linear-gradient(110deg,#ffe66d,#ffad4f);
+ box-shadow:0 5px 0 #a85b25,0 0 22px #ffdc5a55;
+ transition:.15s;
+}
+
+button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+button:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+.primary{font-size:1.08rem;min-width:190px}
+
+.secondary{
+ background:linear-gradient(110deg,#6df5ff,#9b9dff);
+ box-shadow:0 5px 0 #3156a7;
+}
+
+.danger {
+ background:linear-gradient(110deg,#ff5dc8,#ff7b87);
+ box-shadow:0 5px 0 #a82b51;
+ color: white;
+}
+
+.actions{
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
+ justify-content:center;
+ margin-top:18px;
+}
+
+.lesson-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+ margin:18px 0;
+}
+
+.lesson{
+ background:#11144d99;
+ border:1px solid #6beaff77;
+ border-radius:18px;
+ padding:16px;
+}
+
+.lesson strong{
+ color:#36e9ff;
+ display:block;
+ margin-bottom:7px;
+}
+
+.example{
+ font-size:1.25rem;
+ text-align:center;
+ color:#ffe66d;
+ direction:ltr;
+ margin:10px 0;
+}
+
+.small{font-size:.9rem;color:#d8e5ff}
+
+.creator{
+ text-align:center;
+ color:#d5d8ff;
+ font-size:.9rem;
+ margin-top:22px;
+}
+
+.pill{
+ display:inline-block;
+ padding:6px 13px;
+ border-radius:99px;
+ background:#ffffff18;
+ border:1px solid #ffffff35;
+ color:#dffaff;
+ font-size:.85rem;
+}
+
+.topbar{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ flex-wrap:wrap;
+ align-items:center;
+ margin-bottom:18px;
+}
+
+.score{
+ background:linear-gradient(100deg,#ffca4c,#ff7b87);
+ color:#27104e;
+ border-radius:14px;
+ padding:9px 15px;
+ font-weight:900;
+}
+
+.progress{
+ height:10px;
+ background:#ffffff22;
+ border-radius:20px;
+ overflow:hidden;
+ margin:10px 0 22px;
+}
+
+.progress span{
+ display:block;
+ height:100%;
+ width:0;
+ background:linear-gradient(90deg,#38e9ff,#a56bff,#ff5dc8);
+ transition:width .35s;
+}
+
+.question-card{text-align:center;padding:15px 5px}
+
+.question{
+ font-size:clamp(1.25rem,4vw,2rem);
+ font-weight:900;
+ margin:18px 0;
+ color:#fff;
+ text-shadow:0 0 14px #49cfff;
+}
+
+.options{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ margin:20px auto;
+ max-width:650px;
+}
+
+.option{
+ background:linear-gradient(120deg,#3e3b9c,#6734a8);
+ color:white;
+ border:1px solid #a9a5ff;
+ box-shadow:0 0 16px #755bff55;
+ padding:14px 10px;
+ font-size:1.05rem;
+ min-height:64px;
+}
+
+.option.correct{
+ background:linear-gradient(120deg,#087d66,#20c88d);
+ border-color:#9bffdb;
+}
+
+.option.wrong{
+ background:linear-gradient(120deg,#8b315f,#b33d61);
+ border-color:#ff9bb8;
+}
+
+.feedback{
+ min-height:55px;
+ text-align:center;
+ font-weight:800;
+ font-size:1.05rem;
+ margin:12px 0;
+ color:#ffe879;
+}
+
+.hidden{display:none!important}
+
+.result-score{
+ font-size:2.5rem;
+ color:#ffe66d;
+ font-weight:900;
+ text-shadow:0 0 20px #ffca4c;
+}
+
+/* نمایش کسر با خط افقی */
+.frac{
+ display:inline-flex;
+ flex-direction:column;
+ vertical-align:middle;
+ align-items:stretch;
+ justify-content:center;
+ direction:ltr;
+ line-height:1.1;
+ margin:0 .12em;
+ min-width:1.25em;
+ font-size:1.05em;
+}
+
+.frac .num{
+ display:block;
+ border-bottom:2px solid currentColor;
+ padding:0 .18em .13em;
+ text-align:center;
+}
+
+.frac .den{
+ display:block;
+ padding:.13em .18em 0;
+ text-align:center;
+}
+
+/* عدد صحیح در سمت چپ کسر */
+.mixed-number{
+ display:inline-flex;
+ align-items:center;
+ gap:.18em;
+ direction:ltr;
+ white-space:nowrap;
+ vertical-align:middle;
+}
+
+.mixed-number .whole{display:inline-block}
+
+.question .frac{font-size:1.1em}
+.option .frac{font-size:1em}
+.example .frac{font-size:1.1em}
+
+@media(max-width:600px){
+ .lesson-grid,.options{grid-template-columns:1fr}
+ .topbar{justify-content:center}
+ .option{font-size:1rem}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header>
+ <div class="logo">🚀✨</div>
+ <h1>ماجراجویی در سرزمین کسرها</h1>
+ <p class="subtitle">بازی کن، یاد بگیر، ستاره جمع کن! ⭐</p>
+</header>
+
+<!-- صفحه خوش‌آمدگویی -->
+<section id="welcome" class="panel screen active">
+
+ <div class="logo" style="text-align:center">🏰</div>
+
+ <h2 style="text-align:center">به سرزمین کسرها خوش آمدی!</h2>
+
+ <p style="text-align:center">
+ نامت را بنویس و برای یک ماجراجویی ریاضی آماده شو.
+ </p>
+
+ <label for="studentName">👦 نام قهرمان:</label>
+ <input id="studentName" maxlength="25" placeholder="نام شرکت‌کننده...">
+
+ <label for="gameMode">🎯 انتخاب نوع بازی:</label>
+
+ <select id="gameMode">
+  <option value="both">هر دو نوع تبدیل</option>
+  <option value="mixed">عدد مخلوط به کسر</option>
+  <option value="improper">کسر به عدد مخلوط</option>
+ </select>
+
+ <label for="questionCountSelect">🔢 تعداد سؤال‌ها:</label>
+
+ <select id="questionCountSelect">
+  <option value="10">۱۰ سؤال</option>
+  <option value="15">۱۵ سؤال</option>
+  <option value="20">۲۰ سؤال</option>
+ </select>
+
+ <button class="primary" id="enterBtn" style="width:100%;margin-top:16px">
+  📚 ورود به آموزش
+ </button>
+ 
+ <button class="primary hidden" id="resumeBtn" style="width:100%;margin-top:16px; background:linear-gradient(110deg,#20c88d,#087d66); box-shadow:0 5px 0 #054a3d;">
+  🚀 ادامه بازی قبلی
+ </button>
+ 
+ <button class="danger hidden" id="resetBtn" style="width:100%;margin-top:16px">
+  🧹 شروع دوباره (پاک کردن پیشرفت)
+ </button>
+
+ <p class="creator">طراح بازی: <strong>نیره شریفی</strong></p>
+</section>
+
+<!-- صفحه آموزش -->
+<section id="intro" class="panel screen">
+
+ <div class="logo" style="text-align:center">💡</div>
+
+ <h2 style="text-align:center">قبل از بازی، یک مرور کوتاه!</h2>
+
+ <div class="lesson-grid">
+
+  <div class="lesson">
+   <strong>۱) عدد مخلوط ← کسر</strong>
+
+   <p>
+    عدد صحیح را در مخرج ضرب می‌کنیم، سپس صورت را به آن اضافه می‌کنیم.
+    مخرج تغییر نمی‌کند.
+   </p>
+
+   <div class="example">
+    <span class="mixed-number">
+     <span class="whole">۲</span>
+     <span class="frac">
+      <span class="num">۱</span>
+      <span class="den">۳</span>
+     </span>
+    </span>
+    =
+    <span class="frac">
+     <span class="num">۷</span>
+     <span class="den">۳</span>
+    </span>
+   </div>
+
+   <p class="small">۲ × ۳ = ۶؛ سپس ۶ + ۱ = ۷.</p>
+  </div>
+
+  <div class="lesson">
+   <strong>۲) کسر ← عدد مخلوط</strong>
+
+   <p>
+    صورت را بر مخرج تقسیم می‌کنیم.
+    خارج‌قسمت بخش صحیح و باقی‌مانده صورت کسر است.
+   </p>
+
+   <div class="example">
+    <span class="frac">
+     <span class="num">۱۱</span>
+     <span class="den">۴</span>
+    </span>
+    =
+    <span class="mixed-number">
+     <span class="whole">۲</span>
+     <span class="frac">
+      <span class="num">۳</span>
+      <span class="den">۴</span>
+     </span>
+    </span>
+   </div>
+
+   <p class="small">خارج‌قسمت ۲ و باقی‌مانده ۳ است.</p>
+  </div>
+
+ </div>
+
+ <p class="small">
+ هر پاسخ درست ۱۰ امتیاز دارد. با دقت جواب بده و ستاره جمع کن! 🏆
+ </p>
+
+ <button class="primary" id="startBtn" style="width:100%">
+  🚀 شروع بازی!
+ </button>
+</section>
+
+<!-- صفحه بازی -->
+<section id="game" class="panel screen">
+
+ <div class="topbar">
+  <span class="pill" id="playerLabel"></span>
+  <span class="pill" id="modeLabel"></span>
+  <span class="score">⭐ <span id="score">۰</span></span>
+ </div>
+
+ <div class="progress">
+  <span id="progressBar"></span>
+ </div>
+
+ <div class="question-card">
+
+  <div class="pill" id="questionCounter"></div>
+
+  <div class="question" id="questionText"></div>
+
+  <p>پاسخ درست را انتخاب کن:</p>
+
+  <div class="options" id="options"></div>
+
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+
+  <button id="nextBtn" class="primary hidden">
+   سؤال بعدی ➜
+  </button>
+
+ </div>
+</section>
+
+<!-- صفحه نتیجه -->
+<section id="finish" class="panel screen" style="text-align:center">
+
+ <div class="logo">🏆</div>
+ <h2>آفرین قهرمان!</h2>
+
+ <p id="finalName"></p>
+
+ <div class="result-score" id="finalScore"></div>
+
+ <div class="logo" id="medal">🥇</div>
+
+ <p id="finalMessage"></p>
+
+ <div class="actions">
+  <button id="againBtn" class="primary">🔁 بازی دوباره</button>
+  <button id="homeBtn" class="secondary">صفحه اول</button>
+ </div>
+
+ <p class="creator">طراح بازی: <strong>نیره شریفی</strong></p>
+</section>
+
+<p class="creator">ویژه دانش‌آموزان پایه پنجم ابتدایی ✨</p>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const screens=['welcome','intro','game','finish'];
+
+let player='';
+let mode='both';
+let score=0;
+let index=0;
+let total=10;
+let questions=[];
+let locked=false;
+let correctCount=0;
+let chosenOption=null;
+
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
+
+// --- سیستم ذخیره و بازیابی ---
+function saveProgress() {
+  if (index >= total && total > 0) {
+    localStorage.removeItem('fractions_adventure_progress');
+    return;
+  }
+  const data = {
+    player, mode, total, score, index, questions, locked, correctCount, chosenOption
+  };
+  localStorage.setItem('fractions_adventure_progress', JSON.stringify(data));
+}
+
+function loadProgress() {
+  const s = localStorage.getItem('fractions_adventure_progress');
+  if(!s) return false;
+  try {
+    const d = JSON.parse(s);
+    player = d.player || '';
+    mode = d.mode || 'both';
+    total = d.total || 10;
+    score = d.score || 0;
+    index = d.index || 0;
+    questions = d.questions || [];
+    locked = d.locked || false;
+    correctCount = d.correctCount || 0;
+    chosenOption = d.chosenOption || null;
+    return true;
+  } catch(e) { return false; }
+}
+
+function clearProgress() {
+  localStorage.removeItem('fractions_adventure_progress');
+}
+
+function show(id){
+ screens.forEach(s=>{
+  $(s).classList.toggle('active',s===id);
+ });
+}
+
+function gcd(a,b){
+ while(b){
+  const t=b;
+  b=a%b;
+  a=t;
+ }
+ return a;
+}
+
+function fraction(n,d){
+ return `${n}/${d}`;
+}
+
+function mixed(w,n,d){
+ return `${n}/${d} و ${w}`;
+}
+
+function fractionHTML(n,d){
+ return `
+ <span class="frac">
+  <span class="num">${fa(n)}</span>
+  <span class="den">${fa(d)}</span>
+ </span>`;
+}
+
+function answerHTML(value){
+ const s=String(value);
+ const m=s.match(/^(\d+)\/(\d+) و (\d+)$/);
+ if(m){
+  return `
+  <span class="mixed-number">
+   <span class="whole">${fa(m[3])}</span>
+   ${fractionHTML(Number(m[1]),Number(m[2]))}
+  </span>`;
+ }
+
+ const f=s.match(/^(\d+)\/(\d+)$/);
+ if(f){
+  return fractionHTML(Number(f[1]),Number(f[2]));
+ }
+ return fa(s);
+}
+
+function shuffle(a){
+ for(let i=a.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
+ return a;
+}
+
+function makeOptions(type,w,n,d,sum){
+ const correct=type==='toFraction'?fraction(sum,d):mixed(w,n,d);
+ const options=[correct];
+ const seen=new Set([correct]);
+
+ function add(value){
+  if(options.length<4&&!seen.has(value)){
+   seen.add(value);
+   options.push(value);
+  }
+ }
+
+ if(type==='toFraction'){
+  [sum-1,sum+1,sum-2,sum+2,sum-3,sum+3].forEach(v=>{
+   if(v>0)add(fraction(v,d));
+  });
+ }else{
+  const candidates=[
+   w-1>=0?mixed(w-1,n,d):null,
+   mixed(w+1,n,d),
+   n-1>=1?mixed(w,n-1,d):null,
+   n+1<d?mixed(w,n+1,d):null,
+   w-2>=0?mixed(w-2,n,d):null,
+   mixed(w+2,n,d),
+   mixed(w+3,n,d)
+  ];
+
+  candidates.forEach(v=>{
+   if(v!==null)add(v);
+  });
+ }
+
+ let delta=4;
+ while(options.length<4){
+  if(type==='toFraction'){
+   add(fraction(sum+delta,d));
+   add(fraction(Math.max(1,sum-delta),d));
+  }else{
+   add(mixed(w+delta,n,d));
+   if(w-delta>=0){
+    add(mixed(w-delta,n,d));
+   }
+  }
+  delta++;
+ }
+ return shuffle(options);
+}
+
+function makeQuestions(){
+ const pool=[];
+ const types=mode==='mixed'?['toFraction']:mode==='improper'?['toMixed']:['toFraction','toMixed'];
+
+ for(const type of types){
+  for(let d=2;d<=8;d++){
+   for(let w=1;w<=5;w++){
+    for(let n=1;n<d;n++){
+     const sum=w*d+n;
+     pool.push({
+      type,d,w,n,sum,
+      correct:type==='toFraction'?fraction(sum,d):mixed(w,n,d),
+      options:makeOptions(type,w,n,d,sum)
+     });
+    }
+   }
+  }
+ }
+ shuffle(pool);
+ return pool.slice(0,total);
+}
+
+function playSound(good){
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;
+  const ctx=new C();
+  if(good){
+   [520,660,790,1040].forEach((f,i)=>{
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value=f; o.type='sine';
+    g.gain.setValueAtTime(.001,ctx.currentTime+i*.1);
+    g.gain.exponentialRampToValueAtTime(.12,ctx.currentTime+i*.1+.03);
+    g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.1+.2);
+    o.start(ctx.currentTime+i*.1);
+    o.stop(ctx.currentTime+i*.1+.22);
+   });
+  }else{
+   const o=ctx.createOscillator();
+   const g=ctx.createGain();
+   o.connect(g); g.connect(ctx.destination);
+   o.type='triangle'; o.frequency.value=220; g.gain.value=.07;
+   o.start(); o.stop(ctx.currentTime+.16);
+  }
+  setTimeout(()=>ctx.close(),1400);
+ }catch(e){}
+}
+
+/* ورود به آموزش */
+function showLesson(){
+ player=$('studentName').value.trim();
+ if(!player){
+  alert('لطفاً نام شرکت‌کننده را وارد کن.');
+  $('studentName').focus();
+  return;
+ }
+ mode=$('gameMode').value;
+ total=Number($('questionCountSelect').value);
+ show('intro');
+}
+
+function startGame(){
+ clearProgress();
+ score=0;
+ index=0;
+ correctCount=0;
+ locked=false;
+ chosenOption=null;
+ questions=makeQuestions();
+ 
+ $('score').textContent=fa(0);
+ $('playerLabel').textContent='👤 '+player;
+ $('modeLabel').textContent=mode==='mixed'?'عدد مخلوط به کسر':mode==='improper'?'کسر به عدد مخلوط':'تمرین ترکیبی';
+ 
+ show('game');
+ saveProgress();
+ render();
+}
+
+function resumeGame() {
+  if(loadProgress()) {
+    $('score').textContent=fa(score);
+    $('playerLabel').textContent='👤 '+player;
+    $('modeLabel').textContent=mode==='mixed'?'عدد مخلوط به کسر':mode==='improper'?'کسر به عدد مخلوط':'تمرین ترکیبی';
+    show('game');
+    render();
+  }
+}
+
+function resetAll() {
+  if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت شما پاک خواهد شد.')) {
+    clearProgress();
+    player=''; score=0; index=0; correctCount=0; locked=false; chosenOption=null; questions=[];
+    $('studentName').value='';
+    $('resumeBtn').classList.add('hidden');
+    $('resetBtn').classList.add('hidden');
+    $('enterBtn').classList.remove('hidden');
+    show('welcome');
+  }
+}
+
+function render(){
+ const q=questions[index];
+ $('questionCounter').textContent=`سؤال ${fa(index+1)} از ${fa(total)}`;
+ $('progressBar').style.width=(index/total*100)+'%';
+ $('score').textContent=fa(score);
+
+ $('questionText').innerHTML=q.type==='toFraction'
+  ?`عدد مخلوط ${answerHTML(mixed(q.w,q.n,q.d))} را به کسر تبدیل کن.`
+  :`کسر ${answerHTML(`${q.sum}/${q.d}`)} را به عدد مخلوط تبدیل کن.`;
+
+ $('options').innerHTML='';
+ 
+ q.options.forEach(op=>{
+  const b=document.createElement('button');
+  b.className='option';
+  b.innerHTML=answerHTML(op);
+  b.dataset.answer=op;
+  b.addEventListener('click',()=>choose(b,op,q));
+  $('options').appendChild(b);
+ });
+
+ if (locked && chosenOption) {
+    const buttons=[...$('options').children];
+    buttons.forEach(b=>{
+      b.disabled=true;
+      if(b.dataset.answer===q.correct) b.classList.add('correct');
+      if(b.dataset.answer===chosenOption && chosenOption !== q.correct) b.classList.add('wrong');
+    });
+
+    if(chosenOption===q.correct){
+      $('feedback').textContent='🌟 آفرین! پاسخ کاملاً درست است. +۱۰ امتیاز';
+    } else {
+      $('feedback').innerHTML=`اشکالی ندارد! پاسخ درست ${answerHTML(q.correct)} بود. دوباره تلاش کن!`;
+    }
+    
+    $('nextBtn').textContent=index===total-1?'دیدن نتیجه 🏆':'سؤال بعدی ➜';
+    $('nextBtn').classList.remove('hidden');
+ } else {
+    locked = false;
+    chosenOption = null;
+    $('feedback').textContent='';
+    $('nextBtn').classList.add('hidden');
+ }
+}
+
+function choose(btn,op,q){
+ if(locked)return;
+ locked=true;
+ chosenOption=op;
+
+ const buttons=[...$('options').children];
+ buttons.forEach(b=>{
+  b.disabled=true;
+  if(b.dataset.answer===q.correct) b.classList.add('correct');
+ });
+
+ if(op===q.correct){
+  score+=10;
+  correctCount++;
+  $('feedback').textContent='🌟 آفرین! پاسخ کاملاً درست است. +۱۰ امتیاز';
+  playSound(true);
+ }else{
+  btn.classList.add('wrong');
+  $('feedback').innerHTML=`اشکالی ندارد! پاسخ درست ${answerHTML(q.correct)} بود. دوباره تلاش کن!`;
+  playSound(false);
+ }
+
+ $('score').textContent=fa(score);
+ $('nextBtn').textContent=index===total-1?'دیدن نتیجه 🏆':'سؤال بعدی ➜';
+ $('nextBtn').classList.remove('hidden');
+ 
+ saveProgress();
+}
+
+function next(){
+ if(!locked)return;
+ index++;
+ if(index>=total){
+  finish();
+  return;
+ }
+ locked=false;
+ chosenOption=null;
+ saveProgress();
+ render();
+}
+
+function finish(){
+ clearProgress();
+ $('progressBar').style.width='100%';
+ show('finish');
+
+ $('finalName').textContent=`${player} عزیز، تو ${fa(total)} سؤال را به پایان رساندی.`;
+ $('finalScore').textContent=`${fa(score)} از ${fa(total*10)} امتیاز`;
+
+ const pct=correctCount/total;
+ $('medal').textContent=pct>=.8?'🥇':pct>=.5?'🥈':'🥉';
+ $('finalMessage').textContent=pct>=.8?'فوق‌العاده بود! تو قهرمان سرزمین کسرهایی! 🌟':pct>=.5?'آفرین! با کمی تمرین، بهتر و بهتر می‌شوی. 💪':'تلاش خوبی بود! آموزش را مرور کن و دوباره بازی کن. 📚';
+
+ try {
+    window.parent.postMessage({
+      type: 'GAME_FINISHED',
+      gameId: 'ch2-fractions-adventure',
+      score: score,
+      total: total * 10
+    }, '*');
+ } catch (e) {}
+}
+
+$('enterBtn').addEventListener('click',showLesson);
+$('startBtn').addEventListener('click',startGame);
+$('nextBtn').addEventListener('click',next);
+$('againBtn').addEventListener('click',startGame);
+$('resumeBtn').addEventListener('click',resumeGame);
+$('resetBtn').addEventListener('click',resetAll);
+
+$('homeBtn').addEventListener('click',()=>{
+  if(confirm('به صفحه اول برگردی؟ پیشرفت شما ذخیره شده است.')){
+    $('resumeBtn').classList.remove('hidden');
+    $('resetBtn').classList.remove('hidden');
+    $('enterBtn').classList.add('hidden');
+    show('welcome');
+  }
+});
+
+$('studentName').addEventListener('keydown',e=>{
+ if(e.key==='Enter')showLesson();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  if(loadProgress() && index > 0 && index < total) {
+    $('enterBtn').classList.add('hidden');
+    $('resumeBtn').classList.remove('hidden');
+    $('resetBtn').classList.remove('hidden');
+    $('studentName').value = player;
+  }
+});
+</script>
+</body>
+</html>

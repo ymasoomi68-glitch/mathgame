@@ -1,11 +1,11 @@
 {
-  "version": "1.0.11",
-  "releasedAt": "2026-11-05T16:00:25.687Z",
-  "notes": "fix",
+  "version": "1.0.12",
+  "releasedAt": "2026-11-06T17:57:08.785Z",
+  "notes": "add games",
   "hashes": {
     "index": "6ecf8b581a89ed4e14bb2c58954df456",
     "css": "7a3b9dbe96547639ebee65f6962ba8a2",
     "app": "22289bf3123071f244563cafe49cfe0f",
-    "sw": "2c7bea9c1c2fa9624ac7c7161a33e228"
+    "sw": "128573643f02c2d18d47f3101c889670"
   }
 }

@@ -106,6 +106,50 @@
       "emoji": "💎",
       "file": "games/farsi/ch4-farsi-treasure.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch2-fraction-butterfly",
+      "subject": "math",
+      "chapter": 2,
+      "title": "باغ پروانه‌های کسر",
+      "subtitle": "مقایسه کسرها",
+      "description": "بازی تعاملی مقایسه کسرها با روش پروانه‌ای",
+      "emoji": "🦋",
+      "file": "games/math/ch2-fraction-butterfly.html",
+      "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch2-fractions-adventure",
+      "subject": "math",
+      "chapter": 2,
+      "title": "ماجراجویی در سرزمین کسرها",
+      "subtitle": "تبدیل کسرها",
+      "description": "بازی تعاملی تبدیل عدد مخلوط به کسر و برعکس",
+      "emoji": "🚀",
+      "file": "games/math/ch2-fractions-adventure.html",
+      "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch3-science-quiz",
+      "subject": "science",
+      "chapter": 3,
+      "title": "آزمون علوم: رنگین‌کمان",
+      "subtitle": "آزمون آنلاین",
+      "description": "آزمون ۲۰ سوالی علوم پنجم | درس سوم",
+      "emoji": "📝",
+      "file": "games/science/ch3-science-quiz.html",
+      "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch1-social-quiz",
+      "subject": "social",
+      "chapter": 1,
+      "title": "آزمون مطالعات اجتماعی",
+      "subtitle": "درس اول: ارتباط با دیگران",
+      "description": "آزمون آنلاین مطالعات پنجم | درس ۱",
+      "emoji": "🌍",
+      "file": "games/social/ch1-social-quiz.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }
