@@ -480,12 +480,24 @@ el("reset").addEventListener("click",()=>{
   }
 });
 
+// 🔴 اینجا باگ برطرف شد
 function goHome() {
   if(confirm('به صفحه اول برگردی؟ پیشرفت شما ذخیره شده است.')) {
     stopAmbient();
     el("game").style.display="none";
     el("intro").style.display="block";
     saveProgress();
+    
+    // آپدیت دکمه‌ها بر اساس پیشرفت
+    if(index > 0 && index < 10) {
+      el("start").classList.add("hidden");
+      el("resume").classList.remove("hidden");
+      el("reset").classList.remove("hidden");
+    } else {
+      el("start").classList.remove("hidden");
+      el("resume").classList.add("hidden");
+      el("reset").classList.add("hidden");
+    }
   }
 }
 
