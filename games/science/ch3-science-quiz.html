@@ -65,6 +65,8 @@ button{font:inherit;font-weight:bold;border:0;border-radius:12px;padding:13px 16
 </section>
 </main>
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 const raw=[
 ["نور خورشید در ظاهر چه رنگی به نظر می‌رسد؟",["سفید","قرمز","سبز","بنفش"],0],
 ["نور سفید خورشید از چه چیزی تشکیل شده است؟",["فقط رنگ زرد","رنگ‌های گوناگون","فقط قرمز و آبی","فقط نور آبی"],1],
@@ -90,18 +92,18 @@ const raw=[
 const fa=n=>String(n).replace(/[0-9]/g,d=>"۰۱۲۳۴۵۶۷۸۹"[+d]),$=id=>document.getElementById(id);
 function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
-let qs=[],at=0,ans=[];
+let qs=[],at=0,ans=[],adv=null;
 
 function saveProgress() {
   if (at >= qs.length && qs.length > 0) {
-    localStorage.removeItem('science_quiz_progress');
+    LS.del('science_quiz_progress');
     return;
   }
-  localStorage.setItem('science_quiz_progress', JSON.stringify({ qs, at, ans }));
+  LS.set('science_quiz_progress', JSON.stringify({ qs, at, ans }));
 }
 
 function loadProgress() {
-  const s = localStorage.getItem('science_quiz_progress');
+  const s = LS.get('science_quiz_progress');
   if(!s) return false;
   try {
     const d = JSON.parse(s);
@@ -113,7 +115,7 @@ function loadProgress() {
 }
 
 function clearProgress() {
-  localStorage.removeItem('science_quiz_progress');
+  LS.del('science_quiz_progress');
 }
 
 $("startBtn").onclick=()=>{
@@ -138,9 +140,7 @@ function resumeExam() {
 $("resetBtn").onclick = () => {
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام پاسخ‌ها و پیشرفت شما پاک خواهد شد.')){
     clearProgress();
-    $("startBtn").classList.remove("hidden");
-    $("resumeBtn").classList.add("hidden");
-    $("resetBtn").classList.add("hidden");
+    refreshStart();
   }
 }
 
@@ -159,7 +159,8 @@ function draw(){
      saveProgress();
      draw();
      [...$("opts").children].forEach(x=>x.disabled=true);
-     setTimeout(()=>{
+     clearTimeout(adv);
+     adv=setTimeout(()=>{
        if(at<qs.length-1){
          at++;
          saveProgress();
@@ -178,11 +179,12 @@ function draw(){
  $("finish").classList.toggle("hidden",at!==qs.length-1);
 }
 
-$("prev").onclick=()=>{if(at>0){at--;saveProgress();draw()}};
-$("next").onclick=()=>{if(at<qs.length-1){at++;saveProgress();draw()}};
+$("prev").onclick=()=>{clearTimeout(adv);if(at>0){at--;saveProgress();draw()}};
+$("next").onclick=()=>{clearTimeout(adv);if(at<qs.length-1){at++;saveProgress();draw()}};
 $("finish").onclick=finish;
 
 function finish(){
+ clearTimeout(adv);
  if(ans.some(x=>x===null)){alert("هنوز به همهٔ سؤال‌ها پاسخ نداده‌ای. سؤال‌های بی‌پاسخ را کامل کن.");return}
  clearProgress();
  const sc=qs.reduce((s,q,i)=>s+(q.opts[ans[i]].ok?1:0),0);
@@ -220,15 +222,17 @@ $("again").onclick=()=>{
   $("key").classList.add("hidden");
   $("toggle").textContent="مشاهده پاسخنامه";
   $("sticker").textContent="🌟";
+  refreshStart();
 };
 
 $("resumeBtn").addEventListener("click", resumeExam);
 
-window.addEventListener('DOMContentLoaded', () => {
-  if(loadProgress() && at > 0 && at < qs.length) {
-    $("startBtn").classList.add("hidden");
-    $("resumeBtn").classList.remove("hidden");
-    $("resetBtn").classList.remove("hidden");
-  }
-});
+// فقط وقتی پیشرفتِ قابل‌ادامه هست «ادامه/ریست» را نشان بده؛ وگرنه «شروع»
+function refreshStart(){
+  const can = loadProgress() && at > 0 && at < qs.length;
+  $("startBtn").classList.toggle("hidden", !!can);
+  $("resumeBtn").classList.toggle("hidden", !can);
+  $("resetBtn").classList.toggle("hidden", !can);
+}
+window.addEventListener('DOMContentLoaded', refreshStart);
 </script></body></html>

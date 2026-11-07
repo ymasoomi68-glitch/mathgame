@@ -41,7 +41,7 @@ button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0
 <div class="hero">
     <div class="rainbow">🌈</div>
     <h2>دانشمند کوچک، آماده‌ای؟</h2>
-    <p>رنگ‌های رنگین‌کمان گم شده‌اند! ایستگاه‌ها را به‌ترتیب باز کن و پرسش‌ها را حل کن. هر ایستگاه ۱۰ امتیاز دارد.</p>
+    <p>رنگ‌های رنگین‌کمان گم شده‌اند! ایستگاه‌ها را به‌ترتیب باز کن و پرسش‌ها را حل کن. هر سؤال ۱۰ امتیاز دارد.</p>
     <div class="note">
       ⚠️ <b>قوانین مهم:</b><br>
       ۱. هر ایستگاه فقط بعد از تکمیل ایستگاه قبلی باز می‌شود.<br>
@@ -84,6 +84,8 @@ button{font:inherit;cursor:pointer;border-radius:13px;padding:10px 14px;border:0
 </section>
 </main><footer>علوم پنجم دبستان • درس سوم: رنگین‌کمان | طراح: خانم صادقی</footer>
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const stations={
 rainbow:{title:'ایستگاه اول: راز نور سفید',tag:'رنگین‌کمان',color:'🔴',q:[
@@ -136,16 +138,16 @@ const $=id=>document.getElementById(id);
 
 function saveProgress() {
   if (completedStations.size === 6) {
-    localStorage.removeItem('rainbow_mission_progress');
+    LS.del('rainbow_mission_progress');
     return;
   }
-  localStorage.setItem('rainbow_mission_progress', JSON.stringify({
+  LS.set('rainbow_mission_progress', JSON.stringify({
     score, completed: [...completedStations], unlockedIndex
   }));
 }
 
 function loadProgress() {
-  const s = localStorage.getItem('rainbow_mission_progress');
+  const s = LS.get('rainbow_mission_progress');
   if (!s) return false;
   try {
     const d = JSON.parse(s);
@@ -166,7 +168,7 @@ function loadProgress() {
 }
 
 function clearProgress() {
-  localStorage.removeItem('rainbow_mission_progress');
+  LS.del('rainbow_mission_progress');
 }
 
 function updateStats() {
@@ -233,7 +235,7 @@ function renderQ() {
   if (!window.shown) {
     let wrong = q[1].map((t,i) => ({t,i})).filter(o => o.i !== q[2]);
     for(let i=wrong.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[wrong[i],wrong[j]]=[wrong[j],wrong[i]]}
-    let target = qi % 3;
+    let target = Math.floor(Math.random() * 3);
     let opts = [];
     for(let i=0;i<3;i++){if(i===target)opts.push({t:q[1][q[2]],i:q[2]});else opts.push(wrong.shift())}
     window.shown = opts;

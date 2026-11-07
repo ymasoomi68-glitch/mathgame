@@ -63,6 +63,8 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padd
 <footer class="footer"><strong>طراح و تهیه‌کننده: خانم صادقی</strong></footer>
 </div>
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const stages=[
 {label:'ایستگاه اول',title:'بازار بازرگان دانا',icon:'🧔🏻‍♂️',qs:[
@@ -109,16 +111,16 @@ const stages=[
 ]}
 ];
 
-let score=0, completed=[false,false,false], stageScores=[0,0,0], currentStage=0, index=0, locked=false, sessionStageScore=0, currentChosen=null;
+let score=0, completed=[false,false,false], stageScores=[0,0,0], currentStage=0, index=0, locked=false, sessionStageScore=0, currentChosen=null, partial={};
 
 function saveProgress() {
-  localStorage.setItem('farsi_treasure_progress', JSON.stringify({
-    score, completed, stageScores, currentStage, index, sessionStageScore, locked, currentChosen
+  LS.set('farsi_treasure_progress', JSON.stringify({
+    score, completed, stageScores, currentStage, index, sessionStageScore, locked, currentChosen, partial
   }));
 }
 
 function loadProgress() {
-  const raw = localStorage.getItem('farsi_treasure_progress');
+  const raw = LS.get('farsi_treasure_progress');
   if(!raw) return false;
   try {
     const d = JSON.parse(raw);
@@ -130,18 +132,19 @@ function loadProgress() {
     sessionStageScore = d.sessionStageScore || 0;
     locked = d.locked || false;
     currentChosen = d.currentChosen !== undefined ? d.currentChosen : null;
+    partial = d.partial || {};
     return true;
   } catch(e) { return false; }
 }
 
 function clearProgress() {
-  localStorage.removeItem('farsi_treasure_progress');
+  LS.del('farsi_treasure_progress');
 }
 
 function goToMap() {
   clearProgress();
   score=0; completed=[false,false,false]; stageScores=[0,0,0];
-  currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null;
+  currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null; partial={};
 
   document.getElementById('welcome').classList.add('hidden');
   document.getElementById('result').classList.add('hidden');
@@ -188,7 +191,7 @@ function resetAll() {
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
     clearProgress();
     score=0; completed=[false,false,false]; stageScores=[0,0,0];
-    currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null;
+    currentStage=0; index=0; sessionStageScore=0; locked=false; currentChosen=null; partial={};
     
     document.getElementById('welcome').classList.remove('hidden');
     document.getElementById('map').classList.add('hidden');
@@ -219,10 +222,10 @@ function renderMap() {
 function enterStage(s) {
   if(completed[s]) return;
   currentStage=s;
-  index=0;
-  sessionStageScore=0;
-  locked=false;
-  currentChosen=null;
+  // اگر ایستگاه نیمه‌کاره رها شده بود، از همان‌جا ادامه می‌دهد (امکان تکرار و دیدن پاسخ‌ها نیست)
+  const p=partial[s];
+  if(p){index=p.index;sessionStageScore=p.sessionStageScore;locked=p.locked;currentChosen=p.currentChosen;}
+  else{index=0;sessionStageScore=0;locked=false;currentChosen=null;}
   saveProgress();
   document.getElementById('map').classList.add('hidden');
   document.getElementById('result').classList.add('hidden');
@@ -318,6 +321,7 @@ function nextQuestion() {
     renderQuestion();
   } else {
     completed[currentStage]=true;
+    delete partial[currentStage];
     stageScores[currentStage]=sessionStageScore;
     score=stageScores.reduce((a,b)=>a+b,0);
     saveProgress();
@@ -352,7 +356,10 @@ function updateScore() {
 }
 
 function backToMap() {
-  if (!completed[currentStage]) saveProgress();
+  if (!completed[currentStage]) {
+    if (!document.getElementById('quiz').classList.contains('hidden')) partial[currentStage]={index,sessionStageScore,locked,currentChosen};
+    saveProgress();
+  }
   document.getElementById('quiz').classList.add('hidden');
   document.getElementById('result').classList.add('hidden');
   document.getElementById('map').classList.remove('hidden');

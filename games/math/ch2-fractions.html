@@ -216,6 +216,8 @@ body.in-game #heroHeader,body.in-stage-select #heroHeader{display:none!important
   <div class="footer">طراح: خانم صادقی</div>
 </div>
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 (() => {
 'use strict';
 const stages = [
@@ -230,7 +232,7 @@ const questions = [
  {stage:0,skill:'جمع و تفریق کسرها',level:'آسان',q:'۴/۷ − ۲/۷ = ؟',opts:['۲/۷','۲/۱۴','۶/۷','۱/۷'],a:0,hint:'چون مخرج‌ها برابرند، صورت‌ها را از هم کم کن.',steps:['مخرج‌ها برابرند؛ پس مخرج ۷ را نگه می‌داریم.','۴ − ۲ = ۲.','پاسخ: ۲/۷.']},
  {stage:0,skill:'جمع و تفریق کسرها',level:'متوسط',q:'۳/۴ + ۲/۳ = ؟',opts:['۵/۷','۱ و ۵/۱۲','۱ و ۱/۱۲','۱ و ۷/۱۲'],a:1,hint:'مخرج مشترک ۱۲ انتخاب مناسبی است.',steps:['۳/۴ = ۹/۱۲ و ۲/۳ = ۸/۱۲.','۹/۱۲ + ۸/۱۲ = ۱۷/۱۲.','۱۷/۱۲ = ۱ و ۵/۱۲.']},
  {stage:0,skill:'جمع و تفریق کسرها',level:'دشوار',q:'۷/۸ − ۱/۶ = ؟',opts:['۶/۲','۱۷/۲۴','۵/۲۴','۱۹/۲۴'],a:1,hint:'مخرج مشترک ۲۴ است.',steps:['۷/۸ = ۲۱/۲۴ و ۱/۶ = ۴/۲۴.','۲۱/۲۴ − ۴/۲۴ = ۱۷/۲۴.','پاسخ: ۱۷/۲۴.']},
- {stage:0,skill:'جمع و تفریق کسرها',level:'دشوار',q:'۵/۹ + ۷/۱۲ = ؟',opts:['۱۲/۲۱','۱ و ۱/۳۶','۱ و ۵/۳۶','۱ و ۱/۳۶'],a:2,hint:'مخرج مشترک ۳۶ بگیر و در پایان عدد مخلوط بساز.',steps:['۵/۹ = ۲۰/۳۶ و ۷/۱۲ = ۲۱/۳۶.','۲۰/۳۶ + ۲۱/۳۶ = ۴۱/۳۶.','۴۱/۳۶ = ۱ و ۵/۳۶.']},
+ {stage:0,skill:'جمع و تفریق کسرها',level:'دشوار',q:'۵/۹ + ۷/۱۲ = ؟',opts:['۱۲/۲۱','۱ و ۱/۳۶','۱ و ۵/۳۶','۱ و ۷/۳۶'],a:2,hint:'مخرج مشترک ۳۶ بگیر و در پایان عدد مخلوط بساز.',steps:['۵/۹ = ۲۰/۳۶ و ۷/۱۲ = ۲۱/۳۶.','۲۰/۳۶ + ۲۱/۳۶ = ۴۱/۳۶.','۴۱/۳۶ = ۱ و ۵/۳۶.']},
  {stage:1,skill:'مخرج مشترک',level:'دشوار',q:'۳/۵ + ۵/۶ = ؟',opts:['۸/۱۱','۱ و ۱۳/۳۰','۱ و ۱/۳۰','۱ و ۲/۳۰'],a:1,hint:'مخرج مشترک ۳۰ است.',steps:['۳/۵ = ۱۸/۳۰ و ۵/۶ = ۲۵/۳۰.','۱۸/۳۰ + ۲۵/۳۰ = ۴۳/۳۰.','۴۳/۳۰ = ۱ و ۱۳/۳۰.']},
  {stage:1,skill:'مخرج مشترک',level:'دشوار',q:'۱۱/۱۲ − ۳/۸ = ؟',opts:['۸/۴','۱۳/۲۴','۵/۲۴','۷/۲۴'],a:1,hint:'مخرج مشترک ۲۴ انتخاب کن.',steps:['۱۱/۱۲ = ۲۲/۲۴ و ۳/۸ = ۹/۲۴.','۲۲/۲۴ − ۹/۲۴ = ۱۳/۲۴.','پاسخ: ۱۳/۲۴.']},
  {stage:1,skill:'مخرج مشترک',level:'دشوار',q:'کدام کسر با ۳/۴ برابر است؟',opts:['۶/۱۰','۹/۱۲','۶/۱۲','۱۲/۱۸'],a:1,hint:'صورت و مخرج را در یک عدد یکسان ضرب کن.',steps:['۳/۴ را در ۳ ضرب می‌کنیم.','۳×۳ = ۹ و ۴×۳ = ۱۲.','پس ۹/۱۲ با ۳/۴ برابر است.']},
@@ -240,31 +242,31 @@ const questions = [
  {stage:2,skill:'جمع عددهای مخلوط',level:'متوسط',q:'۱ و ۷/۱۰ + ۲ و ۱/۵ = ؟',opts:['۳ و ۹/۱۰','۴ و ۱/۱۰','۳ و ۸/۱۵','۴ و ۹/۱۰'],a:0,hint:'۱/۵ را به ۲/۱۰ تبدیل کن.',steps:['۱/۵ = ۲/۱۰.','۷/۱۰ + ۲/۱۰ = ۹/۱۰.','۱ + ۲ = ۳؛ پاسخ ۳ و ۹/۱۰ است.']},
  {stage:3,skill:'تفریق عددهای مخلوط',level:'متوسط',q:'۵ و ۴/۷ − ۲ و ۲/۷ = ؟',opts:['۳ و ۲/۷','۳ و ۶/۷','۲ و ۲/۷','۳ و ۱/۷'],a:0,hint:'قسمت صحیح و قسمت کسری را جداگانه کم کن.',steps:['۵ − ۲ = ۳.','۴/۷ − ۲/۷ = ۲/۷.','پاسخ: ۳ و ۲/۷.']},
  {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۶ و ۱/۴ − ۲ و ۳/۴ = ؟',opts:['۴ و ۱/۲','۳ و ۱/۲','۳ و ۳/۴','۴ و ۱/۴'],a:1,hint:'از یک واحد صحیح قرض بگیر و آن را به چهار چهارم تبدیل کن.',steps:['۶ و ۱/۴ = ۵ و ۵/۴.','۵/۴ − ۳/۴ = ۲/۴ = ۱/۲.','۵ − ۲ = ۳؛ پاسخ ۳ و ۱/۲ است.']},
- {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۸ و ۲/۳ − ۳ و ۵/6 = ؟',opts:['۵ و ۱/۶','۴ و ۵/۶','۴ و ۱/۲','۵ و ۵/۶'],a:1,hint:'مخرج مشترک ۶ بگیر و از یک واحد صحیح قرض بگیر.',steps:['۲/۳ = ۴/۶؛ چون ۴/۶ از ۵/۶ کمتر است، یک واحد قرض می‌گیریم.','۸ و ۴/۶ = ۷ و ۱۰/۶؛ ۱۰/۶ − ۵/۶ = ۵/۶.','۷ − ۳ = ۴؛ پاسخ ۴ و ۵/۶ است.']},
+ {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۸ و ۲/۳ − ۳ و ۵/۶ = ؟',opts:['۵ و ۱/۶','۴ و ۵/۶','۴ و ۱/۲','۵ و ۵/۶'],a:1,hint:'مخرج مشترک ۶ بگیر و از یک واحد صحیح قرض بگیر.',steps:['۲/۳ = ۴/۶؛ چون ۴/۶ از ۵/۶ کمتر است، یک واحد قرض می‌گیریم.','۸ و ۴/۶ = ۷ و ۱۰/۶؛ ۱۰/۶ − ۵/۶ = ۵/۶.','۷ − ۳ = ۴؛ پاسخ ۴ و ۵/۶ است.']},
  {stage:3,skill:'تفریق عددهای مخلوط',level:'دشوار',q:'۷ و ۱/۵ − ۲ و ۳/۱۰ = ؟',opts:['۵ و ۱/۱۰','۴ و ۹/۱۰','۵ و ۴/۱۰','۴ و ۱/۲'],a:1,hint:'۱/۵ را به ۲/۱۰ تبدیل کن؛ سپس قرض گرفتن را بررسی کن.',steps:['۱/۵ = ۲/۱۰؛ پس ۷ و ۲/۱۰ − ۲ و ۳/۱۰.','قرض می‌گیریم: ۷ و ۲/۱۰ = ۶ و ۱۲/۱۰.','۱۲/۱۰ − ۳/۱۰ = ۹/۱۰ و ۶ − ۲ = ۴؛ پاسخ ۴ و ۹/۱۰.']},
  {stage:4,skill:'عدد مخلوط و کسر',level:'متوسط',q:'۲ و ۳/۸ + ۵/۸ = ؟',opts:['۲ و ۱/۴','۳','۳ و ۳/۸','۲ و ۸/۱۶'],a:1,hint:'کسرها را جمع کن؛ اگر یک واحد کامل شد، به قسمت صحیح اضافه کن.',steps:['۳/۸ + ۵/۸ = ۸/۸ = ۱.','۲ + ۱ = ۳.','پاسخ: ۳.']},
  {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۴ و ۱/۶ − ۵/۱۲ = ؟',opts:['۳ و ۳/۴','۳ و ۷/۱۲','۴ و ۱/۱۲','۳ و ۵/۱۲'],a:0,hint:'۱/۶ را به ۲/۱۲ تبدیل کن و یک واحد قرض بگیر.',steps:['۱/۶ = ۲/۱۲؛ پس ۴ و ۲/۱۲.','قرض می‌گیریم: ۴ و ۲/۱۲ = ۳ و ۱۴/۱۲.','۱۴/۱۲ − ۵/۱۲ = ۹/۱۲ = ۳/۴؛ پاسخ ۳ و ۳/۴ است.']},
- {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۳ و ۵/6 + ۲/3 = ؟',opts:['۴ و ۱/۲','۴ و ۱/۶','۳ و ۷/۹','۴ و ۵/۶'],a:0,hint:'۲/۳ را به ششم تبدیل کن؛ کسرها از یک واحد بیشتر می‌شوند.',steps:['۲/۳ = ۴/۶.','۵/۶ + ۴/۶ = ۹/۶ = ۱ و ۱/۲.','۳ + ۱ و ۱/۲ = ۴ و ۱/۲.']},
- {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۵ و ۱/۴ − ۷/8 = ؟',opts:['۴ و ۳/۸','۴ و ۱/۸','۵ و ۳/۸','۳ و ۷/۸'],a:0,hint:'۱/۴ را به ۲/۸ تبدیل کن و از یک واحد صحیح قرض بگیر.',steps:['۱/۴ = ۲/۸؛ پس ۵ و ۲/۸.','قرض می‌گیریم: ۵ و ۲/۸ = ۴ و ۱۰/۸.','۱۰/۸ − ۷/۸ = ۳/۸؛ پاسخ ۴ و ۳/۸.']}
+ {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۳ و ۵/۶ + ۲/۳ = ؟',opts:['۴ و ۱/۲','۴ و ۱/۶','۳ و ۷/۹','۴ و ۵/۶'],a:0,hint:'۲/۳ را به ششم تبدیل کن؛ کسرها از یک واحد بیشتر می‌شوند.',steps:['۲/۳ = ۴/۶.','۵/۶ + ۴/۶ = ۹/۶ = ۱ و ۱/۲.','۳ + ۱ و ۱/۲ = ۴ و ۱/۲.']},
+ {stage:4,skill:'عدد مخلوط و کسر',level:'دشوار',q:'۵ و ۱/۴ − ۷/۸ = ؟',opts:['۴ و ۳/۸','۴ و ۱/۸','۵ و ۳/۸','۳ و ۷/۸'],a:0,hint:'۱/۴ را به ۲/۸ تبدیل کن و از یک واحد صحیح قرض بگیر.',steps:['۱/۴ = ۲/۸؛ پس ۵ و ۲/۸.','قرض می‌گیریم: ۵ و ۲/۸ = ۴ و ۱۰/۸.','۱۰/۸ − ۷/۸ = ۳/۸؛ پاسخ ۴ و ۳/۸.']}
 ];
 const faDigits = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
 const $ = id => document.getElementById(id);
 
 let order=[], allOrder=[], idx=0, score=0, wrong=0, keys=0, answered=false, soundOn=false, audioCtx=null;
-let records=[], firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
+let records=[], scored={}, firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
 
 // --- ذخیره و بازیابی پیشرفت ---
 function saveProgress() {
   const data = {
     score, wrong, keys, unlockedStage, currentStage, idx,
     firstTry, completedStages: [...completedStages],
-    allOrder, order
+    allOrder, order, records, scored
   };
-  localStorage.setItem('fractions_game_progress', JSON.stringify(data));
+  LS.set('fractions_game_progress', JSON.stringify(data));
 }
 
 function loadProgress() {
-  const saved = localStorage.getItem('fractions_game_progress');
+  const saved = LS.get('fractions_game_progress');
   if (!saved) return false;
   try {
     const data = JSON.parse(saved);
@@ -273,17 +275,18 @@ function loadProgress() {
     idx = data.idx || 0; firstTry = data.firstTry || {};
     completedStages = new Set(data.completedStages || []);
     allOrder = data.allOrder || []; order = data.order || [];
+    records = data.records || []; scored = data.scored || {};
     return true;
   } catch(e) { return false; }
 }
 
 function clearProgress() {
-  localStorage.removeItem('fractions_game_progress');
+  LS.del('fractions_game_progress');
 }
 
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function playTone(freq=660,duration=.11){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.08,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.start();o.stop(audioCtx.currentTime+duration);}catch(e){}}
-function mathHTML(str){return String(str).replace(/([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
+function mathHTML(str){return String(str).replace(/(^|[^0-9۰-۹\/])([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1$2 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
 function setFeedback(kind,title,text){const el=$('feedback');el.className='feedback show '+kind;el.innerHTML='<strong>'+title+'</strong><span>'+mathHTML(text)+'</span>';}
 function showHint(){const q=questions[order[idx]],box=$('hintBox');box.className='feedback show';box.style.background='#fffbeb';box.style.border='1px solid #fde68a';box.style.color='#854d0e';box.innerHTML='💡 راهنمایی: '+mathHTML(q.hint);}
 
@@ -313,7 +316,7 @@ function renderQuestion(){
   $('difficulty').textContent='سطح '+q.level;$('questionText').innerHTML='<span class="math">'+mathHTML(q.q)+'</span>';
   $('options').innerHTML='';
   shuffle(q.opts.map((v,i)=>({v,original:i}))).forEach(item=>{
-    const b=document.createElement('button');b.type='button';b.className='opt';
+    const b=document.createElement('button');b.type='button';b.className='opt';b.dataset.orig=item.original;
     b.innerHTML='<span class="math">'+mathHTML(item.v)+'</span>';
     b.addEventListener('click',()=>choose(item.original,b));$('options').appendChild(b);
   });
@@ -323,31 +326,19 @@ function renderQuestion(){
   $('progressBar').style.width=(idx/order.length*100)+'%';
   $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
 
-  // بازیابی وضعیت سوال قبلی
-  if(firstTry[order[idx]] !== undefined && records.find(r=>r.qid===order[idx])) {
-    const prevRec = records.find(r=>r.qid===order[idx]);
-    const all = [...$('options').querySelectorAll('button')];
-    all.forEach(b => {
-      b.disabled = true;
-      if (b.innerHTML.includes(mathHTML(prevRec.chosen))) {
-        b.style.borderColor = prevRec.correct ? "var(--good)" : "var(--bad)";
-        b.style.color = prevRec.correct ? "var(--good)" : "var(--bad)";
-      }
-      if (!prevRec.correct && b.innerHTML.includes(mathHTML(q.opts[q.a]))) {
-        b.style.borderColor = "var(--good)"; b.style.color = "var(--good)";
-      }
+  // اگر این سؤال قبلاً درست پاسخ داده شده (مثلاً بعد از «ادامهٔ بازی»)، همان وضعیت را بازسازی کن
+  if(records.some(r=>r.qid===order[idx]&&r.correct)){
+    [...$('options').querySelectorAll('button')].forEach(b=>{
+      b.disabled=true;
+      if(Number(b.dataset.orig)===q.a)b.classList.add('correct');
     });
-    if (prevRec.correct) {
-      setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
-      $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
-      $('lab').classList.remove('hidden');
-      $('hintBtn').disabled = true;
-    } else {
-      setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');
-    }
-    answered = true;
+    setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
+    $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
+    $('lab').classList.remove('hidden');
+    $('hintBtn').disabled=true;
+    answered=true;
     $('nextBtn').classList.remove('hidden');
-    $('nextBtn').textContent = idx===order.length-1?'پایان مرحله ←':'سؤال بعدی ←';
+    $('nextBtn').textContent=idx===order.length-1?'پایان مرحله ←':'سؤال بعدی ←';
   }
 }
 
@@ -356,20 +347,20 @@ function choose(original,button){
   if(original===q.a){
     answered=true;
     if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=true;
-    score+=10;keys+=1;buttons.forEach(b=>{b.disabled=true});
+    if(!scored[order[idx]]){scored[order[idx]]=true;score+=10;keys+=1;}buttons.forEach(b=>{b.disabled=true});
     button.classList.add('correct');
     setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
     playTone(790);
     $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
     $('lab').classList.remove('hidden');$('nextBtn').classList.remove('hidden');$('hintBtn').disabled=true;
-    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true,steps:q.steps});
+    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosenIdx:original,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true});
     $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
   } else {
     if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=false;
     wrong++;button.classList.add('wrong');button.disabled=true;
     setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');
     playTone(260);
-    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false,steps:q.steps});
+    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosenIdx:original,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false});
     $('hintBtn').disabled=false;
   }
   saveProgress();
@@ -408,7 +399,7 @@ function showResult(){
   $('game').style.display='none';$('result').style.display='block';$('progressBar').style.width='100%';
   const played=allOrder,total=played.length,correct=played.filter(qid=>firstTry[qid]===true).length,pct=Math.round(correct/total*100);
   $('finalScore').textContent=faDigits(score)+' امتیاز';
-  $('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(wrong);$('percent').textContent=faDigits(pct)+'٪';
+  $('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(total-correct);$('percent').textContent=faDigits(pct)+'٪';
   $('resultTitle').textContent=pct>=85?'قهرمان درخشان شهر کسرها!':pct>=65?'قهرمان پرتلاش شهر کسرها!':'قهرمان آیندهٔ شهر کسرها!';
   $('resultMessage').textContent=pct>=85?'با دقت و پشتکار، گنجینه را پیدا کردی!':pct>=65?'آفرین! با مرور چند نکته می‌توانی قوی‌تر شوی.':'هر تمرین فرصتی برای یادگیری است؛ سؤال‌ها را مرور کن و دوباره تلاش کن.';
   const skills=[...new Set(played.map(qid=>questions[qid].skill))];
@@ -427,6 +418,7 @@ function beginStage(stageIndex){
   currentStage=stageIndex;
   order=questions.map((q,i)=>({q,i})).filter(x=>x.q.stage===stageIndex).map(x=>x.i);
   allOrder=[...allOrder.filter(i=>questions[i].stage!==stageIndex),...order];
+  records=records.filter(r=>!order.includes(r.qid));
   idx=0;
   $('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';
   $('welcome').textContent='سلام قهرمان، آماده‌ای؟';
@@ -437,7 +429,7 @@ function beginStage(stageIndex){
 function resetAll() {
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
     clearProgress();
-    score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    score=0;wrong=0;keys=0;records=[];scored={};firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
     idx = 0;
     $('resumeBtn').classList.add('hidden');
     $('resetHomeBtn').classList.add('hidden');
@@ -470,7 +462,7 @@ $('printBtn').addEventListener('click',()=>window.print());
 $('restartBtn').addEventListener('click',()=>{
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
     clearProgress();
-    score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    score=0;wrong=0;keys=0;records=[];scored={};firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
     document.body.classList.remove('in-game','in-stage-select');
     $('result').style.display='none';$('stageSelect').style.display='none';$('start').style.display='block';
     const notice=$('stageNotice');if(notice)notice.remove();

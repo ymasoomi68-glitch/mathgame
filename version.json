@@ -1,11 +1,11 @@
 {
-  "version": "1.0.13",
-  "releasedAt": "2026-11-06T18:09:02.118Z",
-  "notes": "Fix Butterfly game resume button",
+  "version": "1.0.15",
+  "releasedAt": "2026-11-07T17:53:57.456Z",
+  "notes": "Fixed all bugs, added PWA install button, Vazirmatn font",
   "hashes": {
-    "index": "6ecf8b581a89ed4e14bb2c58954df456",
-    "css": "7a3b9dbe96547639ebee65f6962ba8a2",
-    "app": "22289bf3123071f244563cafe49cfe0f",
-    "sw": "b2ca6f53629715dd280b67e5c85e936f"
+    "index": "5ad436f2b2bcc1d2a5126ac3b67b135c",
+    "css": "d0e90a98e3da653c3145f53292bdf4a7",
+    "app": "7dd9ad59f8736953cf0e46f0eb3dd10a",
+    "sw": "d29eb32c3eaa0e7dd69fb252b2d25a10"
   }
 }

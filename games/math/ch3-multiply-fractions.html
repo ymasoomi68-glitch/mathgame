@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#172554">
 <title>قهرمانان ضرب کسرها | ریاضی پنجم</title>
+<link rel="stylesheet" href="../../fonts/vazirmatn.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
 :root{--navy:#164e75;--blue:#60a5fa;--cyan:#93c5fd;--purple:#ec4899;--gold:#f9a8d4;--ink:#172033;--muted:#64748b;--paper:#fff;--good:#15803d;--bad:#b91c1c;--line:#dbeafe}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Vazirmatn',Tahoma,sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 8%,#dbeafe 0,transparent 27%),radial-gradient(circle at 92% 15%,#fce7f3 0,transparent 28%),linear-gradient(145deg,#f8fafc,#eff6ff);min-height:100vh;padding:14px}
@@ -215,6 +215,8 @@ body.stage-view .card,body.question-view .card{margin-top:4px}
   <div class="footer">طراح: <strong>خانم صادقی</strong></div>
 </div>
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 (() => {
 'use strict';
 const stages = [
@@ -250,20 +252,20 @@ const faDigits = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d
 const $ = id => document.getElementById(id);
 
 let order=[], allOrder=[], idx=0, score=0, wrong=0, keys=0, answered=false, soundOn=false, audioCtx=null;
-let records=[], firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
+let records=[], scored={}, firstTry={}, unlockedStage=0, currentStage=0, completedStages=new Set();
 
 // --- ذخیره و بازیابی پیشرفت ---
 function saveProgress() {
   const data = {
     score, wrong, keys, unlockedStage, currentStage, idx,
     firstTry, completedStages: [...completedStages],
-    allOrder, order
+    allOrder, order, records, scored
   };
-  localStorage.setItem('multiply_fractions_progress', JSON.stringify(data));
+  LS.set('multiply_fractions_progress', JSON.stringify(data));
 }
 
 function loadProgress() {
-  const saved = localStorage.getItem('multiply_fractions_progress');
+  const saved = LS.get('multiply_fractions_progress');
   if (!saved) return false;
   try {
     const data = JSON.parse(saved);
@@ -272,17 +274,18 @@ function loadProgress() {
     idx = data.idx || 0; firstTry = data.firstTry || {};
     completedStages = new Set(data.completedStages || []);
     allOrder = data.allOrder || []; order = data.order || [];
+    records = data.records || []; scored = data.scored || {};
     return true;
   } catch(e) { return false; }
 }
 
 function clearProgress() {
-  localStorage.removeItem('multiply_fractions_progress');
+  LS.del('multiply_fractions_progress');
 }
 
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function playTone(freq=660,duration=.11){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.08,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.start();o.stop(audioCtx.currentTime+duration);}catch(e){}}
-function mathHTML(str){return String(str).replace(/([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
+function mathHTML(str){return String(str).replace(/(^|[^0-9۰-۹\/])([0-9۰-۹]+)\s+و\s+(?=[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+)/g,'$1$2 ').replace(/([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g,'<span class="frac"><span class="num">$1</span><span class="bar"></span><span class="den">$2</span></span>');}
 function setFeedback(kind,title,text){const el=$('feedback');el.className='feedback show '+kind;el.innerHTML='<strong>'+title+'</strong><span>'+mathHTML(text)+'</span>';}
 function showHint(){const q=questions[order[idx]],box=$('hintBox');box.className='feedback show';box.style.background='#fffbeb';box.style.border='1px solid #fde68a';box.style.color='#854d0e';box.innerHTML='💡 راهنمایی: '+mathHTML(q.hint);}
 
@@ -312,7 +315,7 @@ function renderQuestion(){
   $('difficulty').textContent='سطح '+q.level;$('questionText').innerHTML='<span class="math">'+mathHTML(q.q)+'</span>';
   $('options').innerHTML='';
   shuffle(q.opts.map((v,i)=>({v,original:i}))).forEach(item=>{
-    const b=document.createElement('button');b.type='button';b.className='opt';
+    const b=document.createElement('button');b.type='button';b.className='opt';b.dataset.orig=item.original;
     b.innerHTML='<span class="math">'+mathHTML(item.v)+'</span>';
     b.addEventListener('click',()=>choose(item.original,b));$('options').appendChild(b);
   });
@@ -322,31 +325,19 @@ function renderQuestion(){
   $('progressBar').style.width=(idx/order.length*100)+'%';
   $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
 
-  // بازیابی وضعیت سوال قبلی
-  if(firstTry[order[idx]] !== undefined && records.find(r=>r.qid===order[idx])) {
-    const prevRec = records.find(r=>r.qid===order[idx]);
-    const all = [...$('options').querySelectorAll('button')];
-    all.forEach(b => {
-      b.disabled = true;
-      if (b.innerHTML.includes(mathHTML(prevRec.chosen))) {
-        b.style.borderColor = prevRec.correct ? "var(--good)" : "var(--bad)";
-        b.style.color = prevRec.correct ? "var(--good)" : "var(--bad)";
-      }
-      if (!prevRec.correct && b.innerHTML.includes(mathHTML(q.opts[q.a]))) {
-        b.style.borderColor = "var(--good)"; b.style.color = "var(--good)";
-      }
+  // اگر این سؤال قبلاً درست پاسخ داده شده (مثلاً بعد از «ادامهٔ بازی»)، همان وضعیت را بازسازی کن
+  if(records.some(r=>r.qid===order[idx]&&r.correct)){
+    [...$('options').querySelectorAll('button')].forEach(b=>{
+      b.disabled=true;
+      if(Number(b.dataset.orig)===q.a)b.classList.add('correct');
     });
-    if (prevRec.correct) {
-      setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
-      $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
-      $('lab').classList.remove('hidden');
-      $('hintBtn').disabled = true;
-    } else {
-      setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');
-    }
-    answered = true;
+    setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
+    $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
+    $('lab').classList.remove('hidden');
+    $('hintBtn').disabled=true;
+    answered=true;
     $('nextBtn').classList.remove('hidden');
-    $('nextBtn').textContent = idx===order.length-1?'پایان مرحله ←':'سؤال بعدی ←';
+    $('nextBtn').textContent=idx===order.length-1?'پایان مرحله ←':'سؤال بعدی ←';
   }
 }
 
@@ -355,20 +346,20 @@ function choose(original,button){
   if(original===q.a){
     answered=true;
     if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=true;
-    score+=10;keys+=1;buttons.forEach(b=>{b.disabled=true});
+    if(!scored[order[idx]]){scored[order[idx]]=true;score+=10;keys+=1;}buttons.forEach(b=>{b.disabled=true});
     button.classList.add('correct');
     setFeedback('good','🌟 آفرین! پاسخ درست است.','یک ستاره و یک کلید گنج گرفتی. حالا می‌توانی روش حل را در آزمایشگاه ببینی.');
     playTone(790);
     $('labContent').innerHTML=q.steps.map((s,i)=>`<div class="step"><b>گام ${faDigits(i+1)}:</b> ${mathHTML(s)}</div>`).join('');
     $('lab').classList.remove('hidden');$('nextBtn').classList.remove('hidden');$('hintBtn').disabled=true;
-    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true,steps:q.steps});
+    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosenIdx:original,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:true});
     $('points').textContent=faDigits(score);$('keys').textContent=faDigits(keys);
   } else {
     if(firstTry[order[idx]]===undefined)firstTry[order[idx]]=false;
     wrong++;button.classList.add('wrong');button.disabled=true;
     setFeedback('bad','هنوز یک بار دیگر فکر کن!','به راهنمایی توجه کن و دوباره تلاش کن. لازم نیست عجله کنی.');
     playTone(260);
-    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false,steps:q.steps});
+    records.push({qid:order[idx],stage:q.stage,skill:q.skill,q:q.q,chosenIdx:original,chosen:q.opts[original],correctAnswer:q.opts[q.a],correct:false});
     $('hintBtn').disabled=false;
   }
   saveProgress();
@@ -407,7 +398,7 @@ function showResult(){
   $('game').style.display='none';$('result').style.display='block';$('progressBar').style.width='100%';
   const played=allOrder,total=played.length,correct=played.filter(qid=>firstTry[qid]===true).length,pct=Math.round(correct/total*100);
   $('finalScore').textContent=faDigits(score)+' امتیاز';
-  $('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(wrong);$('percent').textContent=faDigits(pct)+'٪';
+  $('correctCount').textContent=faDigits(correct);$('wrongCount').textContent=faDigits(total-correct);$('percent').textContent=faDigits(pct)+'٪';
   $('resultTitle').textContent=pct>=85?'قهرمان درخشان شهر کسرها!':pct>=65?'قهرمان پرتلاش شهر کسرها!':'قهرمان آیندهٔ شهر کسرها!';
   $('resultMessage').textContent=pct>=85?'با دقت و پشتکار، گنجینه را پیدا کردی!':pct>=65?'آفرین! با مرور چند نکته می‌توانی قوی‌تر شوی.':'هر تمرین فرصتی برای یادگیری است؛ سؤال‌ها را مرور کن و دوباره تلاش کن.';
   const skills=[...new Set(played.map(qid=>questions[qid].skill))];
@@ -426,6 +417,7 @@ function beginStage(stageIndex){
   currentStage=stageIndex;
   order=questions.map((q,i)=>({q,i})).filter(x=>x.q.stage===stageIndex).map(x=>x.i);
   allOrder=[...allOrder.filter(i=>questions[i].stage!==stageIndex),...order];
+  records=records.filter(r=>!order.includes(r.qid));
   idx=0;
   $('start').style.display='none';$('stageSelect').style.display='none';$('result').style.display='none';$('game').style.display='block';
   $('welcome').textContent='سلام قهرمان، آماده‌ای؟';
@@ -436,7 +428,7 @@ function beginStage(stageIndex){
 function resetAll() {
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
     clearProgress();
-    score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    score=0;wrong=0;keys=0;records=[];scored={};firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
     idx = 0;
     $('resumeBtn').classList.add('hidden');
     $('resetHomeBtn').classList.add('hidden');
@@ -469,7 +461,7 @@ $('printBtn').addEventListener('click',()=>window.print());
 $('restartBtn').addEventListener('click',()=>{
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) {
     clearProgress();
-    score=0;wrong=0;keys=0;records=[];firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
+    score=0;wrong=0;keys=0;records=[];scored={};firstTry={};allOrder=[];completedStages=new Set();unlockedStage=0;
     document.body.classList.remove('question-view','stage-view');
     $('result').style.display='none';$('stageSelect').style.display='none';$('start').style.display='block';
     const notice=$('stageNotice');if(notice)notice.remove();

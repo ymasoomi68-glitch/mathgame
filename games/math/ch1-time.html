@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>آزمایشگاه زمان | ریاضی پنجم</title>
+<link rel="stylesheet" href="../../fonts/vazirmatn.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
 :root{--bg:#071a3a;--panel:#10264a;--panel2:#17345e;--ink:#f4f8ff;--muted:#c0cee3;--teal:#55e0cf;--orange:#ffb36b;--pink:#ff7c9c;--line:#2b4772;--good:#8cf0b2;--bad:#ffd18a}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 8%,#12366b 0,transparent 30%),radial-gradient(circle at 90% 88%,#172b57 0,transparent 32%),linear-gradient(135deg,#061632 0%,#0a2047 52%,#071a3a 100%);font-family:Vazirmatn,Tahoma,sans-serif;color:var(--ink);padding:18px}
@@ -96,6 +96,8 @@ footer{text-align:center;color:#8fa7bf;font-size:.85rem;padding:16px 0}
 <footer>ریاضی پنجم • یادگیری با فکر کردن، تمرین و کشف اشتباه‌ها | طراح: خانم صادقی</footer>
 </div>
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 const questions = [
 {q:"۱) عدد مرکبِ «۳ متر و ۲۵ سانتی‌متر» را به سانتی‌متر تبدیل کن.",e:"۳ متر و ۲۵ سانتی‌متر = ؟ سانتی‌متر",a:"۳۲۵ سانتی‌متر",o:["۳۲۵ سانتی‌متر","۳۰۲۵ سانتی‌متر","۲۳۵ سانتی‌متر","۳۵۰ سانتی‌متر"],why:"هر متر ۱۰۰ سانتی‌متر است؛ ۳ متر = ۳۰۰ سانتی‌متر و ۳۰۰ + ۲۵ = ۳۲۵ سانتی‌متر."},
 {q:"۲) عدد مرکبِ «۲ کیلوگرم و ۳۵۰ گرم» چند گرم است؟",e:"۲ کیلوگرم و ۳۵۰ گرم = ؟ گرم",a:"۲۳۵۰ گرم",o:["۲۰۳۵۰ گرم","۲۳۵۰ گرم","۲۵۰۰ گرم","۳۵۲ گرم"],why:"هر کیلوگرم ۱۰۰۰ گرم است؛ ۲ کیلوگرم = ۲۰۰۰ گرم و ۲۰۰۰ + ۳۵۰ = ۲۳۵۰ گرم."},
@@ -111,7 +113,7 @@ const questions = [
 {q:"۱۲) حاصل تفریق را پیدا کن.",e:"۶ دقیقه و ۱۵ ثانیه − ۲ دقیقه و ۳۸ ثانیه",a:"۳ دقیقه و ۳۷ ثانیه",o:["۴ دقیقه و ۲۳ ثانیه","۳ دقیقه و ۳۷ ثانیه","۳ دقیقه و ۲۳ ثانیه","۴ دقیقه و ۳۷ ثانیه"],why:"یک دقیقه را تبدیل می‌کنیم: ۵ دقیقه و ۷۵ ثانیه − ۲ دقیقه و ۳۸ ثانیه = ۳ دقیقه و ۳۷ ثانیه."},
 {q:"۱۳) یک مسابقه ۲ ساعت و ۳۵ دقیقه طول کشید. اگر ۵۵ دقیقه از آن گذشته باشد، چه مقدار باقی مانده است؟",e:"۲:۳۵ − ۰:۵۵",a:"۱ ساعت و ۴۰ دقیقه",o:["۱ ساعت و ۸۰ دقیقه","۱ ساعت و ۴۰ دقیقه","۲ ساعت و ۲۰ دقیقه","۱ ساعت و ۳۰ دقیقه"],why:"۲ ساعت و ۳۵ دقیقه را به ۱ ساعت و ۹۵ دقیقه تبدیل می‌کنیم؛ ۹۵ − ۵۵ = ۴۰ دقیقه، پس ۱ ساعت و ۴۰ دقیقه باقی می‌ماند."},
 {q:"۱۴) کدام عبارت زمان بیشتری را نشان می‌دهد؟",e:"الف) ۲ ساعت و ۵۰ دقیقه   ب) ۱۷۰ دقیقه",a:"هر دو برابرند",o:["گزینهٔ الف","گزینهٔ ب","هر دو برابرند","اطلاعات کافی نیست"],why:"۲ ساعت و ۵۰ دقیقه = ۱۷۰ دقیقه؛ بنابراین دو زمان برابرند."},
-{q:"۱۵) محاسبهٔ کدام دانش‌آموز درست است؟",e:"۱ ساعت و ۴۰ دقیقه + ۳۰ دقیقه",a:"۱ ساعت و ۷۰ دقیقه = ۲ ساعت و ۱۰ دقیقه",o:["۱ ساعت و ۷۰ دقیقه = ۲ ساعت و ۱۰ دقیقه","۱ ساعت و ۷۰ دقیقه = ۱ ساعت و ۱۰ دقیقه","۲ ساعت و ۷۰ دقیقه","۱ ساعت و ۳۰ دقیقه"],why:"۴۰ + ۳۰ = ۷۰ دقیقه و ۷۰ دقیقه برابر با ۱ ساعت و ۱۰ دقیقه است؛ در مجموع ۲ ساعت و ۱۰ دقیقه."},
+{q:"۱۵) کدام محاسبه درست است؟",e:"۱ ساعت و ۴۰ دقیقه + ۳۰ دقیقه",a:"۱ ساعت و ۷۰ دقیقه = ۲ ساعت و ۱۰ دقیقه",o:["۱ ساعت و ۷۰ دقیقه = ۲ ساعت و ۱۰ دقیقه","۱ ساعت و ۷۰ دقیقه = ۱ ساعت و ۱۰ دقیقه","۲ ساعت و ۷۰ دقیقه","۱ ساعت و ۳۰ دقیقه"],why:"۴۰ + ۳۰ = ۷۰ دقیقه و ۷۰ دقیقه برابر با ۱ ساعت و ۱۰ دقیقه است؛ در مجموع ۲ ساعت و ۱۰ دقیقه."},
 {q:"۱۶) از ساعت ۱۴:۳۵ تا ساعت ۱۵:۱۰ چند دقیقه فاصله است؟",e:"۱۴:۳۵ ← ۱۵:۱۰",a:"۳۵ دقیقه",o:["۲۵ دقیقه","۳۵ دقیقه","۴۵ دقیقه","۷۵ دقیقه"],why:"از ۱۴:۳۵ تا ۱۵:۰۰، ۲۵ دقیقه و از ۱۵:۰۰ تا ۱۵:۱۰، ۱۰ دقیقه است؛ مجموعاً ۳۵ دقیقه."},
 {q:"۱۷) حاصل جمع را به صورت دقیقه و ثانیه بنویس.",e:"۴ دقیقه و ۴۸ ثانیه + ۲ دقیقه و ۲۵ ثانیه",a:"۷ دقیقه و ۱۳ ثانیه",o:["۶ دقیقه و ۷۳ ثانیه","۷ دقیقه و ۱۳ ثانیه","۷ دقیقه و ۳ ثانیه","۶ دقیقه و ۱۳ ثانیه"],why:"۴۸ + ۲۵ = ۷۳ ثانیه، یعنی ۱ دقیقه و ۱۳ ثانیه؛ با ۶ دقیقه می‌شود ۷ دقیقه و ۱۳ ثانیه."},
 {q:"۱۸) طول دو روبان ۲ متر و ۷۵ سانتی‌متر و ۱ متر و ۴۰ سانتی‌متر است. مجموع طول آن‌ها چقدر است؟",e:"۲ متر و ۷۵ سانتی‌متر + ۱ متر و ۴۰ سانتی‌متر",a:"۴ متر و ۱۵ سانتی‌متر",o:["۳ متر و ۱۱۵ سانتی‌متر","۴ متر و ۱۵ سانتی‌متر","۴ متر و ۵ سانتی‌متر","۳ متر و ۱۵ سانتی‌متر"],why:"۷۵ + ۴۰ = ۱۱۵ سانتی‌متر، یعنی ۱ متر و ۱۵ سانتی‌متر؛ با ۳ متر می‌شود ۴ متر و ۱۵ سانتی‌متر."},
@@ -142,33 +144,35 @@ function prepareQuestions() {
 
 // ذخیره پیشرفت
 function saveProgress() {
-  localStorage.setItem('time_lab_progress', JSON.stringify({ idx, score, answers, gameQuestions }));
+  LS.set('time_lab_progress', JSON.stringify({ idx, score, answers, gameQuestions }));
 }
 
 // بازیابی پیشرفت
 function loadProgress() {
-  const saved = localStorage.getItem('time_lab_progress');
-  if (saved) {
+  const saved = LS.get('time_lab_progress');
+  if (!saved) return false;
+  try {
     const data = JSON.parse(saved);
-    idx = data.idx;
-    score = data.score;
-    answers = data.answers;
+    if (!data || !Array.isArray(data.gameQuestions) || data.gameQuestions.length !== questions.length) return false;
+    idx = data.idx || 0;
+    score = data.score || 0;
+    answers = data.answers || [];
     gameQuestions = data.gameQuestions;
     return true;
-  }
-  return false;
+  } catch (e) { return false; }
 }
 
 // پاک کردن پیشرفت
 function clearProgress() {
-  localStorage.removeItem('time_lab_progress');
+  LS.del('time_lab_progress');
 }
 
 function stageFor(i){return Math.floor(i/5)}
 
 function startGame(isNew = true){
   if (isNew) {
-    if (!confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) return;
+    // فقط وقتی پیشرفتِ ذخیره‌شده‌ای هست تأیید بگیر
+    if (LS.get('time_lab_progress') && !confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت قبلی شما پاک خواهد شد.')) return;
     clearProgress();
     idx = 0; score = 0; answers = [];
     prepareQuestions();
@@ -201,6 +205,7 @@ function renderQuestion(){
     const b=document.createElement("button");
     b.className="opt";
     b.textContent=["الف) ","ب) ","پ) ","ت) "][i]+op;
+    b.dataset.op=op;
     b.addEventListener("click",()=>choose(op,b));
     $("options").appendChild(b);
   });
@@ -211,11 +216,11 @@ function renderQuestion(){
     const all = [...$("options").querySelectorAll("button")];
     all.forEach(b => {
       b.disabled = true;
-      if (b.textContent.includes(savedAnswer.chosen)) {
+      if (b.dataset.op === savedAnswer.chosen) {
          if(savedAnswer.good) { b.style.borderColor="var(--good)"; b.style.color="var(--good)"; }
          else { b.style.borderColor="var(--bad)"; }
       }
-      if (b.textContent.includes(q.a)) {
+      if (b.dataset.op === q.a) {
          if(!savedAnswer.good) { b.style.borderColor="var(--good)"; b.style.color="var(--good)"; }
       }
     });
@@ -247,7 +252,7 @@ function choose(op,button){
     $("feedback").className="feedback bad";
     $("feedback").textContent="این بار درست نبود. پاسخ صحیح: "+q.a+". "+q.why;
     button.style.borderColor="var(--bad)";
-    all.forEach(b=>{if(b.textContent.includes(q.a)){b.style.borderColor="var(--good)";b.style.color="var(--good)"}});
+    all.forEach(b=>{if(b.dataset.op===q.a){b.style.borderColor="var(--good)";b.style.color="var(--good)"}});
   }
   
   $("scoreTag").textContent=fa(score);

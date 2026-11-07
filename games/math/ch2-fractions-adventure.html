@@ -494,6 +494,8 @@ button:disabled{opacity:.6;cursor:not-allowed;transform:none}
 </div>
 
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 const $=id=>document.getElementById(id);
 
 const screens=['welcome','intro','game','finish'];
@@ -513,17 +515,17 @@ const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
 // --- سیستم ذخیره و بازیابی ---
 function saveProgress() {
   if (index >= total && total > 0) {
-    localStorage.removeItem('fractions_adventure_progress');
+    LS.del('fractions_adventure_progress');
     return;
   }
   const data = {
     player, mode, total, score, index, questions, locked, correctCount, chosenOption
   };
-  localStorage.setItem('fractions_adventure_progress', JSON.stringify(data));
+  LS.set('fractions_adventure_progress', JSON.stringify(data));
 }
 
 function loadProgress() {
-  const s = localStorage.getItem('fractions_adventure_progress');
+  const s = LS.get('fractions_adventure_progress');
   if(!s) return false;
   try {
     const d = JSON.parse(s);
@@ -541,7 +543,7 @@ function loadProgress() {
 }
 
 function clearProgress() {
-  localStorage.removeItem('fractions_adventure_progress');
+  LS.del('fractions_adventure_progress');
 }
 
 function show(id){
@@ -657,6 +659,7 @@ function makeQuestions(){
   for(let d=2;d<=8;d++){
    for(let w=1;w<=5;w++){
     for(let n=1;n<d;n++){
+     if(gcd(n,d)!==1)continue; // کسرهای ساده‌نشدنی (مثل ۲/۴) در سؤال‌ها نیایند
      const sum=w*d+n;
      pool.push({
       type,d,w,n,sum,
@@ -730,7 +733,7 @@ function startGame(){
 }
 
 function resumeGame() {
-  if(loadProgress()) {
+  if(loadProgress() && questions.length) {
     $('score').textContent=fa(score);
     $('playerLabel').textContent='👤 '+player;
     $('modeLabel').textContent=mode==='mixed'?'عدد مخلوط به کسر':mode==='improper'?'کسر به عدد مخلوط':'تمرین ترکیبی';
@@ -869,9 +872,7 @@ $('resetBtn').addEventListener('click',resetAll);
 
 $('homeBtn').addEventListener('click',()=>{
   if(confirm('به صفحه اول برگردی؟ پیشرفت شما ذخیره شده است.')){
-    $('resumeBtn').classList.remove('hidden');
-    $('resetBtn').classList.remove('hidden');
-    $('enterBtn').classList.add('hidden');
+    refreshWelcome();
     show('welcome');
   }
 });
@@ -880,14 +881,16 @@ $('studentName').addEventListener('keydown',e=>{
  if(e.key==='Enter')showLesson();
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-  if(loadProgress() && index > 0 && index < total) {
-    $('enterBtn').classList.add('hidden');
-    $('resumeBtn').classList.remove('hidden');
-    $('resetBtn').classList.remove('hidden');
-    $('studentName').value = player;
-  }
-});
+// دکمه‌های صفحهٔ اول فقط وقتی پیشرفتِ قابل‌ادامه وجود دارد «ادامه/ریست» را نشان بدهند
+function refreshWelcome(){
+  const can = loadProgress() && questions.length && index < total && (index > 0 || locked);
+  $('enterBtn').classList.toggle('hidden', !!can);
+  $('resumeBtn').classList.toggle('hidden', !can);
+  $('resetBtn').classList.toggle('hidden', !can);
+  if(can) $('studentName').value = player;
+}
+
+window.addEventListener('DOMContentLoaded', refreshWelcome);
 </script>
 </body>
 </html>

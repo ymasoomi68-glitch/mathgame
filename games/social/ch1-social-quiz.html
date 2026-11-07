@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>آزمون مطالعات پنجم - درس 1 (من با دیگران ارتباط برقرار می‌کنم)</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link href="../../fonts/vazirmatn.css" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f172a;
@@ -157,8 +157,8 @@
 
         <div id="quiz-screen">
             <div class="timer-bar">
-                <span id="timer">20:00</span>
-                <span class="question-counter" id="q-counter">سوال 1 از 20</span>
+                <span id="timer">۲۰:۰۰</span>
+                <span class="question-counter" id="q-counter">سوال ۱ از ۲۰</span>
             </div>
             <div class="question-box">
                 <div class="question-text" id="q-text"></div>
@@ -175,7 +175,7 @@
             <div class="score-card">
                 <div class="sticker-pack">🌸🎉⭐🍀📚💜✨</div>
                 <div class="score-title" id="result-name">🌟 نمره‌ی شما، قهرمان عزیز</div>
-                <div class="score-value" id="final-score">0 از 20</div>
+                <div class="score-value" id="final-score">۰ از ۲۰</div>
             </div>
             <div class="feedback-box" id="feedback-content"></div>
             <button class="btn-answer-key" id="answer-key-btn" style="display: none;">📋 پاسخنامه</button>
@@ -189,6 +189,8 @@
     </footer>
 
     <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
         const questions = [
             { text: "انسان‌ها برای زندگی کردن، علاوه بر آب، غذا و هوا به چه چیزی نیاز دارند؟", options: ["ثروت و پول", "ارتباط با دیگران", "مسکن بزرگ", "وسایل لوکس"], correct: 1 },
             { text: "اگر ارتباط با دیگران نباشد، انسان چه احساسی پیدا می‌کند؟", options: ["احساس خوشحالی", "احساس ترس", "احساس تنهایی", "احساس قدرت"], correct: 2 },
@@ -205,7 +207,7 @@
             { text: "اگر کسی دوست نداشت درباره مسائل خصوصی‌اش توضیح دهد، ما چه وظیفه‌ای داریم؟", options: ["حق داریم کنجکاوی کنیم", "حق نداریم وارد حریم شخصی او شویم", "باید از دیگران بپرسیم", "باید اصرار کنیم"], correct: 1 },
             { text: "در گفت‌وگو با بزرگترها به جای واژه «تو» از چه واژه‌ای استفاده می‌کنیم؟", options: ["ایشان", "او", "شما", "جناب"], correct: 2 },
             { text: "وقتی درخواستی داریم، استفاده از کدام عبارت مؤدبانه‌تر است؟", options: ["بده", "می‌خواهم", "لطفاً و خواهش می‌کنم", "سریع باش"], correct: 2 },
-            { text: "امین در اتوبوس جای خود را به پیرمردی داد و پیرمرد تشکر کرد. امین در جواب چه باید بگوید؟", options: ["خواهش می‌کنم", "چشم", "باشه", "مشکلی نیست"], correct: 0 },
+            { text: "امین در اتوبوس جای خود را به پیرمردی داد و پیرمرد تشکر کرد. امین در جواب چه باید بگوید؟", options: ["خواهش می‌کنم", "چشم", "باشه", "باید تشکر می‌کردی"], correct: 0 },
             { text: "آزاده در حیاط مدرسه ناخواسته به دانش‌آموز کلاس دومی برخورد کرد. او باید چه بگوید؟", options: ["حواسم نبود", "معذرت می‌خواهم", "تو راه رفتی", "جلویم را بگیر"], correct: 1 },
             { text: "در موقعیت زیر کدام اصل گفت‌وگو رعایت نشده است؟ «ناهید ناراحت است و با دوستش صحبت می‌کند، اما دوستش مدام کتاب ورق می‌زند.»", options: ["خوب صحبت کردن", "خوب گوش دادن (دقت و توجه)", "حریم شخصی", "صدای مناسب"], correct: 1 },
             { text: "در موقعیت زیر کدام اصل گفت‌وگو رعایت نشده است؟ «پدر مرتضی مشغول تعمیر ماشین است، اما مرتضی دارد ماجرای فوتبال را برای او تعریف می‌کند.»", options: ["انتخاب زمان مناسب", "قطع نکردن حرف گوینده", "حفظ حریم شخصی", "نگاه کردن به شنونده"], correct: 0 },
@@ -217,30 +219,32 @@
         let userAnswers = new Array(questions.length).fill(null);
         let timerInterval;
         let timeLeft = 20 * 60;
+        let endAt = 0;
         let quizFinished = false;
 
         // --- ذخیره و بازیابی ---
         function saveProgress() {
             if (quizFinished) return;
-            localStorage.setItem('social_quiz_progress', JSON.stringify({
-                currentQuestionIndex, userAnswers, timeLeft
+            LS.set('social_quiz_progress', JSON.stringify({
+                currentQuestionIndex, userAnswers, endAt
             }));
         }
 
         function loadProgress() {
-            const s = localStorage.getItem('social_quiz_progress');
+            const s = LS.get('social_quiz_progress');
             if (!s) return false;
             try {
                 const d = JSON.parse(s);
                 currentQuestionIndex = d.currentQuestionIndex || 0;
-                userAnswers = d.userAnswers || Array(questions.length).fill(null);
-                timeLeft = d.timeLeft || (20 * 60);
+                userAnswers = (Array.isArray(d.userAnswers) && d.userAnswers.length === questions.length) ? d.userAnswers : Array(questions.length).fill(null);
+                endAt = +d.endAt || 0;
+                timeLeft = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
                 return true;
             } catch(e) { return false; }
         }
 
         function clearProgress() {
-            localStorage.removeItem('social_quiz_progress');
+            LS.del('social_quiz_progress');
         }
 
         function createStars() {
@@ -275,6 +279,7 @@
             currentQuestionIndex = 0;
             userAnswers = new Array(questions.length).fill(null);
             timeLeft = 20 * 60;
+            endAt = Date.now() + timeLeft * 1000;
             
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('quiz-screen').style.display = 'block';
@@ -306,17 +311,20 @@
 
         function startTimer() {
             if (timerInterval) clearInterval(timerInterval);
-            updateTimerDisplay();
-            timerInterval = setInterval(() => {
-                if (quizFinished) return;
-                timeLeft--;
+            // زمان از ساعت واقعی حساب می‌شود؛ بستن صفحه زمان را متوقف نمی‌کند
+            const tick = () => {
+                if (quizFinished) return true;
+                timeLeft = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
                 updateTimerDisplay();
-                if (timeLeft % 5 === 0) saveProgress(); // ذخیره زمان
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     finishQuiz(true);
+                    return true;
                 }
-            }, 1000);
+                return false;
+            };
+            if (tick()) return;
+            timerInterval = setInterval(tick, 1000);
         }
 
         function updateTimerDisplay() {

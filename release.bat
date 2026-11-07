@@ -10,7 +10,8 @@ if "%notes%"=="" set notes=Update
 node make-version.js "%notes%"
 if errorlevel 1 goto fail
 git add .
-git commit -m "Release: %notes%"
+git diff --cached --quiet
+if errorlevel 1 git commit -m "Release: %notes%"
 git push
 if errorlevel 1 goto fail
 echo.

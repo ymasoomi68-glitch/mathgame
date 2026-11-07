@@ -21,7 +21,10 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .game-view iframe{width:100%;height:100%;border:0;display:block;background:#061632}
 .page-title{font-size:1.35rem;margin:.3rem 0 1rem;color:var(--ink)}
 /* خانه */
-.home{display:flex;flex-direction:column;align-items:center;gap:1.1rem;text-align:center;padding:1.2rem 0}
+.home{display:flex;flex-direction:column;align-items:center;gap:1.1rem;text-align:center;padding:1.2rem 0;min-height:100%}
+.home-footer{margin-top:auto;padding-top:1.2rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;width:min(320px,100%)}
+.home-footer .btn{width:100%}
+.designer{font-size:.9rem;color:var(--muted);font-weight:700;max-width:none}
 .hero{position:relative;width:170px;height:170px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a4fc4,var(--ink));box-shadow:0 14px 34px rgba(43,47,120,.4),inset 0 -8px 18px rgba(0,0,0,.25)}
 .hero .rocket{font-size:4.6rem;animation:launch 3.2s ease-in-out infinite}
 .hero .orbit{position:absolute;inset:-14px;border-radius:50%;border:2px dashed rgba(255,201,51,.65);animation:spin 18s linear infinite}

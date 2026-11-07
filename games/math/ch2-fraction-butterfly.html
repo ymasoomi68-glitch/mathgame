@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>باغ پروانه‌های کسر | نیره شریفی</title>
+<link rel="stylesheet" href="../../fonts/vazirmatn.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
-
 :root{
  --ink:#183d45;--teal:#087e83;--mint:#b9eadb;
  --pale:#effaf6;--gold:#d8a83d;--white:#fff;
@@ -287,6 +286,8 @@ h1{margin:10px 0 4px;font-size:clamp(25px,5vw,37px);
 </div>
 
 <script>
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
 /* ---------------------------
    صدای بازی با Web Audio
 ---------------------------- */
@@ -418,22 +419,26 @@ let index=0;
 let score=0;
 let selected=null;
 let answered=false;
+let resumeAnswered=false;
+let resumeChosen=null;
 
 function saveProgress() {
-  if (index === 10) {
-    localStorage.removeItem('butterfly_progress');
+  if (index >= 10) {
+    LS.del('butterfly_progress');
     return;
   }
-  localStorage.setItem('butterfly_progress', JSON.stringify({ index, score }));
+  LS.set('butterfly_progress', JSON.stringify({ index, score, answered, chosen: answered ? selected : null }));
 }
 
 function loadProgress() {
-  const s = localStorage.getItem('butterfly_progress');
+  const s = LS.get('butterfly_progress');
   if(!s) return false;
   try {
     const d = JSON.parse(s);
     index = d.index || 0;
     score = d.score || 0;
+    resumeAnswered = !!d.answered;
+    resumeChosen = d.chosen || null;
     return true;
   } catch(e) { return false; }
 }
@@ -449,6 +454,8 @@ function answerOf(q){
 el("start").addEventListener("click",()=>{
  index=0;
  score=0;
+ resumeAnswered=false;
+ resumeChosen=null;
  el("intro").style.display="none";
  el("ending").style.display="none";
  el("game").style.display="block";
@@ -458,6 +465,10 @@ el("start").addEventListener("click",()=>{
  loadQuestion();
 });
 
+function hasResumable(){
+  return (index > 0 || resumeAnswered) && index < 10;
+}
+
 function resumeGame() {
   if(loadProgress()) {
     el("intro").style.display="none";
@@ -466,12 +477,19 @@ function resumeGame() {
     el("homeBtn").style.display="inline-block";
     if(soundEnabled)startAmbient();
     loadQuestion();
+    if(resumeAnswered && resumeChosen){
+      selected=resumeChosen;
+      el("chosen").textContent=selected;
+      applyAnswer(true);
+    }
   }
 }
 
+el("resume").addEventListener("click",resumeGame);
+
 el("reset").addEventListener("click",()=>{
   if(confirm('آیا مطمئن هستید؟ با شروع دوباره، تمام امتیازات و پیشرفت شما پاک خواهد شد.')) {
-    localStorage.removeItem('butterfly_progress');
+    LS.del('butterfly_progress');
     index=0;
     score=0;
     el("resume").classList.add("hidden");
@@ -489,7 +507,7 @@ function goHome() {
     saveProgress();
     
     // آپدیت دکمه‌ها بر اساس پیشرفت
-    if(index > 0 && index < 10) {
+    if(hasResumable()) {
       el("start").classList.add("hidden");
       el("resume").classList.remove("hidden");
       el("reset").classList.remove("hidden");
@@ -563,15 +581,7 @@ function showMethod(q){
  el("method").style.display="block";
 }
 
-el("submit").addEventListener("click",()=>{
- if(answered)return;
-
- if(selected===null){
-  el("feedback").textContent="ابتدا یکی از علامت‌ها را انتخاب کن.";
-  el("feedback").className="feedback incorrect";
-  return;
- }
-
+function applyAnswer(restoring){
  answered=true;
  const q=questions[index];
  const correct=answerOf(q);
@@ -580,11 +590,13 @@ el("submit").addEventListener("click",()=>{
  el("chosen").textContent=correct;
 
  if(isCorrect){
-  score+=10;
+  if(!restoring){
+   score+=10;
+   playCorrectSound();
+  }
   el("feedback").textContent="آفرین! پاسخ تو درست است.";
   el("feedback").className="feedback correct";
   el("praise").style.display="block";
-  playCorrectSound();
  }else{
   el("feedback").textContent="پاسخ درست نبود؛ محاسبه را بررسی کن و یاد بگیر.";
   el("feedback").className="feedback incorrect";
@@ -602,7 +614,18 @@ el("submit").addEventListener("click",()=>{
 
  el("next").style.display="inline-block";
  el("next").textContent=index===9?"مشاهده نتیجه نهایی":"مرحله بعدی";
+}
 
+el("submit").addEventListener("click",()=>{
+ if(answered)return;
+
+ if(selected===null){
+  el("feedback").textContent="ابتدا یکی از علامت‌ها را انتخاب کن.";
+  el("feedback").className="feedback incorrect";
+  return;
+ }
+
+ applyAnswer(false);
  saveProgress();
 });
 
@@ -610,6 +633,7 @@ el("next").addEventListener("click",()=>{
  index++;
  if(index<10){
   loadQuestion();
+  saveProgress();
  }else{
   stopAmbient();
   el("game").style.display="none";
@@ -627,7 +651,7 @@ el("next").addEventListener("click",()=>{
 
   if(soundEnabled)playFinishSound();
   
-  localStorage.removeItem('butterfly_progress');
+  LS.del('butterfly_progress');
 
   // ارسال امتیاز به اپ اصلی
   try {
@@ -653,7 +677,7 @@ el("restart").addEventListener("click",()=>{
 
 // بررسی وضعیت اولیه
 window.addEventListener('DOMContentLoaded', () => {
-  if(loadProgress() && index > 0 && index < 10) {
+  if(loadProgress() && hasResumable()) {
     el("start").classList.add("hidden");
     el("resume").classList.remove("hidden");
     el("reset").classList.remove("hidden");
@@ -661,6 +685,12 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 updateSoundButton();
+
+// وقتی برنامه به پس‌زمینه رفت، صدا قطع شود
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden){stopAmbient();}
+ else if(soundEnabled && el("game").style.display==="block"){startAmbient();}
+});
 </script>
 </body>
 </html>
