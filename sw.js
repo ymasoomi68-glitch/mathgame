@@ -1,4 +1,6 @@
-const CACHE_VERSION = 'kavoshgar5-v1.0.18';
+// سرویس‌ورکر کاوشگر پنجم — پشتیبانی آفلاین و نصب‌پذیری
+// نکته: CACHE_VERSION را make-version.js خودکار به‌روز می‌کند.
+const CACHE_VERSION = 'kavoshgar5-v1.0.20';
 const ASSETS = [
   './',
   './index.html',
@@ -37,67 +39,87 @@ const ASSETS = [
   './images/games.png'
 ];
 
+// نسخه‌هایی که app.js خراب داشتند؛ کاربرانِ این نسخه‌ها باید خودکار و بدون پاک‌کردن کش نجات پیدا کنند
+const BROKEN_CACHES = /^kavoshgar5-v1\.0\.(1[5-9])$/;
+const NETWORK_TIMEOUT = 4000;
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll(ASSETS))
-  );
-  // 🆕 این خط باعث میشه سرویس‌ورکر جدید فوراً نصب بشه و منتظر نمونه
-  self.skipWaiting(); 
+  // allSettled: نبودِ یک فایل نباید کل نصب (و آپدیت) را شکست بدهد
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_VERSION);
+    const results = await Promise.allSettled(ASSETS.map((a) => cache.add(new Request(a, { cache: 'reload' }))));
+    const failed = results.map((r, i) => (r.status === 'rejected' ? ASSETS[i] : null)).filter(Boolean);
+    if (failed.length) console.warn('[sw] کش نشدند:', failed);
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_VERSION)
-          .map((key) => caches.delete(key))
-      )
-    ).then(() => self.clients.claim()) // 🆕 فوراً کنترل صفحه رو به دست می‌گیره
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    const wasBroken = keys.some((k) => k !== CACHE_VERSION && BROKEN_CACHES.test(k));
+    await Promise.all(keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k)));
+    await self.clients.claim();
+    // فقط یک‌بار برای کاربران نسخهٔ خراب: صفحه‌ی بازِ خالی را با نسخهٔ سالم دوباره بارگذاری کن
+    if (wasBroken) {
+      const wins = await self.clients.matchAll({ type: 'window' });
+      wins.forEach((w) => { try { w.navigate(w.url); } catch (e) {} });
+    }
+  })());
 });
 
+function putInCache(event, req, res) {
+  const copy = res.clone();
+  event.waitUntil(caches.open(CACHE_VERSION).then((c) => c.put(req, copy)).catch(() => {}));
+}
+
+// اول شبکه (با مهلت کوتاه)، اگر نشد کش — تا اصلاحات همیشه به کاربر برسد
+function networkFirst(event, req) {
+  return new Promise((resolve) => {
+    let settled = false;
+    const fromCache = () => caches.match(req, { ignoreSearch: true });
+    const timer = setTimeout(async () => {
+      const hit = await fromCache();
+      if (hit && !settled) { settled = true; resolve(hit); }
+    }, NETWORK_TIMEOUT);
+    fetch(req).then(async (res) => {
+      clearTimeout(timer);
+      if (res.ok && res.status === 200) putInCache(event, req, res);
+      if (settled) return;
+      settled = true;
+      resolve(res);
+    }).catch(async () => {
+      clearTimeout(timer);
+      if (settled) return;
+      settled = true;
+      const hit = await fromCache();
+      resolve(hit || (req.mode === 'navigate' ? await caches.match('./index.html') : null) || Response.error());
+    });
+  });
+}
+
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  if (!event.request.url.startsWith(self.location.origin)) return;
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
 
-  const url = new URL(event.request.url);
-  const isDynamic =
-    url.pathname.includes('/games/') ||
-    url.pathname.endsWith('/games.json') ||
-    url.pathname.endsWith('/version.json');
+  const p = url.pathname;
+  const isShell = req.mode === 'navigate' || /\.(html|js|css|json)$/.test(p) || p.endsWith('/');
+  if (isShell) { event.respondWith(networkFirst(event, req)); return; }
 
-  if (isDynamic) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_VERSION).then(c => c.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
+  // تصویرها، آیکون‌ها و فونت: اول کش
   event.respondWith(
-    caches.match(event.request).then((cached) => {
+    caches.match(req, { ignoreSearch: true }).then((cached) => {
       if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_VERSION).then(c => c.put(event.request, clone));
-        }
-        return response;
+      return fetch(req).then((res) => {
+        if (res.ok && res.status === 200) putInCache(event, req, res);
+        return res;
       });
     })
   );
 });
 
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });

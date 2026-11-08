@@ -1,11 +1,11 @@
 {
-  "version": "1.0.18",
-  "releasedAt": "2026-11-08T16:39:55.044Z",
-  "notes": "Fix JS syntax and Force SW Update",
+  "version": "1.0.20",
+  "releasedAt": "2026-11-08T17:38:49.127Z",
+  "notes": "Fix Storage crash & Force auto-reload",
   "hashes": {
     "index": "5ad436f2b2bcc1d2a5126ac3b67b135c",
     "css": "d0e90a98e3da653c3145f53292bdf4a7",
-    "app": "c5bc1151de7b158516d606568fc28dd9",
-    "sw": "5ec4517d70182832920dcaf0e6415899"
+    "app": "f0a83521a845f2837add7b47e33a05ad",
+    "sw": "d9c0c3c6ff17facadd59714dc13a8c44"
   }
 }
