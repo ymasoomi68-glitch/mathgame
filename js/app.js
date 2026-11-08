@@ -69,7 +69,7 @@ const App = {
       this.state.currentGame = null;
     } else if (path.startsWith('/subject/')) {
       const id = path.slice(9);
-      const subject = this.state.subjects.find(s => s.id === id);
+      const subject = this.state.subjects.find(function(s) { return s.id === id; });
       if (subject) {
         this.state.currentSubject = subject;
         this.state.view = 'subject-games';
@@ -79,7 +79,7 @@ const App = {
       this.state.currentGame = null;
     } else if (path.startsWith('/game/')) {
       const id = path.slice(6);
-      const game = this.state.games.find(g => g.id === id);
+      const game = this.state.games.find(function(g) { return g.id === id; });
       if (game) {
         this.state.currentGame = game;
         this.state.view = 'game';
@@ -115,7 +115,10 @@ const App = {
   handleGameMessage(e) {
     if (!e.data || e.data.type !== 'GAME_FINISHED') return;
 
-    const { gameId, score, total } = e.data;
+    const gameId = e.data.gameId;
+    const score = e.data.score;
+    const total = e.data.total;
+    
     if (!gameId || typeof score !== 'number' || typeof total !== 'number') return;
 
     const pct = total > 0 ? score / total : 0;
@@ -174,7 +177,7 @@ const App = {
           </div>
           <p style="font-size:0.85rem; color:var(--text-muted); margin-top:15px;">طراح: یوسف معصومی</p>
         </div>
-        ${this.state.error ? `<p style="color:var(--danger);font-size:0.9rem;margin-top:1rem">${this.state.error}</p>` : ''}
+        ${this.state.error ? '<p style="color:var(--danger);font-size:0.9rem;margin-top:1rem">' + this.state.error + '</p>' : ''}
       </div>
     `;
 
@@ -186,8 +189,8 @@ const App = {
       installBtn.addEventListener('click', async () => {
         if (window.deferredPrompt) {
           window.deferredPrompt.prompt();
-          const { outcome } = await window.deferredPrompt.userChoice;
-          if (outcome === 'accepted') {
+          const choice = await window.deferredPrompt.userChoice;
+          if (choice.outcome === 'accepted') {
             window.deferredPrompt = null;
             document.getElementById('install-container').style.display = 'none';
           }
@@ -211,11 +214,11 @@ const App = {
       return;
     }
 
-    const cardsHtml = subjects.map(s => {
-      const subjectGames = this.state.games.filter(g => g.subject === s.id);
+    const cardsHtml = subjects.map(function(s) {
+      const subjectGames = App.state.games.filter(function(g) { return g.subject === s.id; });
       const count = subjectGames.length;
       let stars = 0;
-      subjectGames.forEach(g => {
+      subjectGames.forEach(function(g) {
         if (progress.games[g.id] && progress.games[g.id].stars) {
           stars += progress.games[g.id].stars;
         }
@@ -224,7 +227,7 @@ const App = {
       const isReady = count > 0;
 
       const statusText = isReady
-        ? `${toFa(count)} بازی • ⭐ ${toFa(stars)} از ${toFa(maxStars)}`
+        ? toFa(count) + ' بازی • ⭐ ' + toFa(stars) + ' از ' + toFa(maxStars)
         : 'به‌زودی...';
 
       return `
@@ -255,7 +258,7 @@ const App = {
     const subject = this.state.currentSubject;
     if (!subject) return;
 
-    const subjectGames = this.state.games.filter(g => g.subject === subject.id);
+    const subjectGames = this.state.games.filter(function(g) { return g.subject === subject.id; });
 
     if (subjectGames.length === 0) {
       this.el.main.innerHTML = `
@@ -270,7 +273,7 @@ const App = {
     }
 
     const byChapter = {};
-    subjectGames.forEach(g => {
+    subjectGames.forEach(function(g) {
       const ch = (g.chapter !== undefined && g.chapter !== null) ? g.chapter : 1;
       if (!byChapter[ch]) byChapter[ch] = [];
       byChapter[ch].push(g);
@@ -281,9 +284,9 @@ const App = {
 
     const chaptersHtml = Object.keys(byChapter)
       .map(Number)
-      .sort((a, b) => a - b)
-      .map(chNum => {
-        const gamesHtml = byChapter[chNum].map(game => {
+      .sort(function(a, b) { return a - b; })
+      .map(function(chNum) {
+        const gamesHtml = byChapter[chNum].map(function(game) {
           let stars = 0;
           if (progress.games[game.id] && progress.games[game.id].stars) {
             stars = progress.games[game.id].stars;
@@ -342,24 +345,24 @@ const App = {
   setupSWUpdate() {
     if (!('serviceWorker' in navigator)) return;
 
-    navigator.serviceWorker.register('./sw.js').catch(err => {
+    navigator.serviceWorker.register('./sw.js').catch(function(err) {
       console.warn('خطا در ثبت SW:', err);
     });
 
-    navigator.serviceWorker.ready.then(reg => {
-      reg.addEventListener('updatefound', () => {
+    navigator.serviceWorker.ready.then(function(reg) {
+      reg.addEventListener('updatefound', function() {
         const newWorker = reg.installing;
         if (!newWorker) return;
-        newWorker.addEventListener('statechange', () => {
+        newWorker.addEventListener('statechange', function() {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            this.showUpdateBanner(reg);
+            App.showUpdateBanner(reg);
           }
         });
       });
     });
 
-    setInterval(() => {
-      this.checkVersion();
+    setInterval(function() {
+      App.checkVersion();
     }, 60000);
     
     this.checkVersion();
@@ -386,17 +389,17 @@ const App = {
     if (!banner) return;
     banner.classList.remove('hidden');
 
-    document.getElementById('update-btn').onclick = () => {
+    document.getElementById('update-btn').onclick = function() {
       if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
       banner.classList.add('hidden');
-      setTimeout(() => location.reload(), 200);
+      setTimeout(function() { location.reload(); }, 200);
     };
-    document.getElementById('dismiss-update').onclick = () => banner.classList.add('hidden');
+    document.getElementById('dismiss-update').onclick = function() { banner.classList.add('hidden'); };
   },
 };
 
 function toFa(n) {
-  return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d]);
+  return String(n).replace(/\d/g, function(d) { return '۰۱۲۳۴۵۶۷۸۹'[+d]; });
 }
 
-document.addEventListener('DOMContentLoaded', () => App.init());
+document.addEventListener('DOMContentLoaded', function() { App.init(); });
