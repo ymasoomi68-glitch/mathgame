@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>آزمون آنلاین فارسی پنجم | تماشاخانه</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0b2f5c, #0a2b55);
+            font-family: 'Vazir', 'Tahoma', 'Segoe UI', system-ui, sans-serif;
+            font-size: 14px;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+
+        .star-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .star {
+            position: absolute; background-color: white; border-radius: 50%;
+            opacity: 0.7; animation: floatStar linear infinite;
+            box-shadow: 0 0 6px rgba(255,255,200,0.8);
+        }
+        @keyframes floatStar {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .quiz-wrapper {
+            position: relative; z-index: 2; max-width: 1000px;
+            margin: 20px auto; padding: 20px; flex: 1;
+            display: flex; flex-direction: column;
+        }
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 48px 24px 48px 24px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25), 0 0 0 3px #1e88e5, 0 0 0 6px #ffdd99;
+            overflow: hidden; backdrop-filter: blur(1px); flex: 1;
+        }
+        .start-screen {
+            padding: 2rem 1.5rem; text-align: center;
+        }
+        .start-screen h1 { font-size: 1.8rem; color: #0a4b7a; margin-bottom: 8px; }
+        .start-screen h3 { font-size: 1.1rem; color: #2c7cb6; margin-bottom: 25px; }
+        
+        .start-btn {
+            background: #ffaa33; border: none; padding: 10px 30px;
+            font-size: 1.1rem; font-weight: bold; border-radius: 60px;
+            margin-top: 20px; cursor: pointer; transition: 0.2s; color: #2c3e5c;
+            width: 100%; max-width: 300px;
+        }
+        .start-btn:hover { background: #ff9c1a; transform: scale(0.97); }
+        .btn-resume { background: #4caf50; color: white; display: none; }
+        .btn-resume:hover { background: #43a047; }
+        .btn-reset { background: #f44336; color: white; display: none; margin-top: 10px; }
+        .btn-reset:hover { background: #e53935; }
+
+        .question-screen {
+            display: none; padding: 1.2rem 1.5rem 1.8rem; min-height: 450px; flex-direction: column;
+        }
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; background: #eef5ff; padding: 8px 16px;
+            border-radius: 60px; margin-bottom: 20px; font-weight: bold; font-size: 0.9rem;
+        }
+        .timer-box { background: #1a6e9b; color: white; padding: 4px 14px; border-radius: 40px; font-size: 1rem; }
+        .q-counter { background: #ffde9c; padding: 4px 12px; border-radius: 32px; color: #946f2c; }
+
+        .question-container {
+            background: linear-gradient(125deg, #ffffff, #f2faff);
+            border-radius: 28px; padding: 1.2rem; margin: 15px 0;
+            border: 2px solid #6ab0de; box-shadow: 0 8px 20px rgba(27, 85, 122, 0.15);
+        }
+        .question-text {
+            font-size: 1rem; font-weight: 700; margin-bottom: 18px; color: #0a6b97;
+            background: #e3f0fc; padding: 8px 16px; border-radius: 40px;
+            border-right: 6px solid #ffb347; text-align: right;
+        }
+        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+        .options-grid label {
+            display: flex; align-items: center; gap: 8px; background: #f0f8fe;
+            padding: 8px 12px; border-radius: 40px; cursor: pointer;
+            font-size: 0.9rem; transition: 0.1s; text-align: right;
+            white-space: nowrap; overflow-x: auto; scrollbar-width: thin;
+        }
+        .options-grid label:hover { background: #e3eff9; }
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .options-grid label { white-space: normal; }
+        }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; }
+        .nav-btn {
+            background: #328fbb; border: none; padding: 8px 22px;
+            border-radius: 40px; color: white; font-weight: bold; cursor: pointer; font-size: 0.9rem;
+        }
+        .submit-final { background: #47b55a; }
+
+        .score-card {
+            background: linear-gradient(135deg, #f9f3d9, #ffefbf);
+            border-radius: 40px; padding: 20px 15px; text-align: center;
+            margin: 20px 0; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); border: 2px solid #ffc107;
+        }
+        .score-big { font-size: 2.8rem; font-weight: 900; color: #d4500f; text-shadow: 1px 1px 0 #ffd966; margin: 10px 0; }
+        .feedback-card {
+            background: #e6f4ea; border-radius: 28px; padding: 15px;
+            margin-top: 12px; border-right: 8px solid #3cac6d;
+            font-size: 0.95rem; color: #1c5a3a; text-align: center;
+        }
+        .feedback-card p { margin: 5px 0; }
+        
+        footer {
+            text-align: center; padding: 12px; font-size: 0.75rem;
+            color: #cfe2f5; background: #082d44; border-radius: 40px; margin-top: 20px;
+        }
+        .channel-box {
+            background: #b8dcff; display: inline-block; padding: 4px 16px;
+            border-radius: 48px; color: #004070; font-weight: bold; margin-bottom: 6px; font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div class="star-bg" id="starsContainer"></div>
+<div class="quiz-wrapper">
+    <div class="quiz-card">
+        <div id="startPage" class="start-screen">
+            <h1>✨ آزمون آنلاین فارسی پنجم ✨</h1>
+            <h3>📖 درس اول: تماشاخانه</h3>
+            <p style="margin-bottom: 20px; color: #555;">آماده‌ای برای آزمون؟ با دقت بخوان و به همه سوالات پاسخ بده.</p>
+            
+            <button class="start-btn" id="startExamBtn">🌟 شروع آزمون (۲۰ دقیقه) 🌟</button>
+            <button class="start-btn btn-resume" id="resumeExamBtn">🚀 ادامه آزمون قبلی</button>
+            <button class="start-btn btn-reset" id="resetExamBtn">🧹 شروع دوباره (پاک کردن پیشرفت)</button>
+        </div>
+
+        <div id="quizPanel" class="question-screen" style="display: none;">
+            <div class="top-bar">
+                <div class="timer-box">⏱️ زمان باقی: <span id="timerDisplay">20:00</span></div>
+                <div class="q-counter">سوال <span id="currentQNumber">1</span> از <span id="totalQCount">20</span></div>
+            </div>
+            <div id="dynamicQuestion"></div>
+            <div class="nav-buttons">
+                <button id="prevBtn" class="nav-btn">◀ قبلی</button>
+                <button id="nextBtn" class="nav-btn">بعدی ▶</button>
+                <button id="submitExamBtn" class="nav-btn submit-final" style="display: none;">✅ پایان آزمون</button>
+            </div>
+            <div id="finalResult" class="result-area" style="display: none;"></div>
+        </div>
+    </div>
+    <footer>
+        <div class="channel-box">📢 کانال کلاس پنجمی‌ها | خانم صادقی</div>
+        <div>📱 آیدی کانال: <strong dir="ltr">@panjomiha_sadeghi</strong></div>
+        <div>📘 فارسی پنجم دبستان</div>
+    </footer>
+</div>
+
+<script>
+    const questions = [
+        { text: "به نظر نویسنده، برای شناخت بهتر عالم، چه کاری ساده است؟", options: ["سفر به کشورهای دور", "تماشای پدیده‌ها و اندیشیدن", "خواندن کتاب‌های زیاد", "آزمایش در آزمایشگاه"], correct: "ب" },
+        { text: "کدام یک به عنوان «بهترین موضوع برای فکر کردن» معرفی شده است؟", options: ["کوه", "گل", "آب", "پروانه"], correct: "ج" },
+        { text: "علف‌های لطیف و شکننده، گاهی از میان چه چیزی سر در می‌آورند؟", options: ["خاک نرم", "شن‌های ساحل", "سنگلاخ", "برف"], correct: "ج" },
+        { text: "در توصیف نویسنده، کدام موجود «بین زمین و آسمان تار می‌تنند»؟", options: ["پروانه", "زنبور", "عنکبوت", "کرم ابریشم"], correct: "ج" },
+        { text: "در بیت «باد سرد، آرام بر صحرا گذشت / سبزه‌زاران، رفته رفته، زرد گشت» چه فصلی توصیف شده است؟", options: ["بهار", "تابستان", "پاییز", "زمستان"], correct: "ج" },
+        { text: "معنی کلمه «شگفتی» در درس تماشاخانه چیست؟", options: ["اندوه", "عجیب و حیرت‌انگیز", "سختی", "سادگی"], correct: "ب" },
+        { text: "مخالف کلمه «زیبا» در زبان فارسی کدام است؟", options: ["قشنگ", "زشت", "نرم", "سخت"], correct: "ب" },
+        { text: "هم‌خانوادهٔ «آفرینش» کدام گزینه است؟", options: ["آفریدن", "آفریده", "آفریننده", "هر سه"], correct: "د" },
+        { text: "در شعر، چه چیزی باعث می‌شود که بار دیگر بهار بازگردد؟", options: ["باران", "خواب طبیعت", "تغییر فصل‌ها", "کار دهقان"], correct: "ج" },
+        { text: "عبارت «چشمه کم کم خشک شد، بی‌آب شد» نشانه چیست؟", options: ["رسیدن بهار", "گرمای تابستان", "خشکی پاییز و نزدیکی زمستان", "بارندگی شدید"], correct: "ج" },
+        { text: "در بیت «گل بخندد، بر سرِ گل بوته‌ها» چه آرایه‌ای به کار رفته است؟", options: ["تشبیه", "تشخیص (جان‌بخشی)", "کنایه", "تضاد"], correct: "ب" },
+        { text: "نویسنده در درس تماشاخانه، عالم را به چه چیزی تشبیه کرده است؟", options: ["دفتر", "تماشاخانه", "باغ", "کتاب"], correct: "ب" },
+        { text: "در بیت «کرد دهقان، دانه‌ها در زیر خاک / کرد کوته، شاخه‌ی پیچانِ تاک» کار دهقان نشانه چیست؟", options: ["ناامیدی", "پایان کار", "تلاش برای آینده", "خشم"], correct: "ج" },
+        { text: "کلمه «نارون» در شعر به چه معناست؟", options: ["نوعی گل", "نوعی درخت", "میوه", "پرنده"], correct: "ب" },
+        { text: "در بیت «برگ نو آرد، درخت نارون / سبز گردد، شاخساران کهن» چه پیامی دارد؟", options: ["تغییر و تحول", "پژمردگی", "سکون", "نابودی"], correct: "الف" },
+        { text: "معنی «تأمل» در درس تماشاخانه چیست؟", options: ["سخن گفتن", "اندیشیدن و دقت کردن", "نوشتن", "خواندن"], correct: "ب" },
+        { text: "مخالف کلمه «سخت» کدام است؟", options: ["نرم", "زبر", "بزرگ", "کوچک"], correct: "الف" },
+        { text: "در عبارت «این جهان دفتری است که خدای مهربان به پاکی و زیبایی در آن نگاشته است» منظور از «نگاشته» چیست؟", options: ["خوانده", "آفریده و نوشته", "دیده", "اندیشیده"], correct: "ب" },
+        { text: "در بیت «باز می‌آید پرستو، نغمه‌خوان / باز می‌سازد در اینجا آشیان» آمدن پرستو نشانه چیست؟", options: ["پاییز", "زمستان", "بهار", "تابستان"], correct: "ج" },
+        { text: "به گفتهٔ متن درس، چرا باید پدیده‌ها را با یکدیگر مقایسه کنیم؟", options: ["برای سرگرمی", "برای شناخت بهتر عالم", "برای حفظ طبیعت", "برای مسابقه"], correct: "ب" }
+    ];
+
+    let currentIndex = 0, examStarted = false, timeRemaining = 20 * 60, timerInterval = null;
+    const startPage = document.getElementById("startPage");
+    const quizPanel = document.getElementById("quizPanel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitExamBtn = document.getElementById("submitExamBtn");
+    const dynamicDiv = document.getElementById("dynamicQuestion");
+    const currentQSpan = document.getElementById("currentQNumber");
+    const totalQSpan = document.getElementById("totalQCount");
+    const timerDisplaySpan = document.getElementById("timerDisplay");
+    const finalResultDiv = document.getElementById("finalResult");
+
+    totalQSpan.innerText = questions.length;
+    
+    // مقداردهی اولیه userAnswer
+    for (let i = 0; i < questions.length; i++) {
+        if (questions[i].userAnswer === undefined) questions[i].userAnswer = "";
+    }
+
+    function createStars() {
+        const starsContainer = document.getElementById("starsContainer");
+        for (let i = 0; i < 130; i++) {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + "px";
+            star.style.height = size + "px";
+            star.style.left = Math.random() * 100 + "%";
+            star.style.animationDuration = Math.random() * 8 + 4 + "s";
+            star.style.animationDelay = Math.random() * 5 + "s";
+            star.style.opacity = Math.random() * 0.6 + 0.3;
+            starsContainer.appendChild(star);
+        }
+    }
+    createStars();
+
+    function saveProgress() {
+        if (!examStarted) return;
+        try {
+            localStorage.setItem('farsi_theater_progress', JSON.stringify({
+                currentIndex, timeRemaining, answers: questions.map(q => q.userAnswer)
+            }));
+        } catch(e) {}
+    }
+
+    function loadProgress() {
+        const s = localStorage.getItem('farsi_theater_progress');
+        if (!s) return false;
+        try {
+            const d = JSON.parse(s);
+            currentIndex = d.currentIndex || 0;
+            timeRemaining = d.timeRemaining || (20 * 60);
+            if (d.answers) {
+                for (let i = 0; i < questions.length; i++) {
+                    questions[i].userAnswer = d.answers[i] || "";
+                }
+            }
+            return true;
+        } catch(e) { return false; }
+    }
+
+    function clearProgress() {
+        try { localStorage.removeItem('farsi_theater_progress'); } catch(e) {}
+    }
+
+    function saveCurrentAnswer() {
+        const q = questions[currentIndex];
+        if (!q) return;
+        const selectedRadio = document.querySelector(`input[name="q_${currentIndex}"]:checked`);
+        q.userAnswer = selectedRadio ? selectedRadio.value : "";
+        saveProgress();
+    }
+
+    function loadQuestion() {
+        if (!examStarted) return;
+        const q = questions[currentIndex];
+        let html = `<div class="question-container"><div class="question-text">${currentIndex+1}. ${q.text}</div><div class="options-grid">`;
+        const letters = ["الف", "ب", "ج", "د"];
+        const groupName = `q_${currentIndex}`;
+        q.options.forEach((opt, idx) => {
+            const letter = letters[idx];
+            const val = letter;
+            const checked = (q.userAnswer === val) ? "checked" : "";
+            html += `<label><input type="radio" name="${groupName}" value="${val}" ${checked}> ${letter}) ${opt}</label>`;
+        });
+        html += `</div></div>`;
+        dynamicDiv.innerHTML = html;
+        currentQSpan.innerText = currentIndex+1;
+        if (currentIndex === questions.length - 1) submitExamBtn.style.display = "inline-block";
+        else submitExamBtn.style.display = "none";
+
+        const radios = document.querySelectorAll(`input[name="${groupName}"]`);
+        radios.forEach(radio => {
+            radio.addEventListener("change", () => {
+                if (radio.checked) {
+                    q.userAnswer = radio.value;
+                    saveProgress();
+                }
+            });
+        });
+    }
+
+    function computeScore() {
+        let total = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (questions[i].userAnswer === questions[i].correct) total++;
+        }
+        return total;
+    }
+
+    function showFinalResult() {
+        clearProgress();
+        if (timerInterval) clearInterval(timerInterval);
+        examStarted = false;
+        saveCurrentAnswer();
+        const score = computeScore();
+        
+        let feedbackHtml = "";
+        if(score === questions.length) {
+            feedbackHtml = "<p>✅ عالی! تماشاخانه را کامل یاد گرفتی. آفرین!</p>";
+        } else if(score >= 16) {
+            feedbackHtml = "<p>🌼 خیلی خوب! یک بار مرور کن عالی می‌شوی.</p>";
+        } else if(score >= 12) {
+            feedbackHtml = "<p>📚 خوب است! باز هم تمرین کن تا به نمره کامل برسی.</p>";
+        } else {
+            feedbackHtml = `<p>🍃 نگران نباش!</p><p>📖 دوباره متن درس را بخوان</p><p>💪 مطمئنم دفعه بعد عالی می‌شوی.</p>`;
+        }
+        
+        const resultHtml = `
+            <div class="score-card">
+                <div style="font-size:1.2rem;">🌟 نمرهٔ شما، قهرمان عزیز 🌟</div>
+                <div class="score-big">${score} از ${questions.length}</div>
+            </div>
+            <div class="feedback-card">${feedbackHtml}</div>
+            <button class="start-btn" onclick="location.reload()" style="margin-top: 20px;">🔄 شروع دوباره</button>
+        `;
+        finalResultDiv.style.display = "block";
+        finalResultDiv.innerHTML = resultHtml;
+        dynamicDiv.innerHTML = "";
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        submitExamBtn.style.display = "none";
+
+        // ارسال امتیاز به اپ اصلی
+        try {
+            window.parent.postMessage({
+                type: 'GAME_FINISHED',
+                gameId: 'ch1-farsi-theater',
+                score: score,
+                total: questions.length
+            }, '*');
+        } catch (e) {}
+    }
+
+    function updateTimerDisplay() {
+        let minutes = Math.floor(timeRemaining / 60);
+        let secs = timeRemaining % 60;
+        timerDisplaySpan.innerText = `${minutes.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        if (timeRemaining <= 0) { 
+            clearInterval(timerInterval); 
+            showFinalResult(); 
+        }
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (examStarted && timeRemaining > 0) { 
+                timeRemaining--; 
+                updateTimerDisplay(); 
+                if (timeRemaining % 5 === 0) saveProgress();
+                if (timeRemaining === 0) { 
+                    clearInterval(timerInterval); 
+                    showFinalResult(); 
+                } 
+            } else if (!examStarted) {
+                clearInterval(timerInterval);
+            }
+        }, 1000);
+    }
+
+    function beginExam() {
+        clearProgress();
+        for (let i = 0; i < questions.length; i++) questions[i].userAnswer = "";
+        currentIndex = 0;
+        timeRemaining = 20 * 60;
+        examStarted = true;
+        startPage.style.display = "none";
+        quizPanel.style.display = "flex";
+        updateTimerDisplay();
+        startTimer();
+        loadQuestion();
+    }
+
+    function resumeExam() {
+        if (loadProgress()) {
+            examStarted = true;
+            startPage.style.display = "none";
+            quizPanel.style.display = "flex";
+            updateTimerDisplay();
+            startTimer();
+            loadQuestion();
+        }
+    }
+
+    function resetAll() {
+        if(confirm('آیا مطمئن هستید؟ تمام پاسخ‌ها و پیشرفت شما پاک خواهد شد.')) {
+            clearProgress();
+            document.getElementById("startExamBtn").style.display = "block";
+            document.getElementById("resumeExamBtn").style.display = "none";
+            document.getElementById("resetExamBtn").style.display = "none";
+        }
+    }
+
+    document.getElementById("startExamBtn").addEventListener("click", beginExam);
+    document.getElementById("resumeExamBtn").addEventListener("click", resumeExam);
+    document.getElementById("resetExamBtn").addEventListener("click", resetAll);
+
+    prevBtn.addEventListener("click", () => { 
+        if (!examStarted) return; 
+        if (currentIndex > 0) { 
+            saveCurrentAnswer(); 
+            currentIndex--; 
+            loadQuestion(); 
+        } 
+    });
+    nextBtn.addEventListener("click", () => { 
+        if (!examStarted) return; 
+        if (currentIndex < questions.length - 1) { 
+            saveCurrentAnswer(); 
+            currentIndex++; 
+            loadQuestion(); 
+        } else { 
+            saveCurrentAnswer(); 
+            showFinalResult(); 
+        } 
+    });
+    submitExamBtn.addEventListener("click", () => { 
+        if(confirm("آیا از پایان آزمون و نمایش نمره مطمئن هستید؟")) { 
+            saveCurrentAnswer(); 
+            showFinalResult(); 
+        } 
+    });
+
+    quizPanel.style.display = "none";
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (loadProgress() && currentIndex > 0 && currentIndex < questions.length) {
+            document.getElementById("startExamBtn").style.display = "none";
+            document.getElementById("resumeExamBtn").style.display = "block";
+            document.getElementById("resetExamBtn").style.display = "block";
+        }
+    });
+</script>
+</body>
+</html>

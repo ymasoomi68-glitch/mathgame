@@ -150,6 +150,17 @@
       "emoji": "🌍",
       "file": "games/social/ch1-social-quiz.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch1-farsi-theater",
+      "subject": "farsi",
+      "chapter": 1,
+      "title": "آزمون تماشاخانه",
+      "subtitle": "درس اول: تماشاخانه",
+      "description": "آزمون آنلاین فارسی پنجم | درس اول",
+      "emoji": "🎭",
+      "file": "games/farsi/ch1-farsi-theater.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }

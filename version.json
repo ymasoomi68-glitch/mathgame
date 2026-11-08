@@ -1,11 +1,11 @@
 {
-  "version": "1.0.15",
-  "releasedAt": "2026-11-07T17:53:57.456Z",
-  "notes": "Fixed all bugs, added PWA install button, Vazirmatn font",
+  "version": "1.0.16",
+  "releasedAt": "2026-11-08T16:23:03.999Z",
+  "notes": "Fix Lesson/Chapter naming & Add Farsi Theater Quiz",
   "hashes": {
     "index": "5ad436f2b2bcc1d2a5126ac3b67b135c",
     "css": "d0e90a98e3da653c3145f53292bdf4a7",
-    "app": "7dd9ad59f8736953cf0e46f0eb3dd10a",
-    "sw": "d29eb32c3eaa0e7dd69fb252b2d25a10"
+    "app": "e8b242a558baddf1b1866f989a68fae6",
+    "sw": "38608278fe1f6d51adbbad7654d41eea"
   }
 }
