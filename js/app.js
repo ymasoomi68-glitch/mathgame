@@ -27,7 +27,7 @@ const App = {
     window.addEventListener('message', (e) => this.handleGameMessage(e));
 
     await this.loadData();
-    // ذخیره نسخه در حافظه
+    
     try {
       localStorage.setItem('app-version', '1.0.0'); 
     } catch (e) {}
@@ -96,7 +96,8 @@ const App = {
   goBack() {
     switch (this.state.view) {
       case 'game':
-        location.hash = '/subject/' + (this.state.currentGame?.subject || 'math');
+        const subId = (this.state.currentGame && this.state.currentGame.subject) ? this.state.currentGame.subject : 'math';
+        location.hash = '/subject/' + subId;
         break;
       case 'subject-games':
         location.hash = '/subjects';
@@ -121,7 +122,7 @@ const App = {
     const stars = pct >= 0.9 ? 3 : pct >= 0.7 ? 2 : pct >= 0.5 ? 1 : 0;
 
     Storage.recordGame(gameId, stars);
-    console.log(`🎮 ${gameId}: ${score}/${total} → ⭐${stars}`);
+    console.log('🎮 ' + gameId + ': ' + score + '/' + total + ' → ⭐' + stars);
   },
 
   render() {
@@ -130,9 +131,9 @@ const App = {
     } else if (this.state.view === 'subjects') {
       this.el.title.textContent = '📚 انتخاب درس';
     } else if (this.state.view === 'subject-games' && this.state.currentSubject) {
-      this.el.title.textContent = `${this.state.currentSubject.emoji} ${this.state.currentSubject.label}`;
+      this.el.title.textContent = this.state.currentSubject.emoji + ' ' + this.state.currentSubject.label;
     } else if (this.state.view === 'game' && this.state.currentGame) {
-      this.el.title.textContent = `${this.state.currentGame.emoji} ${this.state.currentGame.title}`;
+      this.el.title.textContent = this.state.currentGame.emoji + ' ' + this.state.currentGame.title;
     }
 
     this.el.backBtn.classList.toggle('hidden', this.state.view === 'home');
@@ -177,7 +178,6 @@ const App = {
       </div>
     `;
 
-    // کد مربوط به نصب PWA
     if (window.deferredPrompt) {
       document.getElementById('install-container').style.display = 'block';
     }
@@ -214,7 +214,12 @@ const App = {
     const cardsHtml = subjects.map(s => {
       const subjectGames = this.state.games.filter(g => g.subject === s.id);
       const count = subjectGames.length;
-      const stars = subjectGames.reduce((sum, g) => sum + (progress.games[g.id]?.stars || 0), 0);
+      let stars = 0;
+      subjectGames.forEach(g => {
+        if (progress.games[g.id] && progress.games[g.id].stars) {
+          stars += progress.games[g.id].stars;
+        }
+      });
       const maxStars = count * 3;
       const isReady = count > 0;
 
@@ -266,13 +271,12 @@ const App = {
 
     const byChapter = {};
     subjectGames.forEach(g => {
-      const ch = g.chapter ?? 1;
+      const ch = (g.chapter !== undefined && g.chapter !== null) ? g.chapter : 1;
       if (!byChapter[ch]) byChapter[ch] = [];
       byChapter[ch].push(g);
     });
 
     const progress = Storage.getProgress();
-    // تعیین کلمه مناسب: فقط برای ریاضی «فصل» و برای بقیه «درس»
     const word = (subject.id === 'math') ? 'فصل' : 'درس';
 
     const chaptersHtml = Object.keys(byChapter)
@@ -280,8 +284,10 @@ const App = {
       .sort((a, b) => a - b)
       .map(chNum => {
         const gamesHtml = byChapter[chNum].map(game => {
-          const p = progress.games[game.id];
-          const stars = p?.stars || 0;
+          let stars = 0;
+          if (progress.games[game.id] && progress.games[game.id].stars) {
+            stars = progress.games[game.id].stars;
+          }
           const starsText = stars > 0
             ? '⭐'.repeat(stars)
             : '<span style="color:#94a3b8">بازی نشده</span>';
@@ -352,7 +358,6 @@ const App = {
       });
     });
 
-    // بررسی خودکار هر ۱ دقیقه یکبار
     setInterval(() => {
       this.checkVersion();
     }, 60000);
@@ -370,13 +375,10 @@ const App = {
       try { localVersion = localStorage.getItem('app-version') || '1.0.0'; } catch(e) {}
 
       if (data.version && data.version !== localVersion) {
-        // نسخه جدید اومده
         const banner = this.el.updateBanner;
         if (banner) banner.classList.remove('hidden');
       }
-    } catch (err) {
-      // اتصال قطع است یا فایل نیست
-    }
+    } catch (err) {}
   },
 
   showUpdateBanner(reg) {
@@ -385,7 +387,7 @@ const App = {
     banner.classList.remove('hidden');
 
     document.getElementById('update-btn').onclick = () => {
-      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+      if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
       banner.classList.add('hidden');
       setTimeout(() => location.reload(), 200);
     };
