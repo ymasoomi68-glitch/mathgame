@@ -1,6 +1,6 @@
 // سرویس‌ورکر کاوشگر پنجم — پشتیبانی آفلاین و نصب‌پذیری
 // نکته: CACHE_VERSION را make-version.js خودکار به‌روز می‌کند.
-const CACHE_VERSION = 'kavoshgar5-v1.0.20';
+const CACHE_VERSION = 'kavoshgar5-v1.0.21';
 const ASSETS = [
   './',
   './index.html',
@@ -36,7 +36,8 @@ const ASSETS = [
   './images/scores.png',
   './images/settings.png',
   './images/levels.png',
-  './images/games.png'
+  './images/games.png',
+  './games/social/ch4-social-quiz.html'
 ];
 
 // نسخه‌هایی که app.js خراب داشتند؛ کاربرانِ این نسخه‌ها باید خودکار و بدون پاک‌کردن کش نجات پیدا کنند

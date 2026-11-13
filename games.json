@@ -161,6 +161,17 @@
       "emoji": "🎭",
       "file": "games/farsi/ch1-farsi-theater.html",
       "teacher": "یوسف معصومی"
+    },
+    {
+      "id": "ch4-social-quiz",
+      "subject": "social",
+      "chapter": 4,
+      "title": "آزمون مطالعات اجتماعی",
+      "subtitle": "درس ۴ و ۵: گروه‌ها و جمعیت",
+      "description": "آزمون آنلاین مطالعات پنجم | درس ۴ و ۵",
+      "emoji": "👥",
+      "file": "games/social/ch4-social-quiz.html",
+      "teacher": "یوسف معصومی"
     }
   ]
 }

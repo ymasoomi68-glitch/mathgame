@@ -1,11 +1,11 @@
 {
-  "version": "1.0.20",
-  "releasedAt": "2026-11-08T17:38:49.127Z",
-  "notes": "Fix Storage crash & Force auto-reload",
+  "version": "1.0.21",
+  "releasedAt": "2026-11-13T05:35:01.319Z",
+  "notes": "Added Social Studies Lesson 4 & 5 Quiz",
   "hashes": {
     "index": "5ad436f2b2bcc1d2a5126ac3b67b135c",
     "css": "d0e90a98e3da653c3145f53292bdf4a7",
     "app": "f0a83521a845f2837add7b47e33a05ad",
-    "sw": "d9c0c3c6ff17facadd59714dc13a8c44"
+    "sw": "060eab32783a30ed452bdfd4a836a63f"
   }
 }
