@@ -1,11 +1,11 @@
 {
-  "version": "1.0.21",
-  "releasedAt": "2026-11-13T05:35:01.319Z",
-  "notes": "Added Social Studies Lesson 4 & 5 Quiz",
+  "version": "1.0.22",
+  "releasedAt": "2026-11-20T08:18:06.843Z",
+  "notes": "Added Fraction Memory Game for Math Chapter 2",
   "hashes": {
     "index": "5ad436f2b2bcc1d2a5126ac3b67b135c",
     "css": "d0e90a98e3da653c3145f53292bdf4a7",
     "app": "f0a83521a845f2837add7b47e33a05ad",
-    "sw": "060eab32783a30ed452bdfd4a836a63f"
+    "sw": "d1d678eb32ea37a29d8f959c1e5d86ae"
   }
 }

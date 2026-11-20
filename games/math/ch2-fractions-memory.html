@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧩 حافظه‌ی کسرهای مساوی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 10px;
+        }
+        .game-container {
+            background-color: rgba(44, 62, 80, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+        h1 { margin-bottom: 10px; color: #f1c40f; font-size: clamp(1.5rem, 5vw, 2rem); }
+        #level-display, #timer-display, #score-display { font-size: 1.2em; color: #3498db; margin-bottom: 10px; }
+        .controls { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .sound-controls { position: absolute; top: 15px; left: 15px; display: flex; }
+        .sound-button, .game-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #f1c40f;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .sound-button { width: 40px; height: 40px; font-size: 1.2em; padding: 0; }
+        .game-button:hover, .sound-button:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+        .game-button#start-button { background-color: #f1c40f; color: #2c3e50; }
+        .game-button#reset-progress-button { background-color: #e74c3c; color: white; }
+        /* 🆕 دکمه راهنما */
+        .game-button#help-button { background-color: #3498db; color: white; }
+        .sound-button.muted, .game-button:disabled { color: #7f8c8d; cursor: not-allowed; transform: none; }
+        #game-board { display: grid; gap: 6px; margin-top: 20px; perspective: 1000px; width: 100%; margin: 20px auto 0; }
+        .card {
+            aspect-ratio: 1 / 1;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), border-color 0.3s;
+            transform: rotateY(180deg);
+            border: 2px solid #2c3e50;
+            border-radius: 8px;
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(1rem, 4vw, 1.8rem);
+            font-weight: 700;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .card-front { background-color: #ecf0f1; color: #2c3e50; transform: rotateY(180deg); }
+        .card-back { background-color: #34495e; background-repeat: no-repeat; }
+        .fraction { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .numerator { border-bottom: 2px solid #2c3e50; padding: 0 5px; line-height: 1.2; }
+        .denominator { padding: 0 5px; line-height: 1.2; }
+        .card.selected { border-color: #f1c40f; box-shadow: 0 0 15px #f1c40f; }
+        .card.wrong { animation: wrong-shake 0.5s; }
+        @keyframes wrong-shake {
+            0%, 100% { transform: rotateY(180deg) translateX(0); }
+            25% { transform: rotateY(180deg) translateX(-5px); }
+            75% { transform: rotateY(180deg) translateX(5px); }
+        }
+        .card.matched { pointer-events: none; transform: rotateY(0deg); }
+        .card.matched .card-back { border-color: #2ecc71; animation: pulse 0.6s ease-in-out; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        #score-display { color: #2ecc71; }
+        #score-display.pop-animation { animation: statPop 0.3s ease-out; }
+        @keyframes statPop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        footer { margin-top: 20px; text-align: center; font-size: 0.9em; color: #95a5a6; }
+        #victory-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; transition: opacity 0.5s ease-in-out;
+        }
+        #victory-screen.show { display: flex; opacity: 1; }
+        .victory-content {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #2c3e50; padding: 40px 50px; border-radius: 20px;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.5); text-align: center;
+            transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        #victory-screen.show .victory-content { transform: scale(1); }
+        .victory-content h2 { font-size: 2.5em; margin-bottom: 15px; }
+        .victory-content p { font-size: 1.5em; margin-bottom: 25px; }
+        .victory-content button {
+            background-color: #2c3e50; color: #f1c40f; border: none;
+            padding: 12px 30px; font-size: 1.2em; font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            font-weight: 700; border-radius: 50px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .victory-content button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4); }
+        .confetti-piece { position: absolute; width: 10px; height: 10px; background: #f1c40f; pointer-events: none; z-index: 999; }
+        @keyframes confettiFall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+        /* 🆕 استایل modal راهنما */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .help-modal.show { display: flex; }
+        .help-content {
+            background: white;
+            color: #2c3e50;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: right;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            line-height: 1.9;
+        }
+        .help-content h2 { color: #3498db; margin-bottom: 15px; font-size: 1.5rem; }
+        .help-content h3 { color: #2980b9; margin: 12px 0 6px; font-size: 1.1rem; }
+        .help-content p, .help-content li { color: #2c3e50; font-size: 0.95rem; margin: 4px 0; }
+        .help-content ul { margin: 4px 20px; }
+        .close-help-btn {
+            margin-top: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .close-help-btn:hover { background: #2980b9; }
+
+        @media (max-width: 768px) {
+            .game-container { padding: 15px; }
+            #game-board { gap: 4px; }
+            .controls { gap: 0.5rem; }
+            .game-button { font-size: 0.8em; padding: 8px 12px; }
+            .victory-content { padding: 30px 25px; }
+            .victory-content h2 { font-size: 2em; }
+            .victory-content p { font-size: 1.2em; }
+            .help-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="sound-controls">
+            <button id="sfx-toggle" class="sound-button" title="جلوه‌های صوتی">🔊</button>
+        </div>
+
+        <h1>🧩 حافظه‌ی کسرهای مساوی</h1>
+        <h2 id="level-display">مرحله ۱ از ۱۰</h2>
+        <h2 id="timer-display">زمان: --</h2>
+        <h2 id="score-display">امتیاز: 0</h2>
+
+        <div class="controls">
+            <button id="start-button" class="game-button">شروع مرحله</button>
+            <!-- 🆕 دکمه راهنما -->
+            <button id="help-button" class="game-button">💡 راهنما</button>
+            <button id="reset-progress-button" class="game-button">ریست کردن پیشرفت</button>
+        </div>
+
+        <div id="game-board"></div>
+
+        <footer>
+            <p>طراح: یوسف معصومی</p>
+        </footer>
+    </div>
+
+    <!-- صفحه پیروزی -->
+    <div id="victory-screen">
+        <div class="victory-content">
+            <h2>🏆 قهرمان کسرهای مساوی 🏆</h2>
+            <p id="final-score">امتیاز نهایی: 0</p>
+            <button id="play-again-button">بازی دوباره</button>
+        </div>
+    </div>
+
+    <!-- 🆕 modal راهنما -->
+    <div id="help-modal" class="help-modal">
+        <div class="help-content">
+            <h2>💡 راهنمای بازی</h2>
+
+            <h3>📌 هدف بازی</h3>
+            <p>کسرهای مساوی رو پیدا کن! هر دو کارتی که با هم جفت می‌شن، یک کسر بزرگ‌تر و یک کسر ساده‌شده هستن که با هم مساوی‌اند.</p>
+            <p>مثلاً <strong>۲/۴</strong> با <strong>۱/۲</strong> مساویه.</p>
+
+            <h3>🎯 چطور بازی کنم؟</h3>
+            <ul>
+                <li>روی «شروع مرحله» کلیک کن</li>
+                <li>روی یک کارت کلیک کن تا باز بشه</li>
+                <li>روی کارت دوم کلیک کن</li>
+                <li>اگر دو کسر مساوی باشن، جفت می‌شن و ۵ امتیاز می‌گیری</li>
+                <li>اگر مساوی نباشن، کارت‌ها برمی‌گردن</li>
+                <li>همه‌ی جفت‌ها رو پیدا کن تا مرحله تموم شه</li>
+            </ul>
+
+            <h3>⭐ امتیازدهی</h3>
+            <ul>
+                <li>هر جفت درست: ۵ امتیاز</li>
+                <li>هر ثانیه باقی‌مونده در پایان مرحله: ۱ امتیاز پاداش</li>
+                <li>۱۰ مرحله با سختی تدریجی</li>
+            </ul>
+
+            <h3>💾 ذخیره‌ی خودکار</h3>
+            <p>پیشرفتت خودکار ذخیره می‌شه. اگر صفحه رو ببندی، دفعه بعد از همون‌جا ادامه بده.</p>
+
+            <h3>🔊 جلوه‌های صوتی</h3>
+            <p>با دکمه‌ی بلندگو (بالا سمت چپ) می‌تونی صدا رو خاموش یا روشن کنی.</p>
+
+            <button class="close-help-btn" id="close-help">فهمیدم ✓</button>
+        </div>
+    </div>
+
+    <audio id="sfx-level-complete" src="https://cdn.pixabay.com/audio/2021/08/04/audio_12b04c7a6a.mp3" preload="auto"></audio>
+    <audio id="sfx-game-won" src="https://cdn.pixabay.com/audio/2022/07/19/audio_7dd9388154.mp3" preload="auto"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameBoard = document.getElementById('game-board');
+            const startButton = document.getElementById('start-button');
+            const resetProgressButton = document.getElementById('reset-progress-button');
+            const playAgainButton = document.getElementById('play-again-button');
+            const levelDisplay = document.getElementById('level-display');
+            const timerDisplay = document.getElementById('timer-display');
+            const scoreDisplay = document.getElementById('score-display');
+            const finalScoreDisplay = document.getElementById('final-score');
+            const victoryScreen = document.getElementById('victory-screen');
+            const sfxToggle = document.getElementById('sfx-toggle');
+
+            // 🆕 عناصر راهنما
+            const helpButton = document.getElementById('help-button');
+            const helpModal = document.getElementById('help-modal');
+            const closeHelpBtn = document.getElementById('close-help');
+
+            const sfxLevelComplete = document.getElementById('sfx-level-complete');
+            const sfxGameWon = document.getElementById('sfx-game-won');
+
+            const levels = [
+                { pairs: 4, desktopCols: 4, mobileCols: 3 }, { pairs: 6, desktopCols: 4, mobileCols: 3 }, { pairs: 8, desktopCols: 4, mobileCols: 4 },
+                { pairs: 10, desktopCols: 5, mobileCols: 4 }, { pairs: 12, desktopCols: 4, mobileCols: 4 }, { pairs: 14, desktopCols: 7, mobileCols: 5 },
+                { pairs: 16, desktopCols: 8, mobileCols: 5 }, { pairs: 18, desktopCols: 6, mobileCols: 5 }, { pairs: 20, desktopCols: 5, mobileCols: 5 },
+                { pairs: 22, desktopCols: 11, mobileCols: 6 }
+            ];
+
+            let cards = [];
+            let firstCard = null;
+            let isProcessing = false;
+            let currentLevel = 1;
+            const totalLevels = levels.length;
+            let isSoundEffectsMuted = false;
+            const finalImageUrl = 'https://picsum.photos/seed/fraction-game/900/1200.jpg';
+            let timeLeft, timerInterval, bonusTime = 0;
+            let score = 0;
+            const pointsPerMatch = 5;
+            const timeBonusMultiplier = 1;
+
+            const KEY_LEVEL = 'fractionGameCurrentLevel';
+            const KEY_BONUS = 'fractionGameBonusTime';
+            const KEY_SCORE = 'fractionGameScore';
+            const KEY_TIME = 'fractionGameTimeLeft';
+            const KEY_MATCHED = 'fractionGameMatchedCards';
+            const KEY_BOARD = 'fractionGameBoard';
+
+            let audioContext;
+            function initAudio() { if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)(); }
+            function playSelectSound() { if (!audioContext) return; const osc = audioContext.createOscillator(); const gain = audioContext.createGain(); osc.connect(gain); gain.connect(audioContext.destination); osc.frequency.value = 800; osc.type = 'sine'; gain.gain.setValueAtTime(0.2, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05); osc.start(audioContext.currentTime); osc.stop(audioContext.currentTime + 0.05); }
+            function playMatchSound() { if (!audioContext) return; const osc = audioContext.createOscillator(); const gain = audioContext.createGain(); osc.connect(gain); gain.connect(audioContext.destination); osc.frequency.setValueAtTime(400, audioContext.currentTime); osc.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1); osc.type = 'sine'; gain.gain.setValueAtTime(0.3, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2); osc.start(audioContext.currentTime); osc.stop(audioContext.currentTime + 0.2); }
+            function playMismatchSound() { if (!audioContext) return; const osc = audioContext.createOscillator(); const gain = audioContext.createGain(); osc.connect(gain); gain.connect(audioContext.destination); osc.frequency.setValueAtTime(300, audioContext.currentTime); osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.2); osc.type = 'sawtooth'; gain.gain.setValueAtTime(0.2, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2); osc.start(audioContext.currentTime); osc.stop(audioContext.currentTime + 0.2); }
+
+            function playSFX(soundType) {
+                initAudio();
+                if (!isSoundEffectsMuted) {
+                    switch(soundType) {
+                        case 'select': playSelectSound(); break;
+                        case 'match': playMatchSound(); break;
+                        case 'mismatch': playMismatchSound(); break;
+                        case 'level-complete': sfxLevelComplete.currentTime = 0; sfxLevelComplete.play().catch(e => console.error("SFX play failed:", e)); break;
+                        case 'game-won': sfxGameWon.currentTime = 0; sfxGameWon.play().catch(e => console.error("SFX play failed:", e)); break;
+                    }
+                }
+            }
+
+            function toggleSFX() {
+                isSoundEffectsMuted = !isSoundEffectsMuted;
+                sfxToggle.textContent = isSoundEffectsMuted ? '🔇' : '🔊';
+                sfxToggle.classList.toggle('muted', isSoundEffectsMuted);
+            }
+
+            function updateScore(points) {
+                score += points;
+                scoreDisplay.textContent = `امتیاز: ${score}`;
+                scoreDisplay.classList.remove('pop-animation');
+                void scoreDisplay.offsetWidth;
+                scoreDisplay.classList.add('pop-animation');
+            }
+
+            function createConfetti() {
+                const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#1abc9c'];
+                for (let i = 0; i < 150; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti-piece';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                        document.body.appendChild(confetti);
+                        confetti.style.animation = `confettiFall ${confetti.style.animationDuration} linear forwards`;
+                        setTimeout(() => confetti.remove(), parseFloat(confetti.style.animationDuration) * 1000 + 500);
+                    }, i * 20);
+                }
+            }
+
+            function showVictoryScreen() {
+                finalScoreDisplay.textContent = `امتیاز نهایی: ${score}`;
+                victoryScreen.classList.add('show');
+                createConfetti();
+            }
+
+            function resetGame() {
+                currentLevel = 1;
+                score = 0;
+                bonusTime = 0;
+                timeLeft = 0;
+                [KEY_LEVEL, KEY_BONUS, KEY_SCORE, KEY_TIME, KEY_MATCHED, KEY_BOARD].forEach(k => localStorage.removeItem(k));
+                levelDisplay.textContent = `مرحله ${currentLevel} از ${totalLevels}`;
+                scoreDisplay.textContent = `امتیاز: ${score}`;
+                startButton.textContent = 'شروع مرحله';
+                startButton.disabled = false;
+                clearInterval(timerInterval);
+                timerDisplay.textContent = 'زمان: --';
+                gameBoard.innerHTML = '';
+                gameBoard.style.pointerEvents = 'auto';
+                victoryScreen.classList.remove('show');
+            }
+
+            function saveProgress() {
+                const matchedPairIds = cards.filter(card => card.classList.contains('matched')).map(card => card.dataset.pairId);
+                localStorage.setItem(KEY_LEVEL, currentLevel);
+                localStorage.setItem(KEY_BONUS, bonusTime);
+                localStorage.setItem(KEY_SCORE, score);
+                localStorage.setItem(KEY_TIME, timeLeft);
+                localStorage.setItem(KEY_MATCHED, JSON.stringify(matchedPairIds));
+            }
+
+            function loadProgress() {
+                const savedLevel = localStorage.getItem(KEY_LEVEL);
+                if (savedLevel) currentLevel = parseInt(savedLevel, 10);
+                const savedBonusTime = localStorage.getItem(KEY_BONUS);
+                if (savedBonusTime) bonusTime = parseInt(savedBonusTime, 10);
+                const savedScore = localStorage.getItem(KEY_SCORE);
+                if (savedScore) score = parseInt(savedScore, 10);
+                const savedTimeLeft = localStorage.getItem(KEY_TIME);
+                if (savedTimeLeft) timeLeft = parseInt(savedTimeLeft, 10);
+            }
+
+            function saveBoardState(cardData) {
+                try { localStorage.setItem(KEY_BOARD, JSON.stringify({ level: currentLevel, data: cardData })); } catch (e) {}
+            }
+
+            function loadBoardState() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(KEY_BOARD) || 'null');
+                    const expectedCards = levels[currentLevel - 1] ? levels[currentLevel - 1].pairs * 2 : 0;
+                    if (saved && saved.level === currentLevel && Array.isArray(saved.data) && saved.data.length === expectedCards) return saved.data;
+                } catch (e) {}
+                return null;
+            }
+
+            function resetProgress() {
+                if (confirm("آیا از ریست کردن پیشرفت خود مطمئن هستید؟")) resetGame();
+            }
+
+            function setupGame() {
+                loadProgress();
+                levelDisplay.textContent = `مرحله ${currentLevel} از ${totalLevels}`;
+                scoreDisplay.textContent = `امتیاز: ${score}`;
+                const savedBoard = loadBoardState();
+                if (timeLeft > 0 && savedBoard) {
+                    createBoard();
+                    restoreMatchedCards();
+                    startButton.disabled = true;
+                    timerDisplay.textContent = `زمان: ${timeLeft}`;
+                    startTimer();
+                } else {
+                    if (timeLeft > 0 && !savedBoard) {
+                        localStorage.removeItem(KEY_TIME);
+                        localStorage.removeItem(KEY_MATCHED);
+                        timeLeft = 0;
+                    }
+                    gameBoard.innerHTML = '';
+                    timerDisplay.textContent = 'زمان: --';
+                    startButton.disabled = false;
+                }
+            }
+
+            function restoreMatchedCards() {
+                let matchedPairIds = [];
+                try { matchedPairIds = JSON.parse(localStorage.getItem(KEY_MATCHED) || '[]'); } catch (e) { matchedPairIds = []; }
+                matchedPairIds.forEach(pairId => {
+                    cards.filter(card => card.dataset.pairId === pairId).forEach(card => card.classList.add('matched'));
+                });
+            }
+
+            function shuffle(array) { let currentIndex = array.length, randomIndex; while (currentIndex != 0) { randomIndex = Math.floor(Math.random() * currentIndex); currentIndex--; [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]; } return array; }
+
+            function generateFractionPairs(count) {
+                const baseFractions = [{n: 1, d: 2}, {n: 1, d: 3}, {n: 2, d: 3}, {n: 1, d: 4}, {n: 3, d: 4},{n: 1, d: 5}, {n: 2, d: 5}, {n: 3, d: 5}, {n: 4, d: 5},{n: 1, d: 6}, {n: 5, d: 6}, {n: 1, d: 7}, {n: 2, d: 7}, {n: 3, d: 7}, {n: 4, d: 7}, {n: 5, d: 7}, {n: 6, d: 7},{n: 1, d: 8}, {n: 3, d: 8}, {n: 5, d: 8}, {n: 7, d: 8},{n: 1, d: 9}, {n: 2, d: 9}, {n: 4, d: 9}, {n: 5, d: 9}, {n: 7, d: 9}, {n: 8, d: 9},{n: 1, d: 10}, {n: 3, d: 10}, {n: 7, d: 10}, {n: 9, d: 10}];
+                const shuffledBase = shuffle(baseFractions.slice());
+                count = Math.min(count, shuffledBase.length);
+                const pairs = [];
+                for (let i = 0; i < count; i++) {
+                    const base = shuffledBase[i];
+                    const factor = Math.floor(Math.random() * 5) + 2;
+                    pairs.push({
+                        original: { num: base.n * factor, den: base.d * factor },
+                        simplified: { num: base.n, den: base.d }
+                    });
+                }
+                return pairs;
+            }
+
+            function createBoard(forceNew = false) {
+                gameBoard.innerHTML = ''; cards = []; firstCard = null; isProcessing = false;
+                const levelConfig = levels[currentLevel - 1];
+                let cardData = forceNew ? null : loadBoardState();
+                if (!cardData) {
+                    const fractionPairs = generateFractionPairs(levelConfig.pairs);
+                    cardData = [];
+                    fractionPairs.forEach((pair, index) => {
+                        cardData.push({ num: pair.original.num, den: pair.original.den, pairId: index, type: 'original' });
+                        cardData.push({ num: pair.simplified.num, den: pair.simplified.den, pairId: index, type: 'simplified' });
+                    });
+                    cardData = shuffle(cardData);
+                    saveBoardState(cardData);
+                }
+                const isMobile = window.innerWidth <= 768;
+                const numCols = Math.max(1, isMobile ? levelConfig.mobileCols : levelConfig.desktopCols);
+                const numRows = Math.ceil(cardData.length / numCols);
+                gameBoard.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+
+                cardData.forEach((data, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.dataset.pairId = data.pairId;
+                    card.dataset.type = data.type;
+                    card.innerHTML = `<div class="card-face card-front"><span class="fraction"><span class="numerator">${data.num}</span><span class="denominator">${data.den}</span></span></div><div class="card-face card-back"></div>`;
+                    const cardBack = card.querySelector('.card-back');
+                    const row = Math.floor(index / numCols);
+                    const col = index % numCols;
+                    cardBack.style.backgroundImage = `url(${finalImageUrl})`;
+                    cardBack.style.backgroundSize = `${numCols * 100}% ${numRows * 100}%`;
+                    cardBack.style.backgroundPosition = `${(col / Math.max(1, numCols - 1)) * 100}% ${(row / Math.max(1, numRows - 1)) * 100}%`;
+                    card.addEventListener('click', selectCard);
+                    gameBoard.appendChild(card);
+                    cards.push(card);
+                });
+            }
+
+            function selectCard() {
+                if (isProcessing) return;
+                if (this.classList.contains('matched')) return;
+                if (firstCard === this) { this.classList.remove('selected'); firstCard = null; return; }
+                playSFX('select');
+                if (!firstCard) {
+                    firstCard = this;
+                    this.classList.add('selected');
+                } else {
+                    isProcessing = true;
+                    checkMatch(this);
+                }
+            }
+
+            function checkMatch(secondCard) {
+                const isMatch = firstCard.dataset.pairId === secondCard.dataset.pairId && firstCard.dataset.type !== secondCard.dataset.type;
+                if (isMatch) {
+                    playSFX('match');
+                    firstCard.classList.add('matched');
+                    secondCard.classList.add('matched');
+                    firstCard.classList.remove('selected');
+                    resetSelection();
+                    updateScore(pointsPerMatch);
+                    saveProgress();
+                    const allMatched = cards.every(card => card.classList.contains('matched'));
+                    if (allMatched) setTimeout(() => handleLevelComplete(), 500);
+                } else {
+                    playSFX('mismatch');
+                    firstCard.classList.remove('selected');
+                    secondCard.classList.add('wrong');
+                    setTimeout(() => { secondCard.classList.remove('wrong'); resetSelection(); }, 800);
+                }
+            }
+            function resetSelection() { firstCard = null; isProcessing = false; }
+
+            function handleLevelComplete() {
+                clearInterval(timerInterval);
+                bonusTime = timeLeft;
+                const timeBonus = timeLeft * timeBonusMultiplier;
+                updateScore(timeBonus);
+
+                // 🆕 ارسال امتیاز به اپ اصلی (پیشرفت در هر مرحله)
+                try {
+                    window.parent.postMessage({
+                        type: 'GAME_FINISHED',
+                        gameId: 'ch2-fractions-memory',
+                        score: currentLevel,
+                        total: totalLevels
+                    }, '*');
+                } catch (e) { /* در iframe نیستیم */ }
+
+                if (currentLevel < totalLevels) {
+                    playSFX('level-complete');
+                    alert(`آفرین! مرحله ${currentLevel} تمام شد. پاداش زمان: ${timeBonus} امتیاز.`);
+                    currentLevel++;
+                    saveProgress();
+                    startButton.textContent = 'شروع مرحله بعدی';
+                    startButton.disabled = false;
+                    localStorage.removeItem(KEY_TIME);
+                    localStorage.removeItem(KEY_MATCHED);
+                    localStorage.removeItem(KEY_BOARD);
+                } else {
+                    playSFX('game-won');
+                    showVictoryScreen();
+                    localStorage.removeItem(KEY_TIME);
+                    localStorage.removeItem(KEY_MATCHED);
+                    localStorage.removeItem(KEY_BOARD);
+                }
+                levelDisplay.textContent = `مرحله ${currentLevel} از ${totalLevels}`;
+            }
+
+            function handleTimeOut() {
+                clearInterval(timerInterval);
+                bonusTime = 0;
+                timeLeft = 0;
+                saveProgress();
+                localStorage.removeItem(KEY_TIME);
+                localStorage.removeItem(KEY_MATCHED);
+                localStorage.removeItem(KEY_BOARD);
+                alert('زمان شما تمام شد! مرحله را دوباره تلاش کنید.');
+                startButton.disabled = false;
+                gameBoard.style.pointerEvents = 'none';
+            }
+
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.textContent = `زمان: ${timeLeft}`;
+                    saveProgress();
+                    if (timeLeft <= 0) handleTimeOut();
+                }, 1000);
+            }
+
+            function startLevel() {
+                clearInterval(timerInterval);
+                startButton.disabled = true;
+                gameBoard.style.pointerEvents = 'auto';
+                localStorage.removeItem(KEY_MATCHED);
+                const baseTime = 60;
+                const timeIncrement = 20;
+                let initialTime = baseTime + (currentLevel - 1) * timeIncrement;
+                initialTime += bonusTime;
+                timeLeft = initialTime;
+                bonusTime = 0;
+                levelDisplay.textContent = `مرحله ${currentLevel} از ${totalLevels}`;
+                timerDisplay.textContent = `زمان: ${timeLeft}`;
+                createBoard(true);
+                startTimer();
+            }
+
+            setupGame();
+            startButton.addEventListener('click', startLevel);
+            resetProgressButton.addEventListener('click', resetProgress);
+            playAgainButton.addEventListener('click', resetGame);
+            sfxToggle.addEventListener('click', toggleSFX);
+
+            // 🆕 رویدادهای modal راهنما
+            helpButton.addEventListener('click', () => {
+                helpModal.classList.add('show');
+            });
+            closeHelpBtn.addEventListener('click', () => {
+                helpModal.classList.remove('show');
+            });
+            helpModal.addEventListener('click', (e) => {
+                if (e.target === helpModal) helpModal.classList.remove('show');
+            });
+        });
+    </script>
+
+</body>
+</html>
