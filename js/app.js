@@ -34,6 +34,7 @@ const App = {
     try { const v = await (await fetch('./version.json', { cache: 'no-cache' })).json(); this.state.version = v.version; } catch (e) {}
     if (!location.hash || location.hash === '#') location.hash = '/'; else this.route();
     this.setupSW();
+    this.checkNewGames();
   },
 
   async loadData() {
@@ -55,14 +56,11 @@ const App = {
     if (!('serviceWorker' in navigator)) return;
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       this.swReg = reg;
-      if (reg.waiting && navigator.serviceWorker.controller) this.showUpdateBanner(reg);
-      reg.addEventListener('updatefound', () => {
-        const w = reg.installing;
-        if (w) w.addEventListener('statechange', () => {
-          if (w.state === 'installed' && navigator.serviceWorker.controller) this.showUpdateBanner(reg);
-        });
-      });
-      setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+      // نسخهٔ منتظر (در صورت وجود) بی‌صدا فعال می‌شود؛ بررسی نسخهٔ جدید هنگام باز شدن و برگشت از پس‌زمینه
+      if (reg.waiting && navigator.serviceWorker.controller) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      const check = () => reg.update().catch(() => {});
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
+      setInterval(check, 30 * 60 * 1000);
     }).catch((e) => console.warn('ثبت سرویس‌ورکر ناموفق:', e));
     // فقط وقتی کنترل از یک سرویس‌ورکر قدیمی به نسخهٔ جدید می‌رسد صفحه را تازه کن؛ در اولین نصب، بازی در حال اجرا نباید قطع شود
     let reloaded = false;
@@ -70,15 +68,46 @@ const App = {
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (!hadController || reloaded) return;
       // وسط بازی صفحه را ناگهانی تازه نکن؛ بعد از خروج از بازی تازه می‌شود
-      if (this.state.view === 'game') { this.pendingReload = true; this.showUpdateBanner(this.swReg); return; }
+      if (this.state.view === 'game') { this.pendingReload = true; return; }
       reloaded = true; location.reload();
     });
   },
-  showUpdateBanner(reg) {
-    const b = this.el.updateBanner; if (!b) return;
-    b.classList.remove('hidden');
-    document.getElementById('update-btn').onclick = () => { if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); b.classList.add('hidden'); if (this.pendingReload) location.reload(); };
-    document.getElementById('dismiss-update').onclick = () => b.classList.add('hidden');
+  // ---------- اعلام بازی جدید ----------
+  unitWord(subjectId) { return subjectId === 'math' ? 'فصل' : 'درس'; },
+  checkNewGames() {
+    const games = this.state.games; if (!games.length) return;
+    const KEY = 'math5-seen-games';
+    let seen = null;
+    try { const r = localStorage.getItem(KEY); if (r) { const a = JSON.parse(r); if (Array.isArray(a)) seen = a; } } catch (e) {}
+    const ids = games.map((g) => g.id);
+    const save = (a) => { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} };
+    if (!seen) {
+      // اولین بار: بازی‌های قبلی بی‌صدا ثبت می‌شوند و فقط آخرین بازی اعلام می‌شود (کاربر کاملاً تازه‌وارد پیامی نمی‌بیند)
+      let hasData = false;
+      try { hasData = !!localStorage.getItem('math5-progress'); } catch (e) {}
+      save(ids);
+      if (hasData) this.newGamesPending = [games[games.length - 1]];
+    } else {
+      const fresh = games.filter((g) => !seen.includes(g.id));
+      if (fresh.length) { save(seen.concat(fresh.map((g) => g.id))); this.newGamesPending = fresh; }
+    }
+    this.showNewGames();
+  },
+  showNewGames() {
+    const list = this.newGamesPending;
+    if (!list || !list.length || this.state.view === 'game' || document.querySelector('.new-game-modal')) return;
+    this.newGamesPending = null;
+    const rows = list.map((g) => {
+      const sub = this.state.subjects.find((s) => s.id === g.subject);
+      const where = [sub ? sub.label : '', g.chapter != null ? this.unitWord(g.subject) + ' ' + toFa(g.chapter) : ''].filter(Boolean).join(' — ');
+      return `<div class="ng-row"><span class="ng-emoji">${esc(g.emoji || '🎮')}</span><div><div class="ng-title">${esc(g.title)}</div><div class="ng-where">${esc(where)}</div></div></div>`;
+    }).join('');
+    const m = document.createElement('div');
+    m.className = 'modal new-game-modal';
+    m.innerHTML = `<div class="modal-box"><h3>🎉 بازی جدید اضافه شد</h3>${rows}<button class="btn btn-primary" style="width:100%">باشه</button></div>`;
+    m.addEventListener('click', (e) => { if (e.target === m || e.target.tagName === 'BUTTON') m.remove(); });
+    document.body.appendChild(m);
+    this.confetti(24);
   },
 
   // ---------- نصب برنامه ----------
@@ -126,6 +155,7 @@ const App = {
       if (g) { s.currentGame = g; s.view = 'game'; } else s.view = 'subjects';
     } else s.view = 'home';
     this.render();
+    this.showNewGames();
   },
   goBack() {
     const v = this.state.view;
@@ -241,7 +271,7 @@ const App = {
     const by = {}; sg.forEach((g) => { const c = g.chapter == null ? 1 : g.chapter; (by[c] = by[c] || []).push(g); });
     const progress = Progress.getProgress();
     this.el.main.innerHTML = head + Object.keys(by).map(Number).sort((a, b) => a - b).map((ch) =>
-      `<h3 class="chapter-header">📖 فصل ${toFa(ch)}</h3><div class="games-list">${by[ch].map((g) => this.gameCard(g, progress)).join('')}</div>`).join('');
+      `<h3 class="chapter-header">📖 ${this.unitWord(sub.id)} ${toFa(ch)}</h3><div class="games-list">${by[ch].map((g) => this.gameCard(g, progress)).join('')}</div>`).join('');
   },
 
   renderGame() {

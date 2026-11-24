@@ -1,11 +1,11 @@
 {
-  "version": "1.0.22",
-  "releasedAt": "2026-11-20T08:18:06.843Z",
-  "notes": "Added Fraction Memory Game for Math Chapter 2",
+  "version": "1.0.23",
+  "releasedAt": "2026-11-24T15:42:19.908Z",
+  "notes": "Silent auto-update, new-game notice, chapter/lesson wording",
   "hashes": {
     "index": "5ad436f2b2bcc1d2a5126ac3b67b135c",
-    "css": "d0e90a98e3da653c3145f53292bdf4a7",
-    "app": "f0a83521a845f2837add7b47e33a05ad",
-    "sw": "d1d678eb32ea37a29d8f959c1e5d86ae"
+    "css": "f641267ea1477fc32459e9d65da95579",
+    "app": "a11bcf88b13d1557b5787ee2dda59009",
+    "sw": "d338b11c33f8c37883dfa3ccbe09079e"
   }
 }

@@ -75,3 +75,5 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .err{color:#c0392b;font-size:.9rem}
 @media (max-width:480px){.home h2{font-size:1.7rem}.stat-card{min-width:100px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.ng-row{display:flex;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px dashed #e3e6f5}.ng-emoji{font-size:2rem}.ng-title{font-weight:800;color:var(--ink);line-height:1.5}.ng-where{color:var(--muted);font-size:.9rem}.new-game-modal .btn{margin-top:.9rem}
